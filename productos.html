@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos - Los Nombres del Bosque</title>
+  <meta name="description" content="Descubre el libro Los Nombres del Bosque y crea tu propia arboleda personalizada.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="assets/logos/Logo_Ppal_LNDB.png" alt="Los Nombres del Bosque">
+      </a>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav-links">
+        <a href="index.html">Inicio</a>
+        <a href="quienes-somos.html">¿Quiénes somos?</a>
+        <a href="productos.html" class="active">Productos</a>
+        <a href="index.html#identificar">Identifica tu árbol</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PRODUCT TITLE -->
+  <section class="product-title-section">
+    <div class="container">
+      <h1>Los Nombres del Bosque</h1>
+      <p class="product-subtitle">Encuentros con árboles que caminan</p>
+    </div>
+  </section>
+
+  <!-- PRODUCT DETAIL -->
+  <section class="product-detail">
+    <div class="container">
+      <div class="product-image">
+        <img src="assets/images/book-1.jpg" alt="Los Nombres del Bosque - Libro">
+      </div>
+      <div class="product-text">
+        <p>En este bosque de páginas encontrarás dieciséis árboles que habitan en Colombia, cada uno con alma propia.</p>
+        <p>Sus raíces, sus ramas y sus frutos te hablarán como si fueran personas...</p>
+        <p>Quizá reconozcas en ellos a alguien que amas. Quizá te reconozcas a ti. Abre este libro, nómbralos, dibújate, y deja que crezca tu propia arboleda del corazón.</p>
+        <a href="#" class="btn btn-primary">Conócelo aquí</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARBOLEDA -->
+  <section class="arboleda-section">
+    <div class="container">
+      <div class="arboleda-content">
+        <h2>Crea tu arboleda</h2>
+        <p>Elige los árboles que sientas que los representan. Y se creará tu arboleda.</p>
+        <p>La página reunirá todos los árboles que escojas y creará una composición única: tu propio bosque, con nombres y personalidad.</p>
+        <p>Podrás descargarlo en PDF para guardarlo, imprimirlo o regalarlo.</p>
+        <p>Porque cuando nombramos nuestro bosque, lo entendemos mejor. Y cuando lo vemos completo, recordamos que no estamos solos.</p>
+        <a href="#" class="btn btn-primary">Comprar aquí</a>
+      </div>
+      <div class="arboleda-image">
+        <img src="assets/images/trees/Cacao.png" alt="Cacao">
+        <img src="assets/images/trees/Cerezo.png" alt="Cerezo">
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contacto">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-left">
+          <a href="index.html" class="logo">
+            <img src="assets/logos/Logo_Blanco_LNDB.png" alt="Los Nombres del Bosque">
+          </a>
+          <div class="footer-social">
+            <a href="#" aria-label="Instagram">&#9675;</a>
+            <a href="#" aria-label="Correo">&#9993;</a>
+            <a href="#" aria-label="Web">&#8853;</a>
+          </div>
+          <div class="footer-location">Medellín, Colombia</div>
+        </div>
+        <nav class="footer-nav">
+          <a href="quienes-somos.html">¿Quiénes somos?</a>
+          <a href="productos.html">Productos</a>
+          <a href="index.html#identificar">Identifica tu árbol</a>
+          <a href="#contacto">Contacto</a>
+        </nav>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Los Nombres del Bosque S.A.S. Todos los derechos reservados.</span>
+        <span>
+          <a href="#">Aviso legal</a> · <a href="#">Políticas</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.querySelector('.nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    toggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('active');
+      toggle.classList.toggle('active');
+      toggle.setAttribute('aria-expanded', isOpen);
+    });
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        toggle.classList.remove('active');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+  </script>
+
+</body>
+</html>
