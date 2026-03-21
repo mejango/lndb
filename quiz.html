@@ -44,6 +44,7 @@
           <div class="quiz-progress-bar" id="quiz-progress-bar"></div>
         </div>
         <div class="quiz-progress-text" id="quiz-progress-text"></div>
+        <img id="quiz-tree-illustration" class="quiz-tree-illustration" src="" alt="" width="140" height="140">
         <h2 class="quiz-question-text" id="quiz-question-text"></h2>
         <div class="quiz-answers" id="quiz-answers"></div>
       </div>
@@ -59,12 +60,8 @@
             </picture>
           </div>
           <p class="quiz-result-description" id="result-tree-desc"></p>
-          <div class="quiz-result-actions">
-            <a href="#" id="result-listen" class="btn btn-primary">Escuchar tu arbol</a>
-            <button id="result-share" class="btn btn-outline">Compartir</button>
-            <button id="result-gift" class="btn btn-outline">Nombrar a alguien</button>
-            <button id="quiz-retry" class="btn btn-outline">Volver a intentar</button>
-          </div>
+
+          <!-- Email form — primary CTA position -->
           <div class="tree-email" style="margin-top: 2rem;">
             <p class="tree-email-text">Algún día podrás visitar tu árbol en el bosque real. Déjanos tu correo.</p>
             <form class="tree-email-form" id="quiz-email-form">
@@ -73,6 +70,18 @@
               <button type="submit" class="tree-email-submit">Enviar</button>
             </form>
             <div class="tree-email-msg" id="quiz-email-msg" role="status" aria-live="polite"></div>
+          </div>
+
+          <!-- Single primary CTA -->
+          <div class="quiz-result-actions" style="margin-top: 2rem;">
+            <a href="#" id="result-listen" class="btn btn-primary">Escuchar tu árbol</a>
+          </div>
+
+          <!-- Secondary links -->
+          <div class="quiz-result-secondary">
+            <button id="result-share">Compartir</button>
+            <span>·</span>
+            <button id="quiz-retry">Volver a intentar</button>
           </div>
         </div>
       </div>
@@ -106,7 +115,6 @@
       var startBtn = document.getElementById('quiz-start');
       var retryBtn = document.getElementById('quiz-retry');
       var shareBtn = document.getElementById('result-share');
-      var giftBtn = document.getElementById('result-gift');
       var listenBtn = document.getElementById('result-listen');
       var progressBar = document.getElementById('quiz-progress-bar');
       var progressText = document.getElementById('quiz-progress-text');
@@ -114,6 +122,7 @@
       var answersEl = document.getElementById('quiz-answers');
       var revealEl = document.getElementById('quiz-result-reveal');
       var nameInput = document.getElementById('quiz-name');
+      var treeIllustrationEl = document.getElementById('quiz-tree-illustration');
 
       function resetScores() {
         scores = {};
@@ -139,11 +148,25 @@
         progressText.textContent = (currentQuestion + 1) + ' de ' + questions.length;
         questionText.textContent = q.text;
 
+        // Cycle tree illustration
+        var treeKey = LNDB.treeOrder[currentQuestion % LNDB.treeOrder.length];
+        var treeName = LNDB.trees[treeKey].illustration.replace('.png', '.webp');
+        treeIllustrationEl.src = 'assets/images/trees/thumb/' + treeName;
+        treeIllustrationEl.alt = LNDB.trees[treeKey].name;
+
+        // Reset fade-in classes via reflow
+        treeIllustrationEl.classList.remove('--visible');
+        questionText.classList.remove('--visible');
+        void treeIllustrationEl.offsetWidth;
+        treeIllustrationEl.classList.add('--visible');
+        questionText.classList.add('--visible');
+
         answersEl.innerHTML = '';
         q.answers.forEach(function (answer, i) {
           var btn = document.createElement('button');
           btn.className = 'quiz-answer-card';
           btn.textContent = answer.text;
+          btn.style.animationDelay = (i * 0.08) + 's';
           btn.addEventListener('click', function () { selectAnswer(i); });
           answersEl.appendChild(btn);
         });
@@ -388,17 +411,6 @@
             setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
           });
         }
-      });
-
-      // Gift button — go to quiz intro to take for someone else
-      giftBtn.addEventListener('click', function () {
-        plausible('Quiz Gift');
-        resetScores();
-        nameInput.value = '';
-        userName = '';
-        nameInput.setAttribute('placeholder', 'Nombre de esa persona');
-        showScreen(introEl);
-        nameInput.focus();
       });
 
       // Email capture form
