@@ -1286,7 +1286,7 @@ p:last-child {
 
   .about-intro .intro-illustration {
     max-width: 300px;
-    margin: 0 auto;
+    margin: 2rem auto 0;
   }
 
   .together-section .container {
