@@ -1345,6 +1345,10 @@ p:last-child {
     bottom: -28px;
   }
 
+  .hero-trees img:nth-child(4) {
+    bottom: 0;
+  }
+
   .about-intro .intro-text p {
     text-align: center;
   }
