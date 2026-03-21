@@ -5,30 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>¿Qué árbol eres? — Los Nombres del Bosque</title>
   <meta name="description" content="Descubre qué árbol colombiano eres. Un quiz poético basado en el libro Los Nombres del Bosque.">
+  <meta property="og:title" content="¿Qué árbol eres? — Los Nombres del Bosque">
+  <meta property="og:description" content="Descubre qué árbol colombiano eres.">
+  <meta property="og:type" content="website">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="container">
-      <a href="index.html" class="logo">
-        <img src="assets/logos/Logo_Ppal_LNDB.png" alt="Los Nombres del Bosque">
-      </a>
-      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <nav class="nav-links">
-        <a href="index.html">Inicio</a>
-        <a href="quienes-somos.html">¿Quiénes somos?</a>
-        <a href="productos.html">Productos</a>
-        <a href="quiz.html" class="active">Identifica tu árbol</a>
-        <a href="index.html#contacto">Contacto</a>
-      </nav>
-    </div>
-  </header>
+  <div id="header"></div>
 
   <!-- QUIZ -->
   <section class="quiz-page">
@@ -40,11 +24,15 @@
           <h1>¿Qué árbol eres?</h1>
           <p>En este bosque hay dieciséis árboles que caminan entre nosotros. Cada uno con su propia alma, su propia manera de amar, de brillar, de resistir.</p>
           <p>Responde con el corazón y descubre cuál de ellos vive en ti.</p>
+          <div class="quiz-name-field">
+            <label for="quiz-name">Tu nombre <span class="quiz-name-optional">(opcional)</span></label>
+            <input type="text" id="quiz-name" class="quiz-name-input" placeholder="Escribe tu nombre" maxlength="30" autocomplete="given-name">
+          </div>
           <button id="quiz-start" class="btn btn-primary">Comenzar</button>
         </div>
         <div class="quiz-intro-trees">
           <img src="assets/images/trees/Yarumo.png" alt="Yarumo">
-          <img src="assets/images/trees/GuayacanA.png" alt="Guayacán Amarillo">
+          <img src="assets/images/trees/GuayacanA.png" alt="Guayacan Amarillo">
           <img src="assets/images/trees/Ceiba.png" alt="Ceiba">
         </div>
       </div>
@@ -62,15 +50,16 @@
       <!-- Result Screen -->
       <div id="quiz-result" class="quiz-screen">
         <div class="quiz-result-content">
-          <p class="quiz-result-label">Tu árbol es...</p>
+          <div class="quiz-result-reveal" id="quiz-result-reveal"></div>
           <div class="quiz-result-image">
             <img id="result-tree-img" src="" alt="">
           </div>
-          <h2 class="quiz-result-name" id="result-tree-name"></h2>
           <p class="quiz-result-description" id="result-tree-desc"></p>
           <div class="quiz-result-actions">
+            <a href="#" id="result-listen" class="btn btn-primary">Escuchar tu arbol</a>
+            <button id="result-share" class="btn btn-outline">Compartir</button>
+            <button id="result-gift" class="btn btn-outline">Nombrar a alguien</button>
             <button id="quiz-retry" class="btn btn-outline">Volver a intentar</button>
-            <a href="productos.html" class="btn btn-primary">Conocer el libro</a>
           </div>
         </div>
       </div>
@@ -78,173 +67,40 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="footer" id="contacto">
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-left">
-          <a href="index.html" class="logo">
-            <img src="assets/logos/Logo_Blanco_LNDB.png" alt="Los Nombres del Bosque">
-          </a>
-          <div class="footer-social">
-            <a href="#" aria-label="Instagram">&#9675;</a>
-            <a href="#" aria-label="Correo">&#9993;</a>
-            <a href="#" aria-label="Web">&#8853;</a>
-          </div>
-          <div class="footer-location">Medellín, Colombia</div>
-        </div>
-        <nav class="footer-nav">
-          <a href="quienes-somos.html">¿Quiénes somos?</a>
-          <a href="productos.html">Productos</a>
-          <a href="quiz.html">Identifica tu árbol</a>
-          <a href="index.html#contacto">Contacto</a>
-        </nav>
-      </div>
-      <div class="footer-bottom">
-        <span>&copy; 2026 Los Nombres del Bosque S.A.S. Todos los derechos reservados.</span>
-        <span>
-          <a href="#">Aviso legal</a> · <a href="#">Políticas</a>
-        </span>
-      </div>
-    </div>
-  </footer>
+  <!-- Hidden canvas for share card generation -->
+  <canvas id="share-canvas" width="1080" height="1920" style="display:none;"></canvas>
 
+  <div id="footer"></div>
+
+  <script src="js/trees.js"></script>
+  <script src="js/components.js"></script>
   <script>
-    // Nav toggle
-    const toggle = document.querySelector('.nav-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    toggle.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('active');
-      toggle.classList.toggle('active');
-      toggle.setAttribute('aria-expanded', isOpen);
-    });
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-        toggle.classList.remove('active');
-        toggle.setAttribute('aria-expanded', 'false');
-      });
-    });
+    (function () {
+      'use strict';
 
-    // ===== QUIZ =====
-    (function() {
-      var trees = {
-        yarumo:    { name: 'Yarumo',             img: 'Yarumo.png' },
-        guayacanA: { name: 'Guayacán Amarillo',   img: 'GuayacanA.png' },
-        cenizo:    { name: 'Cenizo',              img: 'Cenizo.png' },
-        nogal:     { name: 'Nogal Cafetero',      img: 'Nogal.png' },
-        caimito:   { name: 'Caimito',             img: 'Caimito.png' },
-        roble:     { name: 'Roble',               img: 'Roble.png' },
-        tamarindo: { name: 'Tamarindo',           img: 'Tamarindo.png' },
-        cerezo:    { name: 'Cerezo',              img: 'Cerezo.png' },
-        palma:     { name: 'Palma de Cera',       img: 'PalmaCera.png' },
-        arrayan:   { name: 'Arrayán',             img: 'Arrayan.png' },
-        ceiba:     { name: 'Ceiba',               img: 'Ceiba.png' },
-        guayacanR: { name: 'Guayacán Rosado',     img: 'GuayacanR.png' },
-        mango:     { name: 'Árbol de Mango',      img: 'Mango.png' },
-        cacao:     { name: 'Árbol de Cacao',       img: 'Cacao.png' },
-        eucalipto: { name: 'Eucalipto',           img: 'Eucalipto.png' },
-        copal:     { name: 'El Copal',            img: 'Copal.png' }
-      };
-
-      var descriptions = {
-        yarumo: 'Imagina un ser que no necesita gritar para que lo escuchen. Así eres tú: una presencia serena que cobija sin pedir nada a cambio. Como el Yarumo, tu sombra es generosa, tu silencio es un regalo, y quienes se acercan a ti encuentran paz sin saber bien por qué. Caminas por el mundo con los pies firmes y el corazón abierto, regalando calma a cada paso.',
-        guayacanA: 'Hay personas que al llegar iluminan todo, como si cargaran un pedacito de sol entre las manos. Eso eres tú: luz que no se apaga ni en los días grises. Como el Guayacán Amarillo, tu presencia es una celebración. Floreces con fuerza, con alegría, y cada vez que el mundo necesita color, ahí estás tú, recordándole que la belleza siempre vuelve.',
-        cenizo: 'Eres de los que observan antes de hablar, de los que entienden sin que les expliquen. Como el Cenizo, habitas el silencio con elegancia. Tu fuerza no está en el ruido sino en la profundidad. Eres un refugio discreto, un alma que acompaña sin invadir, y quienes te conocen de verdad saben que en tu quietud vive una sabiduría que pocos alcanzan.',
-        nogal: 'Proteger es tu forma de amar. Como el Nogal Cafetero, cargas en tus ramas la responsabilidad de guiar, de enseñar, de cuidar a quienes crecen a tu sombra. Eres paciente como la tierra y sabio como las raíces que nadie ve. Tu generosidad no tiene prisa: das lo mejor de ti poco a poco, como quien sabe que lo que se siembra con amor siempre da frutos.',
-        caimito: 'Dulzura pura, eso es lo que eres. Como el Caimito, das lo mejor de ti sin pensarlo dos veces. Tu cariño es generoso, incondicional, y quienes prueban tu bondad no la olvidan jamás. Eres de esas almas que endulzan la vida de otros con gestos pequeños pero inolvidables: una palabra tierna, un abrazo largo, un "aquí estoy" que lo cambia todo.',
-        roble: 'Cuando el mundo tiembla, tú permaneces. Como el Roble, tu fortaleza no es rigidez sino raíces profundas. Has aprendido que ser fuerte no es no sentir, sino seguir de pie cuando todo intenta derribarte. Eres el refugio al que vuelven los tuyos, el tronco que sostiene, la promesa silenciosa de que mientras estés ahí, nada se vendrá abajo.',
-        tamarindo: 'La vida contigo sabe diferente: un poco ácida, un poco dulce, siempre intensa. Como el Tamarindo, tienes el don de convertir cualquier momento en algo memorable. Tu risa es contagiosa, tu energía es inagotable, y donde llegas la fiesta comienza. Pero debajo de toda esa alegría hay un corazón sensible que sabe que la mejor medicina es hacer reír a quienes amas.',
-        cerezo: 'Floreces de una manera que nadie puede ignorar. Como el Cerezo, tu belleza no es solo lo que se ve: es la forma en que haces sentir a los demás. Eres delicado/a pero valiente, suave pero memorable. Cada vez que abres tu corazón es como una lluvia de pétalos que cubre todo de esperanza, recordándole al mundo que lo efímero puede ser lo más hermoso.',
-        palma: 'Te elevas sin pedir permiso. Como la Palma de Cera, creces hacia arriba con una dignidad que impone respeto. Has conocido vientos fuertes y alturas solitarias, pero nada te ha doblado. Tu fuerza viene de adentro, de un lugar profundo donde habita la certeza de que fuiste hecho/a para resistir, para llegar alto, para tocar el cielo sin dejar de abrazar la tierra.',
-        arrayan: 'Tu magia está en lo sutil. Como el Arrayán, no necesitas ser el más grande ni el más visible para transformar un lugar. Tu presencia es como un aroma que envuelve sin que uno sepa de dónde viene: reconfortante, íntima, inolvidable. Cuidas con delicadeza, amas con ternura, y quienes tienen la fortuna de conocerte descubren un mundo entero en tu aparente sencillez.',
-        ceiba: 'Eres raíz y copa al mismo tiempo. Como la Ceiba, abrazas el mundo entero con tus ramas y al mismo tiempo te aferras a la tierra con una fuerza ancestral. Eres protector/a, imponente, sagrado/a para quienes te rodean. En ti caben todos: los que buscan refugio, los que necesitan sombra, los que quieren soñar. Eres el árbol al que todos quieren volver.',
-        guayacanR: 'El mundo se detiene cuando floreces. Como el Guayacán Rosado, tu forma de ser es un espectáculo de belleza y alegría que nadie puede pasar de largo. Irradias felicidad, pintas de rosa los días grises, y tienes esa rara habilidad de hacer que cualquiera a tu lado se sienta especial. Tu corazón florece sin miedo, una y otra vez, como si supiera que la vida merece ser celebrada.',
-        mango: 'Generosidad es tu segundo nombre. Como el Árbol de Mango, das sin medida: sabor, frescura, alegría. Eres el amigo que siempre tiene la puerta abierta, la mesa puesta, la risa lista. Tu energía es contagiosa y tu corazón no conoce la mezquindad. Donde estás tú hay abundancia, porque entiendes que la vida es más dulce cuando se comparte con los demás.',
-        cacao: 'Hay algo sagrado en lo que creas. Como el Árbol de Cacao, transformas lo simple en algo extraordinario. Tu esencia es rica, profunda, imposible de replicar. No buscas ser el más llamativo, pero lo que ofreces al mundo tiene un valor que pocos entienden a primera vista. Eres el secreto mejor guardado: quien te descubre, te atesora para siempre.',
-        eucalipto: 'Sanar es tu vocación silenciosa. Como el Eucalipto, tu presencia refresca, limpia, renueva. Eres de los que necesitan soledad para recargarse, de los que encuentran en su interior la medicina que luego comparten con el mundo. Tu espíritu es libre, tu aroma es inconfundible, y quienes se acercan a ti sienten que algo en ellos también sana.',
-        copal: 'Tu alma está hecha de incienso y oración. Como el Copal, todo en ti invita a la pausa, a lo sagrado, a lo que no se puede tocar pero se siente profundamente. Eres un ser espiritual que camina entre los demás regalando paz, conexión con algo más grande. Tu presencia es como un ritual: transforma el espacio, eleva el espíritu, y deja una huella que no se borra.'
-      };
-
-      var questions = [
-        {
-          text: '¿Cómo te describirían quienes te conocen bien?',
-          answers: [
-            { text: 'Tranquilo/a, generoso/a... no necesitas hablar para que se sienta tu presencia', scores: { yarumo: 3, cenizo: 2, eucalipto: 1 } },
-            { text: 'Fuerte, firme... siempre estás cuando más se te necesita', scores: { roble: 3, ceiba: 2, nogal: 2, palma: 1 } },
-            { text: 'Luminoso/a, lleno/a de vida... alegras cualquier lugar con solo llegar', scores: { guayacanA: 3, guayacanR: 2, cerezo: 2 } },
-            { text: 'Dulce, cariñoso/a... das lo mejor de ti sin pensarlo', scores: { caimito: 3, cacao: 2, arrayan: 2, mango: 1 } }
-          ]
-        },
-        {
-          text: '¿Cómo cuidas a quienes amas?',
-          answers: [
-            { text: 'Estando presente sin invadir. Dando espacio, dando sombra', scores: { yarumo: 3, eucalipto: 2, cenizo: 1 } },
-            { text: 'Protegiendo, guiando, enseñando con paciencia', scores: { nogal: 3, roble: 2, ceiba: 2 } },
-            { text: 'Con detalles pequeños, una palabra amable, un silencio que acompaña', scores: { arrayan: 3, copal: 2, cenizo: 2 } },
-            { text: 'Compartiendo lo mejor: risas, sabores, abrazos apretados', scores: { mango: 3, caimito: 2, tamarindo: 2, cacao: 1 } }
-          ]
-        },
-        {
-          text: 'Cuando la vida se pone difícil, tú...',
-          answers: [
-            { text: 'Te mantienes firme. No importa el viento, sigues de pie', scores: { roble: 3, palma: 3 } },
-            { text: 'Encuentras la risa incluso en la tormenta', scores: { tamarindo: 3, guayacanR: 2, mango: 1 } },
-            { text: 'Te refugias en tu interior para volver renovado/a', scores: { eucalipto: 3, cerezo: 2, cenizo: 2 } },
-            { text: 'Abrazas más fuerte a los tuyos', scores: { ceiba: 3, caimito: 2, arrayan: 2 } }
-          ]
-        },
-        {
-          text: 'En una reunión con amigos, tú...',
-          answers: [
-            { text: 'Escucho más de lo que hablo. Me gusta observar', scores: { cenizo: 3, yarumo: 2, copal: 2, palma: 1 } },
-            { text: 'Soy el alma de la fiesta. La música, la risa, el baile', scores: { mango: 3, tamarindo: 2, guayacanR: 1 } },
-            { text: 'Lleno el espacio de buena energía sin darme cuenta', scores: { guayacanA: 3, guayacanR: 2, cerezo: 2 } },
-            { text: 'Me aseguro de que todos estén bien y cómodos', scores: { nogal: 3, ceiba: 2, arrayan: 2, caimito: 1 } }
-          ]
-        },
-        {
-          text: '¿Qué valoras más?',
-          answers: [
-            { text: 'La paz interior y la conexión con lo sagrado', scores: { copal: 3, eucalipto: 2, palma: 2 } },
-            { text: 'La alegría, la fiesta, hacer reír a quienes amo', scores: { tamarindo: 3, mango: 2, guayacanR: 2 } },
-            { text: 'La fortaleza para proteger a los míos', scores: { roble: 3, nogal: 2, ceiba: 1 } },
-            { text: 'La ternura y el cariño en las cosas simples', scores: { caimito: 3, arrayan: 2, cacao: 2, cenizo: 1 } }
-          ]
-        },
-        {
-          text: 'Tu forma de brillar es...',
-          answers: [
-            { text: 'Sin hacer ruido. Quien presta atención, lo nota', scores: { arrayan: 3, cenizo: 2, copal: 2, yarumo: 1 } },
-            { text: 'Con todo el color y la luz. No puedo evitarlo', scores: { guayacanA: 3, guayacanR: 3, cerezo: 2 } },
-            { text: 'Desde las raíces. Mi fuerza habla por mí', scores: { palma: 3, roble: 2, ceiba: 2, nogal: 1 } },
-            { text: 'Creando algo único que reconforta', scores: { cacao: 3, tamarindo: 2, mango: 1 } }
-          ]
-        },
-        {
-          text: '¿Qué quisieras que sintieran los demás cerca de ti?',
-          answers: [
-            { text: 'Paz, como sentarse bajo la sombra de un árbol grande', scores: { yarumo: 3, eucalipto: 2, copal: 2 } },
-            { text: 'Ganas de sonreír. Que la vida es bella', scores: { guayacanR: 3, cerezo: 2, guayacanA: 2, tamarindo: 1 } },
-            { text: 'Seguridad. Que siempre habrá alguien cuidándolos', scores: { nogal: 3, roble: 2, ceiba: 2, palma: 1 } },
-            { text: 'Calidez, como un abrazo o el olor a algo dulce', scores: { caimito: 3, cacao: 2, arrayan: 2, mango: 1 } }
-          ]
-        }
-      ];
+      var trees = LNDB.trees;
+      var descriptions = LNDB.descriptions;
+      var questions = LNDB.questions;
 
       var currentQuestion = 0;
       var scores = {};
       var lastAwarded = '';
+      var userName = '';
 
       var introEl = document.getElementById('quiz-intro');
       var questionEl = document.getElementById('quiz-question');
       var resultEl = document.getElementById('quiz-result');
       var startBtn = document.getElementById('quiz-start');
       var retryBtn = document.getElementById('quiz-retry');
+      var shareBtn = document.getElementById('result-share');
+      var giftBtn = document.getElementById('result-gift');
+      var listenBtn = document.getElementById('result-listen');
       var progressBar = document.getElementById('quiz-progress-bar');
       var progressText = document.getElementById('quiz-progress-text');
       var questionText = document.getElementById('quiz-question-text');
       var answersEl = document.getElementById('quiz-answers');
+      var revealEl = document.getElementById('quiz-result-reveal');
+      var nameInput = document.getElementById('quiz-name');
 
       function resetScores() {
         scores = {};
@@ -254,11 +110,10 @@
       }
 
       function showScreen(screen) {
-        [introEl, questionEl, resultEl].forEach(function(el) {
+        [introEl, questionEl, resultEl].forEach(function (el) {
           el.classList.remove('quiz-screen--active');
         });
-        // Small delay for fade effect
-        setTimeout(function() {
+        setTimeout(function () {
           screen.classList.add('quiz-screen--active');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }, 50);
@@ -272,11 +127,11 @@
         questionText.textContent = q.text;
 
         answersEl.innerHTML = '';
-        q.answers.forEach(function(answer, i) {
+        q.answers.forEach(function (answer, i) {
           var btn = document.createElement('button');
           btn.className = 'quiz-answer-card';
           btn.textContent = answer.text;
-          btn.addEventListener('click', function() { selectAnswer(i); });
+          btn.addEventListener('click', function () { selectAnswer(i); });
           answersEl.appendChild(btn);
         });
 
@@ -286,19 +141,16 @@
       function selectAnswer(index) {
         var answer = questions[currentQuestion].answers[index];
 
-        // Highlight selected card
         var cards = answersEl.querySelectorAll('.quiz-answer-card');
-        cards.forEach(function(c) { c.classList.remove('quiz-answer-card--selected'); });
+        cards.forEach(function (c) { c.classList.remove('quiz-answer-card--selected'); });
         cards[index].classList.add('quiz-answer-card--selected');
 
-        // Apply scores
         for (var tree in answer.scores) {
           scores[tree] += answer.scores[tree];
           lastAwarded = tree;
         }
 
-        // Short delay before next question
-        setTimeout(function() {
+        setTimeout(function () {
           currentQuestion++;
           if (currentQuestion < questions.length) {
             showQuestion();
@@ -322,86 +174,280 @@
         return winner;
       }
 
+      // Typewriter animation
+      function typewriter(el, text, speed, callback) {
+        var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reducedMotion) {
+          el.textContent = text;
+          if (callback) callback();
+          return;
+        }
+        var i = 0;
+        el.textContent = '';
+        function type() {
+          if (i < text.length) {
+            el.textContent += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+          } else if (callback) {
+            callback();
+          }
+        }
+        type();
+      }
+
+      var currentWinnerKey = '';
+
       function showResult() {
-        // Complete progress bar
         progressBar.style.width = '100%';
 
         var winner = getWinner();
+        currentWinnerKey = winner;
         var tree = trees[winner];
 
-        document.getElementById('result-tree-img').src = 'assets/images/trees/' + tree.img;
+        document.getElementById('result-tree-img').src = 'assets/images/trees/' + tree.illustration;
         document.getElementById('result-tree-img').alt = tree.name;
-        document.getElementById('result-tree-name').textContent = tree.name;
         document.getElementById('result-tree-desc').textContent = descriptions[winner];
 
+        // Set up listen link
+        listenBtn.href = 'arboles/' + tree.slug + '.html?from=quiz';
+
+        // Build the reveal text with typewriter
+        revealEl.innerHTML = '';
         showScreen(resultEl);
+
+        // Typewriter: "[Name], " (pause) "eres [Tree]."
+        var line1El = document.createElement('span');
+        line1El.className = 'quiz-result-line1';
+        var line2El = document.createElement('span');
+        line2El.className = 'quiz-result-line2';
+        revealEl.appendChild(line1El);
+        revealEl.appendChild(line2El);
+
+        var name = userName.trim();
+        if (name) {
+          typewriter(line1El, name + ',', 80, function () {
+            setTimeout(function () {
+              typewriter(line2El, ' eres ' + tree.name + '.', 80);
+            }, 500);
+          });
+        } else {
+          typewriter(line2El, 'Eres ' + tree.name + '.', 80);
+        }
       }
 
-      startBtn.addEventListener('click', function() {
+      // Share card generation
+      function generateShareCard(width, height, callback) {
+        var canvas = document.getElementById('share-canvas');
+        canvas.width = width;
+        canvas.height = height;
+        var ctx = canvas.getContext('2d');
+
+        var winner = currentWinnerKey;
+        var tree = trees[winner];
+
+        // Background
+        ctx.fillStyle = '#F5EDE0';
+        ctx.fillRect(0, 0, width, height);
+
+        // Accent bar at top
+        ctx.fillStyle = tree.accentColor || '#7E8E6D';
+        ctx.fillRect(0, 0, width, 8);
+
+        // Load illustration
+        var img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function () {
+          var isStory = height > width;
+          var imgSize = isStory ? width * 0.55 : height * 0.5;
+          var imgX = (width - imgSize) / 2;
+          var imgY = isStory ? height * 0.15 : height * 0.08;
+          ctx.drawImage(img, imgX, imgY, imgSize, imgSize);
+
+          // Name line
+          var name = userName.trim();
+          var nameY = imgY + imgSize + (isStory ? 60 : 30);
+          ctx.textAlign = 'center';
+
+          if (name) {
+            ctx.fillStyle = '#3B4A3A';
+            ctx.font = '600 ' + (isStory ? 42 : 28) + 'px system-ui, -apple-system, sans-serif';
+            ctx.fillText(name + ',', width / 2, nameY);
+            nameY += isStory ? 60 : 40;
+          }
+
+          // "eres [Tree]."
+          ctx.fillStyle = '#3B4A3A';
+          ctx.font = '700 ' + (isStory ? 56 : 36) + 'px system-ui, -apple-system, sans-serif';
+          ctx.fillText((name ? 'eres ' : 'Eres ') + tree.name + '.', width / 2, nameY);
+
+          // Description (wrap text)
+          var descY = nameY + (isStory ? 80 : 50);
+          ctx.font = '300 ' + (isStory ? 28 : 18) + 'px system-ui, -apple-system, sans-serif';
+          ctx.fillStyle = '#5A5A5A';
+          var maxW = width * 0.8;
+          var lineH = isStory ? 40 : 26;
+          var desc = descriptions[winner];
+          // Truncate for card
+          if (desc.length > 200) desc = desc.substring(0, 197) + '...';
+          wrapText(ctx, desc, width / 2, descY, maxW, lineH);
+
+          // Brand footer
+          var footY = height - (isStory ? 80 : 50);
+          ctx.fillStyle = '#7E8E6D';
+          ctx.font = '400 ' + (isStory ? 24 : 16) + 'px system-ui, -apple-system, sans-serif';
+          ctx.fillText('Los Nombres del Bosque', width / 2, footY);
+
+          canvas.toBlob(function (blob) {
+            if (callback) callback(blob);
+          }, 'image/png');
+        };
+        img.onerror = function () {
+          // Fallback without image
+          ctx.textAlign = 'center';
+          ctx.fillStyle = '#3B4A3A';
+          ctx.font = '700 48px system-ui, sans-serif';
+          ctx.fillText(tree.name, width / 2, height / 2);
+          canvas.toBlob(function (blob) {
+            if (callback) callback(blob);
+          }, 'image/png');
+        };
+        img.src = 'assets/images/trees/' + tree.illustration;
+      }
+
+      function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+        var words = text.split(' ');
+        var line = '';
+        for (var n = 0; n < words.length; n++) {
+          var testLine = line + words[n] + ' ';
+          var metrics = ctx.measureText(testLine);
+          if (metrics.width > maxWidth && n > 0) {
+            ctx.fillText(line.trim(), x, y);
+            line = words[n] + ' ';
+            y += lineHeight;
+          } else {
+            line = testLine;
+          }
+        }
+        ctx.fillText(line.trim(), x, y);
+      }
+
+      // Share button
+      shareBtn.addEventListener('click', function () {
+        var tree = trees[currentWinnerKey];
+        var name = userName.trim();
+        var title = name ? name + ', eres ' + tree.name : 'Eres ' + tree.name;
+
+        // Try Web Share API first (mobile)
+        if (navigator.share && navigator.canShare) {
+          generateShareCard(1080, 1920, function (blob) {
+            var file = new File([blob], 'mi-arbol.png', { type: 'image/png' });
+            var shareData = {
+              title: title,
+              text: title + ' — Los Nombres del Bosque',
+              files: [file]
+            };
+            if (navigator.canShare(shareData)) {
+              navigator.share(shareData).catch(function () {});
+            } else {
+              // Share without file
+              navigator.share({
+                title: title,
+                text: title + ' — Los Nombres del Bosque',
+                url: window.location.href
+              }).catch(function () {});
+            }
+          });
+        } else {
+          // Desktop fallback: download image
+          generateShareCard(1200, 630, function (blob) {
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'mi-arbol-' + tree.slug + '.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
+          });
+        }
+      });
+
+      // Gift button — go to quiz intro to take for someone else
+      giftBtn.addEventListener('click', function () {
+        resetScores();
+        nameInput.value = '';
+        userName = '';
+        nameInput.setAttribute('placeholder', 'Nombre de esa persona');
+        showScreen(introEl);
+        nameInput.focus();
+      });
+
+      // Start button
+      startBtn.addEventListener('click', function () {
+        userName = nameInput.value;
         resetScores();
         showQuestion();
       });
 
-      retryBtn.addEventListener('click', function() {
+      // Retry button
+      retryBtn.addEventListener('click', function () {
         resetScores();
+        nameInput.value = '';
+        userName = '';
+        nameInput.setAttribute('placeholder', 'Escribe tu nombre');
         showScreen(introEl);
       });
 
-      // Admin view: quiz.html?admin
+      // Allow Enter key on name input to start quiz
+      nameInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          startBtn.click();
+        }
+      });
+
+      // ===== Admin view: quiz.html?admin =====
       if (window.location.search.indexOf('admin') !== -1) {
-        [introEl, questionEl, resultEl].forEach(function(el) {
+        [introEl, questionEl, resultEl].forEach(function (el) {
           el.classList.remove('quiz-screen--active');
         });
         var adminEl = document.createElement('div');
         adminEl.className = 'quiz-screen quiz-screen--active quiz-admin';
 
-        // --- Section 1: Scoring map (per tree) ---
-        // Calculate max possible points per tree
         var maxPoints = {};
         for (var k in trees) maxPoints[k] = 0;
-        questions.forEach(function(q) {
-          // For each question, find the max points each tree can get
-          q.answers.forEach(function(a) {
-            for (var t in a.scores) {
-              // We track per-question max, but since user picks one answer,
-              // the max a tree can get from a question is the best single answer
-            }
-          });
-          // Per question, find best answer for each tree
+        questions.forEach(function (q) {
           for (var t in trees) {
             var best = 0;
-            q.answers.forEach(function(a) {
+            q.answers.forEach(function (a) {
               if (a.scores[t] && a.scores[t] > best) best = a.scores[t];
             });
             maxPoints[t] += best;
           }
         });
 
-        // Sort trees by max possible points descending
         var treeKeys = Object.keys(trees);
 
-        var html = '<h1 style="text-align:center;color:var(--color-forest);margin-bottom:0.5rem;">Los 16 árboles</h1>';
+        var html = '<h1 style="text-align:center;color:var(--color-forest);margin-bottom:0.5rem;">Los 16 arboles</h1>';
 
-        // --- Section 2: Question scoring breakdown ---
         html += '<div class="admin-section">';
-        html += '<h2 style="color:var(--color-forest);margin:2.5rem 0 1rem;">Mapa de puntuación</h2>';
-        html += '<p style="color:var(--color-text-muted);margin-bottom:1.5rem;">Cada respuesta otorga puntos a ciertos árboles. El árbol con más puntos al final gana. En caso de empate, gana el último árbol que recibió puntos.</p>';
+        html += '<h2 style="color:var(--color-forest);margin:2.5rem 0 1rem;">Mapa de puntuacion</h2>';
+        html += '<p style="color:var(--color-text-muted);margin-bottom:1.5rem;">Cada respuesta otorga puntos a ciertos arboles. El arbol con mas puntos al final gana. En caso de empate, gana el ultimo arbol que recibio puntos.</p>';
 
-        // Max points summary table
         html += '<div class="admin-max-table">';
-        html += '<h3 style="color:var(--color-forest);margin-bottom:0.75rem;">Puntaje máximo posible por árbol</h3>';
+        html += '<h3 style="color:var(--color-forest);margin-bottom:0.75rem;">Puntaje maximo posible por arbol</h3>';
         html += '<div class="admin-chips">';
-        var sorted = treeKeys.slice().sort(function(a, b) { return maxPoints[b] - maxPoints[a]; });
-        sorted.forEach(function(k) {
+        var sorted = treeKeys.slice().sort(function (a, b) { return maxPoints[b] - maxPoints[a]; });
+        sorted.forEach(function (k) {
           html += '<span class="admin-chip"><strong>' + trees[k].name + '</strong> ' + maxPoints[k] + ' pts</span>';
         });
         html += '</div></div>';
 
-        questions.forEach(function(q, qi) {
+        questions.forEach(function (q, qi) {
           html += '<div class="admin-question">';
           html += '<h3>P' + (qi + 1) + ': ' + q.text + '</h3>';
           html += '<div class="admin-answers">';
-          q.answers.forEach(function(a, ai) {
+          q.answers.forEach(function (a, ai) {
             var labels = 'abcd';
             var scoreList = [];
             for (var t in a.scores) {
@@ -418,11 +464,10 @@
         });
         html += '</div>';
 
-        // --- Section 3: Tree cards with descriptions ---
         html += '<h2 style="color:var(--color-forest);margin:2.5rem 0 1rem;">Descripciones de resultado</h2>';
         for (var key in trees) {
           html += '<div class="quiz-admin-card">' +
-            '<img src="assets/images/trees/' + trees[key].img + '" alt="' + trees[key].name + '">' +
+            '<img src="assets/images/trees/' + trees[key].illustration + '" alt="' + trees[key].name + '">' +
             '<div class="quiz-admin-text">' +
             '<h3>' + trees[key].name + '</h3>' +
             '<p>' + descriptions[key] + '</p>' +

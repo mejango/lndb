@@ -9,26 +9,7 @@
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <div class="container">
-      <a href="index.html" class="logo">
-        <img src="assets/logos/Logo_Ppal_LNDB.png" alt="Los Nombres del Bosque">
-      </a>
-      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <nav class="nav-links">
-        <a href="index.html">Inicio</a>
-        <a href="quienes-somos.html">¿Quiénes somos?</a>
-        <a href="productos.html" class="active">Productos</a>
-        <a href="index.html#identificar">Identifica tu árbol</a>
-        <a href="#contacto">Contacto</a>
-      </nav>
-    </div>
-  </header>
+  <div id="header"></div>
 
   <!-- PRODUCT TITLE -->
   <section class="product-title-section">
@@ -71,53 +52,9 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="footer" id="contacto">
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-left">
-          <a href="index.html" class="logo">
-            <img src="assets/logos/Logo_Blanco_LNDB.png" alt="Los Nombres del Bosque">
-          </a>
-          <div class="footer-social">
-            <a href="#" aria-label="Instagram">&#9675;</a>
-            <a href="#" aria-label="Correo">&#9993;</a>
-            <a href="#" aria-label="Web">&#8853;</a>
-          </div>
-          <div class="footer-location">Medellín, Colombia</div>
-        </div>
-        <nav class="footer-nav">
-          <a href="quienes-somos.html">¿Quiénes somos?</a>
-          <a href="productos.html">Productos</a>
-          <a href="index.html#identificar">Identifica tu árbol</a>
-          <a href="#contacto">Contacto</a>
-        </nav>
-      </div>
-      <div class="footer-bottom">
-        <span>© 2026 Los Nombres del Bosque S.A.S. Todos los derechos reservados.</span>
-        <span>
-          <a href="#">Aviso legal</a> · <a href="#">Políticas</a>
-        </span>
-      </div>
-    </div>
-  </footer>
+  <div id="footer"></div>
 
-  <script>
-    const toggle = document.querySelector('.nav-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    toggle.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('active');
-      toggle.classList.toggle('active');
-      toggle.setAttribute('aria-expanded', isOpen);
-    });
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-        toggle.classList.remove('active');
-        toggle.setAttribute('aria-expanded', 'false');
-      });
-    });
-  </script>
+  <script src="js/components.js"></script>
 
 </body>
 </html>

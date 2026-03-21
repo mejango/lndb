@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caimito — Los Nombres del Bosque</title>
+  <meta name="description" content="Dulzura pura, das lo mejor de ti sin pensarlo.">
+  <meta property="og:title" content="Caimito — Los Nombres del Bosque">
+  <meta property="og:description" content="Dulzura pura, das lo mejor de ti sin pensarlo.">
+  <meta property="og:image" content="assets/images/trees/Caimito.png">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="tree-page" data-tree="caimito">
+
+  <a href="#main-content" class="skip-link">Ir al contenido</a>
+  <div id="header"></div>
+
+  <button class="tree-sound-toggle" aria-label="Activar sonido ambiente">&#128264;</button>
+
+  <nav class="tree-nav" aria-label="Navegacion entre arboles">
+    <a href="#" class="tree-nav-prev" aria-label="Arbol anterior">&#8592;</a>
+    <a href="#" class="tree-nav-next" aria-label="Siguiente arbol">&#8594;</a>
+  </nav>
+
+  <section class="tree-hero">
+    <div class="tree-hero-bg"></div>
+    <div class="tree-hero-scrim"></div>
+    <div class="tree-hero-content">
+      <img class="tree-hero-illustration" src="../assets/images/trees/Caimito.png" alt="Ilustracion del arbol Caimito" loading="eager">
+      <h1 class="tree-hero-name">Caimito</h1>
+      <button class="tree-hero-scroll" aria-label="Desplazarse al contenido">&#8595;</button>
+    </div>
+  </section>
+
+  <main id="main-content" class="tree-content">
+    <p class="tree-description"></p>
+    <hr class="tree-divider">
+
+    <div class="tree-player">
+      <div class="tree-player-label">Meditacion</div>
+      <div class="tree-player-active" style="display:none;">
+        <div class="tree-player-controls">
+          <button class="tree-player-btn" aria-label="Meditacion de Caimito">&#9654;</button>
+          <div class="tree-player-progress"><div class="tree-player-fill"></div></div>
+          <span class="tree-player-time">0:00</span>
+        </div>
+      </div>
+      <div class="tree-player-soon" style="display:none;">
+        <img class="tree-player-soon-img" src="../assets/images/trees/Caimito.png" alt="" aria-hidden="true">
+        <p>Esta meditacion llegara pronto.</p>
+        <p>Mientras tanto, cierra los ojos e imagina el sonido de este arbol.</p>
+      </div>
+    </div>
+
+    <hr class="tree-divider">
+
+    <div class="tree-email">
+      <div class="tree-email-label">Visita tu arbol</div>
+      <p class="tree-email-text">Algun dia podras visitar este arbol en el bosque real. Dejanos tu correo y te avisaremos cuando sea el momento.</p>
+      <form class="tree-email-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <input type="email" class="tree-email-input" name="email" placeholder="tu@correo.com" required aria-label="Tu correo electronico" aria-required="true">
+        <input type="text" class="tree-email-honeypot" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button type="submit" class="tree-email-submit">Enviar</button>
+      </form>
+      <div class="tree-email-msg" role="status" aria-live="polite"></div>
+    </div>
+
+    <hr class="tree-divider">
+
+    <div class="tree-gift">
+      <p>Conoces a alguien que sea este arbol?</p>
+      <a href="../quiz.html" class="btn btn-outline">Regalar este nombre</a>
+    </div>
+
+    <hr class="tree-divider">
+    <div class="tree-prevnext">
+      <a href="#" class="tree-prevnext-prev">&#8592; <span></span></a>
+      <a href="#" class="tree-prevnext-next"><span></span> &#8594;</a>
+    </div>
+  </main>
+
+  <div class="tree-nudge" role="status" aria-live="polite">
+    <button class="tree-nudge-dismiss" aria-label="Cerrar">&times;</button>
+    <p>Conoces a alguien que sea este arbol?</p>
+    <div class="tree-nudge-actions">
+      <a href="../quiz.html">Tomar el quiz para alguien</a>
+      <button class="tree-nudge-share">Compartir</button>
+    </div>
+  </div>
+
+  <div class="tree-ritual" role="status" aria-live="polite">
+    <p class="tree-ritual-msg"></p>
+    <div class="tree-ritual-actions">
+      <button class="tree-ritual-share">Compartir</button>
+      <a href="#" class="tree-ritual-next">Siguiente meditacion</a>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <script src="../js/trees.js"></script>
+  <script src="../js/components.js"></script>
+  <script src="../js/tree-page.js"></script>
+  <script>
+    (function () {
+      var key = document.body.dataset.tree;
+      var tree = LNDB.trees[key];
+      if (!tree) return;
+
+      document.querySelector('.tree-description').textContent = LNDB.descriptions[key];
+
+      if (tree.hasMeditation) {
+        var el = document.querySelector('.tree-player-active');
+        if (el) el.style.display = '';
+      } else {
+        var el = document.querySelector('.tree-player-soon');
+        if (el) el.style.display = '';
+      }
+
+      var prevKey = LNDB.getPrevTree(key);
+      var nextKey = LNDB.getNextTree(key);
+      var prevTree = LNDB.trees[prevKey];
+      var nextTree = LNDB.trees[nextKey];
+
+      var pl = document.querySelector('.tree-prevnext-prev');
+      var nl = document.querySelector('.tree-prevnext-next');
+      if (pl) { pl.href = prevTree.slug + '.html'; pl.querySelector('span').textContent = prevTree.name; }
+      if (nl) { nl.href = nextTree.slug + '.html'; nl.querySelector('span').textContent = nextTree.name; }
+
+      var np = document.querySelector('.tree-nav-prev');
+      var nn = document.querySelector('.tree-nav-next');
+      if (np) np.href = prevTree.slug + '.html';
+      if (nn) nn.href = nextTree.slug + '.html';
+
+      var rn = document.querySelector('.tree-ritual-next');
+      if (rn) { rn.href = nextTree.slug + '.html'; rn.textContent = 'Siguiente: ' + nextTree.name; }
+    })();
+  </script>
+</body>
+</html>

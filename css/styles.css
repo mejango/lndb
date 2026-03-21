@@ -907,6 +907,49 @@ p:last-child {
   margin-top: 1.5rem;
 }
 
+/* Name input */
+.quiz-name-field {
+  max-width: 320px;
+  margin: 1.5rem auto 0;
+  text-align: left;
+}
+
+.quiz-name-field label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--color-forest);
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+}
+
+.quiz-name-optional {
+  font-weight: 300;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.quiz-name-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--color-text-dark);
+  background-color: var(--color-cream);
+  border: 2px solid var(--color-sage);
+  border-radius: var(--border-radius);
+  transition: border-color 0.25s ease;
+}
+
+.quiz-name-input:focus {
+  outline: none;
+  border-color: var(--color-forest);
+}
+
+.quiz-name-input::placeholder {
+  color: var(--color-text-muted);
+  font-weight: 300;
+}
+
 .quiz-intro-trees {
   display: flex;
   justify-content: center;
@@ -993,10 +1036,26 @@ p:last-child {
   text-align: center;
 }
 
-.quiz-result-label {
-  font-size: clamp(1rem, 2vw, 1.2rem);
+/* Typewriter reveal */
+.quiz-result-reveal {
+  margin-bottom: 1.5rem;
+  min-height: 3.5rem;
+}
+
+.quiz-result-line1 {
+  display: block;
+  font-family: var(--font-display, var(--font-body));
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
   color: var(--color-text-muted);
-  margin-bottom: 1rem;
+  font-weight: 400;
+}
+
+.quiz-result-line2 {
+  display: block;
+  font-family: var(--font-display, var(--font-body));
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: var(--color-forest);
+  font-weight: 700;
 }
 
 .quiz-result-image {
@@ -1008,12 +1067,6 @@ p:last-child {
   width: 100%;
   height: auto;
   object-fit: contain;
-}
-
-.quiz-result-name {
-  color: var(--color-forest);
-  margin-bottom: 1.5rem;
-  font-size: clamp(2rem, 5vw, 3rem);
 }
 
 .quiz-result-description {
@@ -1348,5 +1401,761 @@ p:last-child {
 
   .footer-nav a + a::before {
     display: none;
+  }
+}
+
+/* ===== SKIP LINK ===== */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-forest);
+  color: var(--color-cream);
+  z-index: 200;
+  font-size: 0.9rem;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* ===== TREE PAGE ===== */
+.tree-page {
+  --accent: var(--color-sage);
+}
+
+.tree-hero {
+  position: relative;
+  height: 100vh;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+  background-color: var(--color-cream);
+}
+
+.tree-hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.tree-hero-bg.loaded {
+  opacity: 1;
+}
+
+.tree-hero-scrim {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to top, rgba(59, 74, 58, 0.5) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.tree-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 2rem 3rem;
+}
+
+.tree-hero-illustration {
+  max-width: 320px;
+  width: 40vw;
+  height: auto;
+  margin: 0 auto 1.5rem;
+  opacity: 0;
+  transition: opacity 0.8s ease 0.3s;
+}
+
+.tree-hero-illustration.loaded {
+  opacity: 1;
+}
+
+.tree-hero-name {
+  font-family: var(--font-display);
+  font-size: 48px;
+  color: var(--color-cream);
+  text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  margin-bottom: 1rem;
+}
+
+.tree-hero-scroll {
+  display: block;
+  margin: 0.5rem auto 0;
+  font-size: 1.5rem;
+  color: var(--color-cream);
+  opacity: 0.6;
+  animation: tree-scroll-bounce 2s ease-in-out infinite;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+@keyframes tree-scroll-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* Sound toggle */
+.tree-sound-toggle {
+  position: fixed;
+  top: 5rem;
+  left: 1.5rem;
+  z-index: 50;
+  background: rgba(245, 237, 224, 0.85);
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--color-sage);
+  transition: all var(--transition);
+  backdrop-filter: blur(4px);
+}
+
+.tree-sound-toggle:hover {
+  background: rgba(245, 237, 224, 1);
+}
+
+.tree-sound-toggle.pulsing {
+  animation: sound-pulse 2s ease-in-out infinite;
+}
+
+@keyframes sound-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(126, 142, 109, 0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(126, 142, 109, 0); }
+}
+
+/* Tree navigation */
+.tree-nav {
+  position: fixed;
+  top: 5rem;
+  right: 1.5rem;
+  z-index: 50;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tree-nav a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(245, 237, 224, 0.85);
+  border-radius: 50%;
+  color: var(--color-sage);
+  font-size: 1.2rem;
+  backdrop-filter: blur(4px);
+  transition: all var(--transition);
+}
+
+.tree-nav a:hover {
+  background: rgba(245, 237, 224, 1);
+  opacity: 1;
+}
+
+/* Content panel */
+.tree-content {
+  position: relative;
+  z-index: 3;
+  background: rgba(245, 237, 224, 0.92);
+  border-radius: 16px 16px 0 0;
+  max-width: 640px;
+  margin: -2rem auto 0;
+  padding: 2.5rem 2rem 3rem;
+}
+
+.tree-description {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 1.8;
+  color: var(--color-text-dark);
+  margin-bottom: 2rem;
+}
+
+.tree-divider {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  margin: 2rem 0;
+}
+
+/* Meditation player */
+.tree-player {
+  margin-bottom: 0.5rem;
+}
+
+.tree-player-label {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+}
+
+.tree-player-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tree-player-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--accent, var(--color-sage));
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-cream);
+  font-size: 1.1rem;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+
+.tree-player-btn:focus-visible {
+  outline: 2px solid var(--color-coral);
+  outline-offset: 2px;
+}
+
+.tree-player-btn:hover {
+  opacity: 0.85;
+}
+
+.tree-player-progress {
+  flex: 1;
+  position: relative;
+  height: 1px;
+  background: var(--color-sage);
+  opacity: 0.3;
+}
+
+.tree-player-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--color-coral);
+  width: 0%;
+  transition: width 0.3s linear;
+}
+
+.tree-player-time {
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  min-width: 70px;
+  text-align: right;
+}
+
+/* Coming soon state */
+.tree-player-soon {
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.tree-player-soon-img {
+  max-width: 120px;
+  margin: 0 auto 1rem;
+  opacity: 0.6;
+}
+
+.tree-player-soon p {
+  font-style: italic;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+/* Resort seed / email capture */
+.tree-email {
+  margin-bottom: 0.5rem;
+}
+
+.tree-email-label {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.tree-email-text {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--color-text-dark);
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.tree-email-form {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.tree-email-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 50px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  background: white;
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.tree-email-input:focus {
+  border-color: var(--color-sage);
+}
+
+.tree-email-submit {
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  border: none;
+  background: var(--color-coral);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.tree-email-submit:hover {
+  background: var(--color-coral-hover);
+}
+
+.tree-email-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.tree-email-honeypot {
+  position: absolute;
+  left: -9999px;
+}
+
+.tree-email-msg {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.tree-email-msg.success {
+  color: var(--color-sage-dark);
+}
+
+.tree-email-msg.error {
+  color: var(--color-coral);
+}
+
+/* Gift CTA */
+.tree-gift {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.tree-gift p {
+  font-style: italic;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+/* Prev/next trees */
+.tree-prevnext {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 0 0;
+}
+
+.tree-prevnext a {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-sage-dark);
+}
+
+.tree-prevnext a:hover {
+  opacity: 0.7;
+}
+
+/* Naming nudge */
+.tree-nudge {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  text-align: center;
+  padding: 2rem 2rem 2.5rem;
+  background: linear-gradient(to top, rgba(245, 237, 224, 0.95) 60%, transparent 100%);
+  transform: translateY(100%);
+  transition: transform 0.6s ease-out;
+  pointer-events: none;
+}
+
+.tree-nudge.visible {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.tree-nudge p {
+  font-style: italic;
+  color: var(--color-sage-dark);
+  font-size: 1.05rem;
+  margin-bottom: 1rem;
+}
+
+.tree-nudge-actions {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.tree-nudge-actions a,
+.tree-nudge-actions button {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--color-coral);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.tree-nudge-dismiss {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  padding: 0.5rem;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Completion ritual */
+.tree-ritual {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+  opacity: 0;
+  transition: opacity 1s ease;
+  pointer-events: none;
+}
+
+.tree-ritual.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tree-ritual-msg {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 1.3rem;
+  color: var(--color-sage-dark);
+  max-width: 480px;
+  line-height: 1.8;
+  margin-bottom: 2rem;
+}
+
+.tree-ritual-actions {
+  display: flex;
+  gap: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.tree-ritual-actions.visible {
+  opacity: 1;
+}
+
+.tree-ritual-actions a,
+.tree-ritual-actions button {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--color-coral);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  min-height: 44px;
+}
+
+/* ===== FOREST GRID (Homepage) ===== */
+.forest-grid-section {
+  padding: var(--section-padding);
+  background-color: var(--color-cream);
+}
+
+.forest-grid-section h2 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-style: normal;
+  text-align: center;
+  color: var(--color-forest);
+  margin-bottom: 0.5rem;
+}
+
+.forest-grid-section .forest-subtitle {
+  text-align: center;
+  font-style: italic;
+  color: var(--color-text-muted);
+  margin-bottom: 2.5rem;
+}
+
+.forest-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.forest-grid-item {
+  text-align: center;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.forest-grid-item:hover {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+.forest-grid-item img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+}
+
+.forest-grid-item span {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--color-forest);
+}
+
+/* Neighbor sway on hover */
+.forest-grid-item.sway {
+  animation: tree-sway 0.6s ease-in-out;
+}
+
+@keyframes tree-sway {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(1.5deg); }
+  75% { transform: rotate(-1.5deg); }
+}
+
+/* ===== MEDITATION TEASER (Homepage) ===== */
+.meditation-teaser {
+  padding: var(--section-padding);
+  background-color: var(--color-cream-light);
+}
+
+.meditation-teaser h2 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-style: normal;
+  text-align: center;
+  color: var(--color-forest);
+  margin-bottom: 0.5rem;
+}
+
+.meditation-teaser .teaser-subtitle {
+  text-align: center;
+  font-style: italic;
+  color: var(--color-text-muted);
+  margin-bottom: 2.5rem;
+}
+
+.meditation-teaser-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.meditation-teaser-card {
+  text-align: center;
+}
+
+.meditation-teaser-card img {
+  max-height: 160px;
+  width: auto;
+  margin: 0 auto 1rem;
+  object-fit: contain;
+}
+
+.meditation-teaser-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-style: normal;
+  color: var(--color-forest);
+  margin-bottom: 0.5rem;
+}
+
+.meditation-teaser-card p {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.meditation-teaser-card .teaser-link {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-coral);
+}
+
+/* ===== TREE PAGE RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .tree-hero-name {
+    font-size: 40px;
+  }
+
+  .tree-content {
+    max-width: 80%;
+  }
+
+  .forest-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tree-hero {
+    min-height: 500px;
+    background-attachment: scroll;
+  }
+
+  .tree-hero-bg {
+    background-attachment: scroll;
+  }
+
+  .tree-hero-name {
+    font-size: 36px;
+  }
+
+  .tree-hero-illustration {
+    width: 50vw;
+    max-width: 240px;
+  }
+
+  .tree-content {
+    max-width: 100%;
+    padding: 2rem 1.5rem 2.5rem;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .tree-description {
+    font-size: 16px;
+  }
+
+  .tree-email-form {
+    flex-direction: column;
+  }
+
+  .tree-email-input,
+  .tree-email-submit {
+    width: 100%;
+  }
+
+  .tree-nav {
+    top: auto;
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .tree-sound-toggle {
+    top: auto;
+    bottom: 1rem;
+    left: 1rem;
+  }
+
+  .meditation-teaser-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .forest-grid-section h2,
+  .meditation-teaser h2 {
+    font-size: 24px;
+  }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  .tree-hero-bg,
+  .tree-hero-illustration,
+  .tree-nudge,
+  .tree-ritual,
+  .tree-ritual-actions,
+  .forest-grid-item {
+    transition: none;
+  }
+
+  .tree-hero-scroll,
+  .tree-sound-toggle.pulsing,
+  .forest-grid-item.sway {
+    animation: none;
   }
 }
