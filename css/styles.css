@@ -410,6 +410,7 @@ p:last-child {
 .hero-trees img {
   display: block;
   width: auto;
+  max-width: none;
   height: var(--h);
   object-fit: contain;
 }
