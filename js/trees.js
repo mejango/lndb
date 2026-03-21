@@ -18,6 +18,7 @@ var LNDB = (function () {
     yarumo: {
       name: 'Yarumo',
       slug: 'yarumo',
+      blurb: 'La calma',
       illustration: 'Yarumo.png',
       backgroundFile: 'Yarumo 2.jpg',
       hasMeditation: false,
@@ -28,6 +29,7 @@ var LNDB = (function () {
     guayacanA: {
       name: 'Guayacan Amarillo',
       slug: 'guayacan-amarillo',
+      blurb: 'La alegría',
       illustration: 'GuayacanA.png',
       backgroundFile: 'Guayacan_A. 2.jpg',
       hasMeditation: false,
@@ -38,6 +40,7 @@ var LNDB = (function () {
     cenizo: {
       name: 'Cenizo',
       slug: 'cenizo',
+      blurb: 'La serenidad',
       illustration: 'Cenizo.png',
       backgroundFile: 'Cenizo 2.jpg',
       hasMeditation: false,
@@ -48,6 +51,7 @@ var LNDB = (function () {
     nogal: {
       name: 'Nogal Cafetero',
       slug: 'nogal',
+      blurb: 'La sabiduría',
       illustration: 'Nogal.png',
       backgroundFile: 'Nogal_Cafetero 2.jpg',
       hasMeditation: false,
@@ -58,6 +62,7 @@ var LNDB = (function () {
     caimito: {
       name: 'Caimito',
       slug: 'caimito',
+      blurb: 'La dulzura',
       illustration: 'Caimito.png',
       backgroundFile: 'Caimito_ 2.jpg',
       hasMeditation: false,
@@ -68,6 +73,7 @@ var LNDB = (function () {
     roble: {
       name: 'Roble',
       slug: 'roble',
+      blurb: 'La fortaleza',
       illustration: 'Roble.png',
       backgroundFile: 'Roble_2.jpg',
       hasMeditation: false,
@@ -78,6 +84,7 @@ var LNDB = (function () {
     tamarindo: {
       name: 'Tamarindo',
       slug: 'tamarindo',
+      blurb: 'El humor',
       illustration: 'Tamarindo.png',
       backgroundFile: 'Tamarindo.jpg',
       hasMeditation: false,
@@ -88,6 +95,7 @@ var LNDB = (function () {
     cerezo: {
       name: 'Cerezo',
       slug: 'cerezo',
+      blurb: 'La belleza',
       illustration: 'Cerezo.png',
       backgroundFile: 'Cerezo_2.jpg',
       hasMeditation: false,
@@ -98,6 +106,7 @@ var LNDB = (function () {
     palma: {
       name: 'Palma de Cera',
       slug: 'palma-cera',
+      blurb: 'La dignidad',
       illustration: 'PalmaCera.png',
       backgroundFile: 'Palma_Cera_2.jpg',
       hasMeditation: false,
@@ -108,6 +117,7 @@ var LNDB = (function () {
     arrayan: {
       name: 'Arrayan',
       slug: 'arrayan',
+      blurb: 'El hogar',
       illustration: 'Arrayan.png',
       backgroundFile: 'Arrayan_2.jpg',
       hasMeditation: false,
@@ -118,6 +128,7 @@ var LNDB = (function () {
     ceiba: {
       name: 'Ceiba',
       slug: 'ceiba',
+      blurb: 'El abrazo',
       illustration: 'Ceiba.png',
       backgroundFile: 'Ceiba 2.jpg',
       hasMeditation: false,
@@ -128,6 +139,7 @@ var LNDB = (function () {
     guayacanR: {
       name: 'Guayacan Rosado',
       slug: 'guayacan-rosado',
+      blurb: 'La magia',
       illustration: 'GuayacanR.png',
       backgroundFile: 'GuayacanR.jpg',
       hasMeditation: false,
@@ -138,6 +150,7 @@ var LNDB = (function () {
     mango: {
       name: 'Mango',
       slug: 'mango',
+      blurb: 'La generosidad',
       illustration: 'Mango.png',
       backgroundFile: 'Mango 2.jpg',
       hasMeditation: false,
@@ -148,6 +161,7 @@ var LNDB = (function () {
     cacao: {
       name: 'Cacao',
       slug: 'cacao',
+      blurb: 'La ternura',
       illustration: 'Cacao.png',
       backgroundFile: 'Cacao 2.jpg',
       hasMeditation: false,
@@ -158,6 +172,7 @@ var LNDB = (function () {
     eucalipto: {
       name: 'Eucalipto',
       slug: 'eucalipto',
+      blurb: 'La respiración',
       illustration: 'Eucalipto.png',
       backgroundFile: 'Eucalipto.jpg',
       hasMeditation: false,
@@ -168,6 +183,7 @@ var LNDB = (function () {
     copal: {
       name: 'Copal',
       slug: 'copal',
+      blurb: 'La luz sagrada',
       illustration: 'Copal.png',
       backgroundFile: 'Copal 2.jpg',
       hasMeditation: false,

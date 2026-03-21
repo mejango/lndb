@@ -151,8 +151,13 @@
         name.className = 'forest-grid-item-name';
         name.textContent = tree.name;
 
+        var blurb = document.createElement('span');
+        blurb.className = 'forest-grid-item-blurb';
+        blurb.textContent = tree.blurb;
+
         card.appendChild(picture);
         card.appendChild(name);
+        card.appendChild(blurb);
         grid.appendChild(card);
       });
     })();

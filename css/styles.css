@@ -2092,12 +2092,22 @@ p:last-child {
   margin-bottom: 0.5rem;
 }
 
-.forest-grid-item span {
+.forest-grid-item-name {
   display: block;
   font-family: var(--font-body);
   font-weight: 400;
   font-size: 14px;
   color: var(--color-forest);
+}
+
+.forest-grid-item-blurb {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 300;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--color-text-muted);
+  margin-top: 0.15rem;
 }
 
 /* Neighbor sway on hover */
