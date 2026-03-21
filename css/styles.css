@@ -1334,31 +1334,27 @@ p:last-child {
 
   .hero {
     padding: 2rem 0 0;
-    min-height: calc(100svh - 5rem);
-    display: flex;
-    flex-direction: column;
   }
 
   .hero-forest {
-    min-height: 0;
-    flex: 1;
-  }
-
-  .hero-names-bg {
-    justify-content: center;
+    min-height: calc(100svh - 12rem);
   }
 
   .hero-names-bg p {
-    font-size: 0.75rem;
-    line-height: 1.7;
+    font-size: 0.7rem;
+    line-height: 1.6;
+  }
+
+  .hero-trees {
+    min-height: calc(100svh - 16rem);
   }
 
   .hero-trees img {
-    bottom: -10px;
+    bottom: -28px;
   }
 
   .hero-trees img:nth-child(7) {
-    bottom: -30px;
+    bottom: -42px;
   }
 
   .about-intro .intro-text p {
