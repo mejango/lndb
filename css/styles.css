@@ -846,16 +846,27 @@ p:last-child {
 
 .footer-social {
   display: flex;
-  gap: 1rem;
+  gap: 1.25rem;
+  align-items: center;
 }
 
 .footer-social a {
-  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-cream);
   opacity: 0.7;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .footer-social a:hover {
   opacity: 1;
+  transform: scale(1.1);
+}
+
+.footer-social svg {
+  width: 28px;
+  height: 28px;
 }
 
 .footer-location {
