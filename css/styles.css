@@ -1337,7 +1337,7 @@ p:last-child {
   }
 
   .hero-forest {
-    min-height: calc(100svh - 18rem);
+    min-height: max(380px, calc(100svh - 18rem));
   }
 
   .hero-names-bg p {
@@ -1346,7 +1346,7 @@ p:last-child {
   }
 
   .hero-trees {
-    min-height: calc(100svh - 22rem);
+    min-height: max(320px, calc(100svh - 22rem));
     width: 900px;
     left: 50%;
     transform: translateX(-50%);
