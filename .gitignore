@@ -13,3 +13,6 @@ Thumbs.db
 
 # gstack browse logs
 .gstack/
+
+# Playwright MCP logs
+.playwright-mcp/
