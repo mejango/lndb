@@ -401,28 +401,32 @@ p:last-child {
   width: 100%;
 }
 
-.hero-trees img {
+.hero-trees picture {
   position: absolute;
   bottom: -60px;
-  width: auto;
-  object-fit: contain;
   transform: translateX(-50%);
 }
 
+.hero-trees img {
+  width: auto;
+  height: 100%;
+  object-fit: contain;
+}
+
 /* Core trees: Roble → Nogal → PalmaCera → Cenizo → GuayacanA → Mango → Ceiba → Eucalipto → GuayacanR */
-.hero-trees img:nth-child(1)  { left: 5%;   height: clamp(190px, 36vw, 460px); z-index: 3; } /* Roble */
-.hero-trees img:nth-child(2)  { left: 14%;  height: clamp(165px, 30vw, 390px); z-index: 4; } /* Nogal Cafetero */
-.hero-trees img:nth-child(3)  { left: 22%;  height: clamp(220px, 41vw, 520px); z-index: 1; bottom: -30px; } /* PalmaCera - tall, behind */
-.hero-trees img:nth-child(4)  { left: 30%;  height: clamp(160px, 29vw, 370px); z-index: 5; } /* Cenizo */
-.hero-trees img:nth-child(5)  { left: 40%;  height: clamp(185px, 34vw, 440px); z-index: 4; } /* GuayacanA */
-.hero-trees img:nth-child(6)  { left: 50%;  height: clamp(175px, 32vw, 410px); z-index: 5; } /* Mango - in front */
-.hero-trees img:nth-child(7)  { left: 60%;  height: clamp(260px, 49vw, 624px); z-index: 2; bottom: -65px; } /* Ceiba */
-.hero-trees img:nth-child(8)  { left: 72%;  height: clamp(170px, 32vw, 400px); z-index: 3; } /* Eucalipto */
-.hero-trees img:nth-child(9)  { left: 84%;  height: clamp(185px, 37vw, 470px); z-index: 2; } /* GuayacanR */
+.hero-trees picture:nth-child(1)  { left: 5%;   height: clamp(190px, 36vw, 460px); z-index: 3; } /* Roble */
+.hero-trees picture:nth-child(2)  { left: 14%;  height: clamp(165px, 30vw, 390px); z-index: 4; } /* Nogal Cafetero */
+.hero-trees picture:nth-child(3)  { left: 22%;  height: clamp(220px, 41vw, 520px); z-index: 1; bottom: -30px; } /* PalmaCera - tall, behind */
+.hero-trees picture:nth-child(4)  { left: 30%;  height: clamp(160px, 29vw, 370px); z-index: 5; } /* Cenizo */
+.hero-trees picture:nth-child(5)  { left: 40%;  height: clamp(185px, 34vw, 440px); z-index: 4; } /* GuayacanA */
+.hero-trees picture:nth-child(6)  { left: 50%;  height: clamp(175px, 32vw, 410px); z-index: 5; } /* Mango - in front */
+.hero-trees picture:nth-child(7)  { left: 60%;  height: clamp(260px, 49vw, 624px); z-index: 2; bottom: -65px; } /* Ceiba */
+.hero-trees picture:nth-child(8)  { left: 72%;  height: clamp(170px, 32vw, 400px); z-index: 3; } /* Eucalipto */
+.hero-trees picture:nth-child(9)  { left: 84%;  height: clamp(185px, 37vw, 470px); z-index: 2; } /* GuayacanR */
 /* Edge fill trees */
-.hero-trees img:nth-child(10) { left: -2%;  height: clamp(155px, 28vw, 360px); z-index: 5; } /* Copal - far left edge */
-.hero-trees img:nth-child(11) { left: 95%;  height: clamp(160px, 30vw, 380px); z-index: 5; } /* Cerezo - far right edge */
-.hero-trees img:nth-child(12) { left: 70%;  height: clamp(170px, 31vw, 390px); z-index: 1; bottom: -40px; } /* Caimito - between Eucalipto and GuayacanR, behind both */
+.hero-trees picture:nth-child(10) { left: -2%;  height: clamp(155px, 28vw, 360px); z-index: 5; } /* Copal - far left edge */
+.hero-trees picture:nth-child(11) { left: 95%;  height: clamp(160px, 30vw, 380px); z-index: 5; } /* Cerezo - far right edge */
+.hero-trees picture:nth-child(12) { left: 70%;  height: clamp(170px, 31vw, 390px); z-index: 1; bottom: -40px; } /* Caimito - between Eucalipto and GuayacanR, behind both */
 
 /* ===== SECTIONS ===== */
 .section {
@@ -1315,7 +1319,7 @@ p:last-child {
     gap: 2rem;
   }
 
-  .hero-trees img {
+  .hero-trees picture {
     bottom: -48px;
   }
 
@@ -1397,39 +1401,39 @@ p:last-child {
     transform: translateX(-50%);
   }
 
-  .hero-trees img:nth-child(1)  { height: 340px; }
-  .hero-trees img:nth-child(2)  { height: 290px; }
-  .hero-trees img:nth-child(3)  { height: 390px; bottom: -85px; }
-  .hero-trees img:nth-child(4)  { height: 270px; }
-  .hero-trees img:nth-child(5)  { height: 330px; }
-  .hero-trees img:nth-child(6)  { height: 310px; }
-  .hero-trees img:nth-child(7)  { height: 470px; bottom: -120px; }
-  .hero-trees img:nth-child(8)  { height: 300px; }
-  .hero-trees img:nth-child(9)  { height: 350px; }
-  .hero-trees img:nth-child(10) { height: 260px; }
-  .hero-trees img:nth-child(11) { height: 280px; }
-  .hero-trees img:nth-child(12) { height: 290px; bottom: -80px; }
+  .hero-trees picture:nth-child(1)  { height: 340px; }
+  .hero-trees picture:nth-child(2)  { height: 290px; }
+  .hero-trees picture:nth-child(3)  { height: 390px; bottom: -85px; }
+  .hero-trees picture:nth-child(4)  { height: 270px; }
+  .hero-trees picture:nth-child(5)  { height: 330px; }
+  .hero-trees picture:nth-child(6)  { height: 310px; }
+  .hero-trees picture:nth-child(7)  { height: 470px; bottom: -120px; }
+  .hero-trees picture:nth-child(8)  { height: 300px; }
+  .hero-trees picture:nth-child(9)  { height: 350px; }
+  .hero-trees picture:nth-child(10) { height: 260px; }
+  .hero-trees picture:nth-child(11) { height: 280px; }
+  .hero-trees picture:nth-child(12) { height: 290px; bottom: -80px; }
 
-  .hero-trees img {
+  .hero-trees picture {
     bottom: -100px;
   }
 
   @media (max-height: 700px) {
-    .hero-trees img:nth-child(1)  { height: 230px; }
-    .hero-trees img:nth-child(2)  { height: 200px; }
-    .hero-trees img:nth-child(3)  { height: 270px; }
-    .hero-trees img:nth-child(4)  { height: 185px; }
-    .hero-trees img:nth-child(5)  { height: 225px; }
-    .hero-trees img:nth-child(6)  { height: 210px; }
-    .hero-trees img:nth-child(7)  { height: 320px; bottom: -90px; }
-    .hero-trees img:nth-child(8)  { height: 205px; }
-    .hero-trees img:nth-child(9)  { height: 240px; }
-    .hero-trees img:nth-child(10) { height: 175px; }
-    .hero-trees img:nth-child(11) { height: 190px; }
-    .hero-trees img:nth-child(12) { height: 200px; }
+    .hero-trees picture:nth-child(1)  { height: 230px; }
+    .hero-trees picture:nth-child(2)  { height: 200px; }
+    .hero-trees picture:nth-child(3)  { height: 270px; }
+    .hero-trees picture:nth-child(4)  { height: 185px; }
+    .hero-trees picture:nth-child(5)  { height: 225px; }
+    .hero-trees picture:nth-child(6)  { height: 210px; }
+    .hero-trees picture:nth-child(7)  { height: 320px; bottom: -90px; }
+    .hero-trees picture:nth-child(8)  { height: 205px; }
+    .hero-trees picture:nth-child(9)  { height: 240px; }
+    .hero-trees picture:nth-child(10) { height: 175px; }
+    .hero-trees picture:nth-child(11) { height: 190px; }
+    .hero-trees picture:nth-child(12) { height: 200px; }
 
-    .hero-trees img { bottom: -95px; }
-    .hero-trees img:nth-child(7) { bottom: -115px; }
+    .hero-trees picture { bottom: -95px; }
+    .hero-trees picture:nth-child(7) { bottom: -115px; }
     .hero-trees { width: 650px; }
   }
 
