@@ -1351,12 +1351,21 @@ p:last-child {
     min-height: calc(100svh - 22rem);
   }
 
+  .hero-trees img:nth-child(1)  { height: 340px; }
+  .hero-trees img:nth-child(2)  { height: 290px; }
+  .hero-trees img:nth-child(3)  { height: 390px; }
+  .hero-trees img:nth-child(4)  { height: 270px; }
+  .hero-trees img:nth-child(5)  { height: 330px; }
+  .hero-trees img:nth-child(6)  { height: 310px; }
+  .hero-trees img:nth-child(7)  { height: 470px; bottom: -120px; }
+  .hero-trees img:nth-child(8)  { height: 300px; }
+  .hero-trees img:nth-child(9)  { height: 350px; }
+  .hero-trees img:nth-child(10) { height: 260px; }
+  .hero-trees img:nth-child(11) { height: 280px; }
+  .hero-trees img:nth-child(12) { height: 290px; }
+
   .hero-trees img {
     bottom: -100px;
-  }
-
-  .hero-trees img:nth-child(7) {
-    bottom: -120px;
   }
 
   .about-intro .intro-text p {
