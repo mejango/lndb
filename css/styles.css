@@ -1464,7 +1464,7 @@ p:last-child {
   }
 
   .hero-forest {
-    min-height: max(280px, calc(100svh - 18rem));
+    min-height: 280px;
   }
 
   .hero-names-bg p {
@@ -1473,7 +1473,7 @@ p:last-child {
   }
 
   .hero-trees {
-    min-height: max(220px, calc(100svh - 22rem));
+    min-height: 220px;
     width: 900px;
     left: 50%;
     transform: translateX(-50%);
@@ -1496,7 +1496,7 @@ p:last-child {
     bottom: -100px;
   }
 
-  @media (max-height: 700px) {
+  @media (max-width: 480px) {
     .hero-trees picture:nth-child(1)  { --h: 230px; }
     .hero-trees picture:nth-child(2)  { --h: 200px; }
     .hero-trees picture:nth-child(3)  { --h: 270px; }
