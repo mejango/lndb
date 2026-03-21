@@ -141,7 +141,7 @@
         }, 50);
       }
 
-      function showQuestion() {
+      function showQuestion(inPlace) {
         var q = questions[currentQuestion];
         var progress = ((currentQuestion) / questions.length) * 100;
         progressBar.style.width = progress + '%';
@@ -171,7 +171,11 @@
           answersEl.appendChild(btn);
         });
 
-        showScreen(questionEl);
+        if (inPlace) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          showScreen(questionEl);
+        }
       }
 
       function selectAnswer(index) {
@@ -189,7 +193,7 @@
         setTimeout(function () {
           currentQuestion++;
           if (currentQuestion < questions.length) {
-            showQuestion();
+            showQuestion(true);
           } else {
             showResult();
           }
