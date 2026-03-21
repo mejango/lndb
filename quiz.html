@@ -65,6 +65,15 @@
             <button id="result-gift" class="btn btn-outline">Nombrar a alguien</button>
             <button id="quiz-retry" class="btn btn-outline">Volver a intentar</button>
           </div>
+          <div class="tree-email" style="margin-top: 2rem;">
+            <p class="tree-email-text">Algún día podrás visitar tu árbol en el bosque real. Déjanos tu correo.</p>
+            <form class="tree-email-form" id="quiz-email-form">
+              <input type="email" class="tree-email-input" name="email" placeholder="tu@correo.com" required>
+              <input type="text" class="tree-email-honeypot" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+              <button type="submit" class="tree-email-submit">Enviar</button>
+            </form>
+            <div class="tree-email-msg" id="quiz-email-msg" role="status" aria-live="polite"></div>
+          </div>
         </div>
       </div>
 
@@ -390,6 +399,48 @@
         nameInput.setAttribute('placeholder', 'Nombre de esa persona');
         showScreen(introEl);
         nameInput.focus();
+      });
+
+      // Email capture form
+      var quizEmailForm = document.getElementById('quiz-email-form');
+      var quizEmailMsg = document.getElementById('quiz-email-msg');
+      quizEmailForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var submitBtn = quizEmailForm.querySelector('.tree-email-submit');
+        if (submitBtn.disabled) return;
+
+        var email = quizEmailForm.querySelector('.tree-email-input').value;
+        var honeypot = quizEmailForm.querySelector('.tree-email-honeypot');
+        if (honeypot && honeypot.value) return;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = '...';
+
+        fetch('https://formspree.io/f/mreyvela', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            name: userName,
+            email: email,
+            tree: trees[currentWinnerKey].name,
+            source: 'quiz',
+            _subject: 'Quiz — ' + trees[currentWinnerKey].name
+          })
+        }).then(function (r) {
+          if (r.ok) {
+            plausible('Email Signup', { props: { tree: trees[currentWinnerKey].name, source: 'quiz' } });
+            quizEmailMsg.textContent = 'Gracias. Te avisaremos cuando sea el momento.';
+            quizEmailMsg.className = 'tree-email-msg success';
+            submitBtn.textContent = 'Enviado';
+          } else {
+            throw new Error('fail');
+          }
+        }).catch(function () {
+          quizEmailMsg.textContent = 'No se pudo enviar. Intenta de nuevo.';
+          quizEmailMsg.className = 'tree-email-msg error';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Enviar';
+        });
       });
 
       // Start button
