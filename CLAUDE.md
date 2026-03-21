@@ -53,15 +53,5 @@
 
 ## gstack
 
-- **Web Browsing:** Always use the `/browse` skill from gstack for all web browsing. Never use `mcp__plugin_playwright_playwright__*` tools directly.
-- **Available Skills:**
-  - `/plan-ceo-review` - CEO-level plan review
-  - `/plan-eng-review` - Engineering plan review
-  - `/review` - Code review
-  - `/ship` - Ship changes
-  - `/browse` - Web browsing (use this for ALL web browsing)
-  - `/qa` - QA testing
-  - `/qa-only` - QA testing only
-  - `/setup-browser-cookies` - Set up browser cookies
-  - `/retro` - Retrospective
-  - `/document-release` - Document a release
+- Use the `/browse` skill from gstack for ALL web browsing. Never use `mcp__claude-in-chrome__*` tools.
+- Available skills: `/office-hours`, `/plan-ceo-review`, `/plan-eng-review`, `/plan-design-review`, `/design-consultation`, `/review`, `/ship`, `/browse`, `/qa`, `/qa-only`, `/design-review`, `/setup-browser-cookies`, `/retro`, `/investigate`, `/document-release`, `/codex`, `/careful`, `/freeze`, `/guard`, `/unfreeze`, `/gstack-upgrade`

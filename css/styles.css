@@ -55,6 +55,38 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Mulish';
+  src: url('../assets/fonts/Mulish-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mulish';
+  src: url('../assets/fonts/Mulish-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mulish';
+  src: url('../assets/fonts/Mulish-SemiBoldItalic.ttf') format('truetype');
+  font-weight: 600;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mulish';
+  src: url('../assets/fonts/Mulish-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 /* ===== DESIGN TOKENS ===== */
 :root {
   --color-sage: #7E8E6D;
@@ -150,8 +182,9 @@ ul {
 
 /* ===== TYPOGRAPHY ===== */
 h1, h2, h3 {
-  font-family: var(--font-display);
-  font-weight: normal;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-style: italic;
   line-height: 1.2;
 }
 
@@ -311,13 +344,14 @@ p:last-child {
 .hero h1 {
   color: var(--color-forest);
   margin-bottom: 0.5rem;
+  font-size: clamp(1.8rem, 4vw, 3rem);
 }
 
 .hero .subtitle {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-family: var(--font-body);
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem);
   color: var(--color-forest);
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 2rem;
 }
 
@@ -364,8 +398,7 @@ p:last-child {
   position: relative;
   z-index: 2;
   min-height: clamp(250px, 42vw, 550px);
-  max-width: 1400px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .hero-trees img {
@@ -373,19 +406,23 @@ p:last-child {
   bottom: -60px;
   width: auto;
   object-fit: contain;
-  left: 50%;
+  transform: translateX(-50%);
 }
 
-.hero-trees img:nth-child(1)  { margin-left: -53vw;  height: clamp(160px, 30vw, 380px); z-index: 2; } /* Eucalipto */
-.hero-trees img:nth-child(2)  { margin-left: -44vw;  height: clamp(220px, 41vw, 520px); z-index: 6; } /* PalmaCera */
-.hero-trees img:nth-child(3)  { margin-left: -39vw;  height: clamp(185px, 34vw, 440px); z-index: 4; } /* GuayacanA */
-.hero-trees img:nth-child(4)  { margin-left: -26vw;  height: clamp(200px, 38vw, 480px); z-index: 3; } /* Ceiba */
-.hero-trees img:nth-child(5)  { margin-left: -14vw;  height: clamp(145px, 27vw, 350px); z-index: 5; } /* Cacao */
-.hero-trees img:nth-child(6)  { margin-left: -8vw;   height: clamp(175px, 33vw, 420px); z-index: 3; } /* Copal */
-.hero-trees img:nth-child(7)  { margin-left: 2vw;    height: clamp(190px, 36vw, 460px); z-index: 2; } /* Roble */
-.hero-trees img:nth-child(8)  { margin-left: 12vw;   height: clamp(180px, 34vw, 430px); z-index: 1; } /* Caimito */
-.hero-trees img:nth-child(9)  { margin-left: 16vw;   height: clamp(185px, 37vw, 470px); z-index: 4; } /* GuayacanR */
-.hero-trees img:nth-child(10) { margin-left: 32vw;   height: clamp(160px, 30vw, 380px); z-index: 3; } /* Cerezo */
+/* Core trees: Roble → Nogal → PalmaCera → Cenizo → GuayacanA → Mango → Ceiba → Eucalipto → GuayacanR */
+.hero-trees img:nth-child(1)  { left: 5%;   height: clamp(190px, 36vw, 460px); z-index: 3; } /* Roble */
+.hero-trees img:nth-child(2)  { left: 14%;  height: clamp(165px, 30vw, 390px); z-index: 4; } /* Nogal Cafetero */
+.hero-trees img:nth-child(3)  { left: 22%;  height: clamp(220px, 41vw, 520px); z-index: 1; bottom: -30px; } /* PalmaCera - tall, behind */
+.hero-trees img:nth-child(4)  { left: 30%;  height: clamp(160px, 29vw, 370px); z-index: 5; } /* Cenizo */
+.hero-trees img:nth-child(5)  { left: 40%;  height: clamp(185px, 34vw, 440px); z-index: 4; } /* GuayacanA */
+.hero-trees img:nth-child(6)  { left: 50%;  height: clamp(175px, 32vw, 410px); z-index: 5; } /* Mango - in front */
+.hero-trees img:nth-child(7)  { left: 60%;  height: clamp(260px, 49vw, 624px); z-index: 2; bottom: -40px; } /* Ceiba */
+.hero-trees img:nth-child(8)  { left: 72%;  height: clamp(170px, 32vw, 400px); z-index: 3; } /* Eucalipto */
+.hero-trees img:nth-child(9)  { left: 84%;  height: clamp(185px, 37vw, 470px); z-index: 2; } /* GuayacanR */
+/* Edge fill trees */
+.hero-trees img:nth-child(10) { left: -2%;  height: clamp(155px, 28vw, 360px); z-index: 5; } /* Copal - far left edge */
+.hero-trees img:nth-child(11) { left: 95%;  height: clamp(160px, 30vw, 380px); z-index: 5; } /* Cerezo - far right edge */
+.hero-trees img:nth-child(12) { left: 70%;  height: clamp(170px, 31vw, 390px); z-index: 1; bottom: -20px; } /* Caimito - between Eucalipto and GuayacanR, behind both */
 
 /* ===== SECTIONS ===== */
 .section {
@@ -437,7 +474,8 @@ p:last-child {
 }
 
 .about-intro p.welcome {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
+  font-style: italic;
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   margin-top: 1.5rem;
   color: var(--color-cream);
@@ -473,9 +511,10 @@ p:last-child {
 }
 
 .book-content .book-subtitle {
-  font-family: var(--font-display);
-  font-size: clamp(1.5rem, 3vw, 2rem);
-  line-height: 1.3;
+  font-family: var(--font-body);
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 700;
+  line-height: 1.4;
   margin-bottom: 2rem;
   color: var(--color-sage-dark);
 }
@@ -653,8 +692,9 @@ p:last-child {
 }
 
 .product-title-section .product-subtitle {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-family: var(--font-body);
+  font-size: clamp(1.2rem, 2.5vw, 1.75rem);
+  font-weight: 600;
   color: var(--color-cream);
   opacity: 0.85;
 }
@@ -815,6 +855,314 @@ p:last-child {
   color: var(--color-text-light);
 }
 
+/* ===== QUIZ PAGE ===== */
+.quiz-page {
+  min-height: calc(100vh - 77px);
+  background-color: var(--color-cream-light);
+  padding: 3rem 2rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.quiz-page .container {
+  max-width: 720px;
+  width: 100%;
+}
+
+.quiz-screen {
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.quiz-screen--active {
+  opacity: 1;
+  visibility: visible;
+  max-height: none;
+  overflow: visible;
+}
+
+/* Intro */
+.quiz-intro-content {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.quiz-intro-content h1 {
+  color: var(--color-forest);
+  margin-bottom: 1.5rem;
+}
+
+.quiz-intro-content p {
+  max-width: 520px;
+  margin: 0 auto 1rem;
+  color: var(--color-text-dark);
+  line-height: 1.8;
+}
+
+.quiz-intro-content .btn {
+  margin-top: 1.5rem;
+}
+
+.quiz-intro-trees {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0;
+}
+
+.quiz-intro-trees img {
+  height: 220px;
+  width: auto;
+  object-fit: contain;
+  margin: 0 -1rem;
+}
+
+/* Progress */
+.quiz-progress {
+  background-color: rgba(0, 0, 0, 0.06);
+  border-radius: 50px;
+  height: 6px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.quiz-progress-bar {
+  height: 100%;
+  background-color: var(--color-coral);
+  border-radius: 50px;
+  width: 0%;
+  transition: width 0.5s ease;
+}
+
+.quiz-progress-text {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  text-align: right;
+  margin-bottom: 2rem;
+}
+
+/* Question */
+.quiz-question-text {
+  color: var(--color-forest);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: clamp(1.4rem, 3.5vw, 2rem);
+}
+
+.quiz-answers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.quiz-answer-card {
+  display: block;
+  width: 100%;
+  padding: 1.25rem 1.5rem;
+  font-family: var(--font-body);
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  line-height: 1.6;
+  color: var(--color-text-dark);
+  background-color: var(--color-cream);
+  border: 2px solid var(--color-sage);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.25s ease;
+  min-height: 48px;
+}
+
+.quiz-answer-card:hover {
+  background-color: var(--color-sage);
+  color: var(--color-cream);
+  border-color: var(--color-sage);
+}
+
+.quiz-answer-card--selected {
+  background-color: var(--color-sage);
+  color: var(--color-cream);
+  border-color: var(--color-sage);
+}
+
+/* Result */
+.quiz-result-content {
+  text-align: center;
+}
+
+.quiz-result-label {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+}
+
+.quiz-result-image {
+  margin: 0 auto 1.5rem;
+  max-width: 280px;
+}
+
+.quiz-result-image img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.quiz-result-name {
+  color: var(--color-forest);
+  margin-bottom: 1.5rem;
+  font-size: clamp(2rem, 5vw, 3rem);
+}
+
+.quiz-result-description {
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.9;
+  color: var(--color-text-dark);
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+}
+
+.quiz-result-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Admin view */
+.quiz-admin ~ .quiz-screen { display: none; }
+.quiz-page:has(.quiz-admin) .container {
+  max-width: 900px;
+}
+
+.quiz-admin .quiz-admin-card {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  background: var(--color-cream);
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.quiz-admin .quiz-admin-card img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.quiz-admin .quiz-admin-text {
+  text-align: left;
+}
+
+.quiz-admin .quiz-admin-text h3 {
+  color: var(--color-forest);
+  margin-bottom: 0.5rem;
+}
+
+.quiz-admin .quiz-admin-text p {
+  line-height: 1.8;
+  color: var(--color-text-dark);
+}
+
+.admin-max-table {
+  background: var(--color-cream);
+  border-radius: var(--border-radius);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.admin-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.admin-chip {
+  font-size: 0.8rem;
+  background: var(--color-cream-light);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 50px;
+  padding: 0.3rem 0.75rem;
+  color: var(--color-text-dark);
+}
+
+.admin-question {
+  background: var(--color-cream);
+  border-radius: var(--border-radius);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.admin-question h3 {
+  color: var(--color-forest);
+  font-size: 1rem;
+  font-weight: 600;
+  font-style: normal;
+  margin-bottom: 0.75rem;
+}
+
+.admin-answers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.admin-answer {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+
+.admin-answer-label {
+  font-weight: 700;
+  color: var(--color-sage-dark);
+  min-width: 1.5rem;
+  padding-top: 0.1rem;
+}
+
+.admin-answer-body {
+  flex: 1;
+}
+
+.admin-answer-text {
+  font-size: 0.9rem;
+  color: var(--color-text-dark);
+  margin-bottom: 0.2rem;
+}
+
+.admin-answer-scores {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-coral);
+}
+
+.admin-sep {
+  margin: 0 0.35rem;
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
+@media (max-width: 768px) {
+  .quiz-admin .quiz-admin-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .quiz-admin .quiz-admin-card img {
+    max-width: 160px;
+    margin: 0 auto;
+  }
+  .quiz-admin .quiz-admin-text {
+    text-align: center;
+  }
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
   .nav-toggle {
@@ -949,6 +1297,23 @@ p:last-child {
 
   .quiz-images img {
     height: 200px;
+  }
+
+  .quiz-page {
+    padding: 2rem 1.25rem;
+  }
+
+  .quiz-intro-trees img {
+    height: 160px;
+  }
+
+  .quiz-answer-card {
+    font-size: 0.95rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .quiz-result-image {
+    max-width: 220px;
   }
 
   .footer-top {

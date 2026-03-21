@@ -9,6 +9,18 @@
 </head>
 <body>
 
+  <div id="last-updated" style="position:fixed;top:8px;left:8px;z-index:9999;font-size:11px;color:#999;font-family:monospace;background:rgba(255,255,255,0.8);padding:2px 6px;border-radius:4px;"></div>
+  <script>
+    (function(){
+      var t=Date.now();
+      setInterval(function(){
+        var d=Math.floor((Date.now()-t)/1000);
+        var s=d<60?d+'s':d<3600?Math.floor(d/60)+'m':d<86400?Math.floor(d/3600)+'h':Math.floor(d/86400)+'d';
+        document.getElementById('last-updated').textContent='loaded '+s+' ago';
+      },1000);
+    })();
+  </script>
+
   <!-- HEADER -->
   <header class="header">
     <div class="container">
@@ -56,16 +68,20 @@
         <p>Mónica | Susana | Amanda | Alejandra | Andrea | Natalia | Emilia | Camilo | Abril | Emma | Olivia | Mía | Antonia | Lucas | Simón | Roberto | Gabriela | Valentina | Sofía | Mariana | Martín</p>
       </div>
       <div class="hero-trees">
-        <img src="assets/images/trees/Eucalipto.png" alt="Eucalipto" loading="eager">
-        <img src="assets/images/trees/PalmaCera.png" alt="Palma de Cera" loading="eager">
-        <img src="assets/images/trees/GuayacanA.png" alt="Guayacán Amarillo" loading="eager">
-        <img src="assets/images/trees/Ceiba.png" alt="Ceiba" loading="eager">
-        <img src="assets/images/trees/Cacao.png" alt="Cacao" loading="eager">
-        <img src="assets/images/trees/Copal.png" alt="Copal" loading="eager">
+        <!-- Core trees left to right -->
         <img src="assets/images/trees/Roble.png" alt="Roble" loading="eager">
-        <img src="assets/images/trees/Caimito.png" alt="Caimito" loading="eager">
+        <img src="assets/images/trees/Nogal.png" alt="Nogal Cafetero" loading="eager">
+        <img src="assets/images/trees/PalmaCera.png" alt="Palma de Cera" loading="eager">
+        <img src="assets/images/trees/Cenizo.png" alt="Cenizo" loading="eager">
+        <img src="assets/images/trees/GuayacanA.png" alt="Guayacán Amarillo" loading="eager">
+        <img src="assets/images/trees/Mango.png" alt="Árbol de Mango" loading="eager">
+        <img src="assets/images/trees/Ceiba.png" alt="Ceiba" loading="eager">
+        <img src="assets/images/trees/Eucalipto.png" alt="Eucalipto" loading="eager">
         <img src="assets/images/trees/GuayacanR.png" alt="Guayacán Rosado" loading="eager">
+        <!-- Edge fill trees -->
+        <img src="assets/images/trees/Copal.png" alt="Copal" loading="eager">
         <img src="assets/images/trees/Cerezo.png" alt="Cerezo" loading="eager">
+        <img src="assets/images/trees/Caimito.png" alt="Caimito" loading="eager">
       </div>
     </div>
   </section>
@@ -108,7 +124,7 @@
       <div>
         <h2>¿Qué árbol eres?</h2>
         <p>¿Un Caimito? ¿Un Cenizo? Cada persona se reconoce en un árbol, identifícate con el tuyo.</p>
-        <a href="#" class="btn btn-outline">Ver mi árbol</a>
+        <a href="quiz.html" class="btn btn-outline">Ver mi árbol</a>
       </div>
       <div class="quiz-images">
         <img src="assets/images/trees/Caimito.png" alt="Caimito">
