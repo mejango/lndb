@@ -1383,8 +1383,8 @@ p:last-child {
     .hero-trees img:nth-child(11) { height: 190px; }
     .hero-trees img:nth-child(12) { height: 200px; }
 
-    .hero-trees img { bottom: -120px; }
-    .hero-trees img:nth-child(7) { bottom: -140px; }
+    .hero-trees img { bottom: -95px; }
+    .hero-trees img:nth-child(7) { bottom: -115px; }
     .hero-trees { width: 650px; }
   }
 
