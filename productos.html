@@ -31,7 +31,8 @@
         <p>En este bosque de páginas encontrarás dieciséis árboles que habitan en Colombia, cada uno con alma propia.</p>
         <p>Sus raíces, sus ramas y sus frutos te hablarán como si fueran personas...</p>
         <p>Quizá reconozcas en ellos a alguien que amas. Quizá te reconozcas a ti. Abre este libro, nómbralos, dibújate, y deja que crezca tu propia arboleda del corazón.</p>
-        <a href="#" class="btn btn-primary">Conócelo aquí</a>
+        <a href="https://wa.me/573013784227?text=Hola%2C%20quiero%20conocer%20el%20libro%20Los%20Nombres%20del%20Bosque" target="_blank" rel="noopener" class="btn btn-primary" data-whatsapp="libro">Conócelo aquí</a>
+        <span class="btn-hint">Escríbenos por WhatsApp</span>
       </div>
     </div>
   </section>
@@ -45,7 +46,8 @@
         <p>La página reunirá todos los árboles que escojas y creará una composición única: tu propio bosque, con nombres y personalidad.</p>
         <p>Podrás descargarlo en PDF para guardarlo, imprimirlo o regalarlo.</p>
         <p>Porque cuando nombramos nuestro bosque, lo entendemos mejor. Y cuando lo vemos completo, recordamos que no estamos solos.</p>
-        <a href="#" class="btn btn-primary">Comprar aquí</a>
+        <a href="https://wa.me/573013784227?text=Hola%2C%20quiero%20crear%20mi%20arboleda" target="_blank" rel="noopener" class="btn btn-primary" data-whatsapp="arboleda">Comprar aquí</a>
+        <span class="btn-hint">Escríbenos por WhatsApp</span>
       </div>
       <div class="arboleda-image">
         <picture><source srcset="assets/images/trees/Cacao.webp" type="image/webp"><img src="assets/images/trees/Cacao.png" alt="Cacao"></picture>
@@ -54,9 +56,38 @@
     </div>
   </section>
 
+  <!-- CONTACT -->
+  <section class="contact-section">
+    <div class="container">
+      <h2>¿Tienes preguntas?</h2>
+      <div class="contact-links">
+        <a href="https://wa.me/573013784227" target="_blank" rel="noopener" class="contact-link">
+          <span class="contact-icon">&#9742;</span>
+          <span>WhatsApp — Susy</span>
+        </a>
+        <a href="mailto:creemos@losnombresdelbosque.com" class="contact-link">
+          <span class="contact-icon">&#9993;</span>
+          <span>creemos@losnombresdelbosque.com</span>
+        </a>
+        <a href="https://www.instagram.com/losnombresdelbosque/" target="_blank" rel="noopener" class="contact-link">
+          <span class="contact-icon">&#9675;</span>
+          <span>@losnombresdelbosque</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <div id="footer"></div>
 
   <script src="js/components.js"></script>
+  <script>
+    // Track WhatsApp CTA clicks
+    document.querySelectorAll('[data-whatsapp]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        plausible('WhatsApp Click', { props: { source: el.dataset.whatsapp } });
+      });
+    });
+  </script>
 
 </body>
 </html>

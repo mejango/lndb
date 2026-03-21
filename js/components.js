@@ -31,6 +31,15 @@
         if (id === 'header') {
           initNav(el);
         }
+
+        // Track social link clicks in footer
+        if (id === 'footer') {
+          el.querySelectorAll('[data-social]').forEach(function (link) {
+            link.addEventListener('click', function () {
+              plausible('Social Click', { props: { type: link.dataset.social } });
+            });
+          });
+        }
       })
       .catch(function () {
         // Silent fail — page still works without shared header/footer

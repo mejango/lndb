@@ -218,6 +218,8 @@
         // Set up listen link
         listenBtn.href = 'arboles/' + tree.slug + '.html?from=quiz';
 
+        plausible('Quiz Completed', { props: { tree: tree.name } });
+
         // Build the reveal text with typewriter
         revealEl.innerHTML = '';
         showScreen(resultEl);
@@ -340,6 +342,7 @@
 
       // Share button
       shareBtn.addEventListener('click', function () {
+        plausible('Quiz Shared');
         var tree = trees[currentWinnerKey];
         var name = userName.trim();
         var title = name ? name + ', eres ' + tree.name : 'Eres ' + tree.name;
@@ -381,6 +384,7 @@
 
       // Gift button — go to quiz intro to take for someone else
       giftBtn.addEventListener('click', function () {
+        plausible('Quiz Gift');
         resetScores();
         nameInput.value = '';
         userName = '';
@@ -394,6 +398,7 @@
         userName = nameInput.value;
         resetScores();
         showQuestion();
+        plausible('Quiz Started');
       });
 
       // Retry button

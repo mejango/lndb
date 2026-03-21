@@ -17,6 +17,9 @@
   // Set accent color
   document.documentElement.style.setProperty('--accent', tree.accentColor);
 
+  // Track tree page view
+  plausible('Tree Page View', { props: { tree: tree.name } });
+
   // ── Background photo loading ──
   var heroBg = document.querySelector('.tree-hero-bg');
   if (heroBg) {
@@ -232,6 +235,7 @@
         })
       }).then(function (r) {
         if (r.ok) {
+          plausible('Email Signup', { props: { tree: tree.name } });
           if (msgEl) {
             msgEl.textContent = 'Gracias. Te avisaremos cuando sea el momento.';
             msgEl.className = 'tree-email-msg success';

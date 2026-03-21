@@ -91,7 +91,7 @@
         <p>En este bosque de páginas encontrarás dieciséis árboles que habitan en Colombia, cada uno con alma propia.</p>
         <p>Sus raíces, sus ramas y sus frutos te hablarán como si fueran personas...</p>
         <p>Quizá reconozcas en ellos a alguien que amas. Quizá te reconozcas a ti. Abre este libro, nómbralos, dibújate, y deja que crezca tu propia arboleda del corazón.</p>
-        <a href="productos.html" class="btn btn-primary">Conocelo aqui</a>
+        <a href="productos.html" class="btn btn-primary" id="book-cta">Conocelo aqui</a>
       </div>
     </div>
   </section>
@@ -117,6 +117,14 @@
   <script src="js/trees.js"></script>
   <script src="js/components.js"></script>
   <script>
+    // Track Book CTA click on homepage
+    var bookCta = document.getElementById('book-cta');
+    if (bookCta) {
+      bookCta.addEventListener('click', function () {
+        plausible('Book CTA Click', { props: { source: 'homepage' } });
+      });
+    }
+
     // Populate forest grid from LNDB data
     (function () {
       var grid = document.getElementById('forest-grid');
