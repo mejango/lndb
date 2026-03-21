@@ -1948,7 +1948,7 @@ p:last-child {
 
 .forest-grid-section h2 {
   font-family: var(--font-display);
-  font-size: 32px;
+  font-size: clamp(2rem, 5vw, 3.5rem);
   font-style: normal;
   text-align: center;
   color: var(--color-forest);
@@ -2142,7 +2142,6 @@ p:last-child {
     gap: 2.5rem;
   }
 
-  .forest-grid-section h2,
   .meditation-teaser h2 {
     font-size: 24px;
   }
