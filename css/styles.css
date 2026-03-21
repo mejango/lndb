@@ -1108,13 +1108,14 @@ p:last-child {
 }
 
 .quiz-answer-card--selected {
-  background-color: #5a7a4a;
-  color: #fff;
-  border-color: #5a7a4a;
+  background-color: rgba(126, 142, 109, 0.15);
+  color: var(--color-forest);
+  border-color: var(--color-sage);
+  border-width: 2px;
   transform: scale(0.98);
   box-shadow:
-    0 2px 6px rgba(90, 122, 74, 0.25),
-    0 6px 16px rgba(90, 122, 74, 0.18);
+    0 2px 6px rgba(126, 142, 109, 0.2),
+    0 6px 16px rgba(126, 142, 109, 0.12);
 }
 
 @keyframes quizTreeFadeIn {
