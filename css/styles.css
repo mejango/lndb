@@ -398,7 +398,9 @@ p:last-child {
   position: relative;
   z-index: 2;
   min-height: clamp(250px, 42vw, 550px);
-  width: 100%;
+  width: 900px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .hero-trees img {
@@ -1347,9 +1349,6 @@ p:last-child {
 
   .hero-trees {
     min-height: calc(100svh - 22rem);
-    min-width: 700px;
-    left: 50%;
-    transform: translateX(-50%);
   }
 
   .hero-trees img {
