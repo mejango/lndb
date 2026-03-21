@@ -146,10 +146,10 @@
 
         var picture = document.createElement('picture');
         var source = document.createElement('source');
-        source.srcset = 'assets/images/trees/thumb/' + tree.illustration.replace('.png', '.webp');
+        source.srcset = 'assets/images/trees/' + tree.illustration.replace('.png', '.webp');
         source.type = 'image/webp';
         var img = document.createElement('img');
-        img.src = 'assets/images/trees/thumb/' + tree.illustration;
+        img.src = 'assets/images/trees/' + tree.illustration;
         img.alt = tree.name;
         img.loading = 'lazy';
         picture.appendChild(source);
