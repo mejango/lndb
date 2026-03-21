@@ -1,0 +1,18 @@
+# Source assets (high-res, not needed for web)
+PNG_Arboles/
+Fondos/
+Tipografias/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# gstack browse logs
+.gstack/
+
+# Playwright MCP logs
+.playwright-mcp/

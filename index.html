@@ -5,42 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Los Nombres del Bosque</title>
   <meta name="description" content="Encuentros con árboles que caminan. Descubre el bosque colombiano a través de historias que conectan naturaleza y alma.">
+  <link rel="icon" type="image/svg+xml" href="assets/logos/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/logos/favicon.png">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-  <div id="last-updated" style="position:fixed;top:8px;left:8px;z-index:9999;font-size:11px;color:#999;font-family:monospace;background:rgba(255,255,255,0.8);padding:2px 6px;border-radius:4px;"></div>
-  <script>
-    (function(){
-      var t=Date.now();
-      setInterval(function(){
-        var d=Math.floor((Date.now()-t)/1000);
-        var s=d<60?d+'s':d<3600?Math.floor(d/60)+'m':d<86400?Math.floor(d/3600)+'h':Math.floor(d/86400)+'d';
-        document.getElementById('last-updated').textContent='loaded '+s+' ago';
-      },1000);
-    })();
-  </script>
-
-  <!-- HEADER -->
-  <header class="header">
-    <div class="container">
-      <a href="index.html" class="logo">
-        <img src="assets/logos/Logo_Ppal_LNDB.png" alt="Los Nombres del Bosque">
-      </a>
-      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <nav class="nav-links">
-        <a href="index.html" class="active">Inicio</a>
-        <a href="quienes-somos.html">¿Quiénes somos?</a>
-        <a href="productos.html">Productos</a>
-        <a href="#identificar">Identifica tu árbol</a>
-        <a href="#contacto">Contacto</a>
-      </nav>
-    </div>
-  </header>
+  <div id="header"></div>
 
   <!-- HERO -->
   <section class="hero">
@@ -68,17 +39,15 @@
         <p>Mónica | Susana | Amanda | Alejandra | Andrea | Natalia | Emilia | Camilo | Abril | Emma | Olivia | Mía | Antonia | Lucas | Simón | Roberto | Gabriela | Valentina | Sofía | Mariana | Martín</p>
       </div>
       <div class="hero-trees">
-        <!-- Core trees left to right -->
         <img src="assets/images/trees/Roble.png" alt="Roble" loading="eager">
         <img src="assets/images/trees/Nogal.png" alt="Nogal Cafetero" loading="eager">
         <img src="assets/images/trees/PalmaCera.png" alt="Palma de Cera" loading="eager">
         <img src="assets/images/trees/Cenizo.png" alt="Cenizo" loading="eager">
-        <img src="assets/images/trees/GuayacanA.png" alt="Guayacán Amarillo" loading="eager">
-        <img src="assets/images/trees/Mango.png" alt="Árbol de Mango" loading="eager">
+        <img src="assets/images/trees/GuayacanA.png" alt="Guayacan Amarillo" loading="eager">
+        <img src="assets/images/trees/Mango.png" alt="Mango" loading="eager">
         <img src="assets/images/trees/Ceiba.png" alt="Ceiba" loading="eager">
         <img src="assets/images/trees/Eucalipto.png" alt="Eucalipto" loading="eager">
-        <img src="assets/images/trees/GuayacanR.png" alt="Guayacán Rosado" loading="eager">
-        <!-- Edge fill trees -->
+        <img src="assets/images/trees/GuayacanR.png" alt="Guayacan Rosado" loading="eager">
         <img src="assets/images/trees/Copal.png" alt="Copal" loading="eager">
         <img src="assets/images/trees/Cerezo.png" alt="Cerezo" loading="eager">
         <img src="assets/images/trees/Caimito.png" alt="Caimito" loading="eager">
@@ -101,6 +70,15 @@
     </div>
   </section>
 
+  <!-- FOREST GRID -->
+  <section class="forest-grid-section">
+    <div class="container">
+      <h2 class="forest-grid-title">Los dieciseis arboles</h2>
+      <p class="forest-subtitle">Cada uno con su propia alma, su propia manera de amar, de brillar, de resistir.</p>
+      <div class="forest-grid" id="forest-grid"></div>
+    </div>
+  </section>
+
   <!-- BOOK -->
   <section class="book-section">
     <div class="container">
@@ -113,7 +91,7 @@
         <p>En este bosque de páginas encontrarás dieciséis árboles que habitan en Colombia, cada uno con alma propia.</p>
         <p>Sus raíces, sus ramas y sus frutos te hablarán como si fueran personas...</p>
         <p>Quizá reconozcas en ellos a alguien que amas. Quizá te reconozcas a ti. Abre este libro, nómbralos, dibújate, y deja que crezca tu propia arboleda del corazón.</p>
-        <a href="productos.html" class="btn btn-primary">Conócelo aquí</a>
+        <a href="productos.html" class="btn btn-primary">Conocelo aqui</a>
       </div>
     </div>
   </section>
@@ -124,62 +102,46 @@
       <div>
         <h2>¿Qué árbol eres?</h2>
         <p>¿Un Caimito? ¿Un Cenizo? Cada persona se reconoce en un árbol, identifícate con el tuyo.</p>
-        <a href="quiz.html" class="btn btn-outline">Ver mi árbol</a>
+        <a href="quiz.html" class="btn btn-outline">Ver mi arbol</a>
       </div>
       <div class="quiz-images">
         <img src="assets/images/trees/Caimito.png" alt="Caimito">
         <img src="assets/images/trees/Cenizo.png" alt="Cenizo">
-        <img src="assets/images/trees/GuayacanR.png" alt="Guayacán Rosado">
+        <img src="assets/images/trees/GuayacanR.png" alt="Guayacan Rosado">
       </div>
     </div>
   </section>
 
-  <!-- FOOTER -->
-  <footer class="footer" id="contacto">
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-left">
-          <a href="index.html" class="logo">
-            <img src="assets/logos/Logo_Blanco_LNDB.png" alt="Los Nombres del Bosque">
-          </a>
-          <div class="footer-social">
-            <a href="#" aria-label="Instagram">&#9675;</a>
-            <a href="#" aria-label="Correo">&#9993;</a>
-            <a href="#" aria-label="Web">&#8853;</a>
-          </div>
-          <div class="footer-location">Medellín, Colombia</div>
-        </div>
-        <nav class="footer-nav">
-          <a href="quienes-somos.html">¿Quiénes somos?</a>
-          <a href="productos.html">Productos</a>
-          <a href="#identificar">Identifica tu árbol</a>
-          <a href="#contacto">Contacto</a>
-        </nav>
-      </div>
-      <div class="footer-bottom">
-        <span>© 2026 Los Nombres del Bosque S.A.S. Todos los derechos reservados.</span>
-        <span>
-          <a href="#">Aviso legal</a> · <a href="#">Políticas</a>
-        </span>
-      </div>
-    </div>
-  </footer>
+  <div id="footer"></div>
 
+  <script src="js/trees.js"></script>
+  <script src="js/components.js"></script>
   <script>
-    const toggle = document.querySelector('.nav-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    toggle.addEventListener('click', () => {
-      const isOpen = navLinks.classList.toggle('active');
-      toggle.classList.toggle('active');
-      toggle.setAttribute('aria-expanded', isOpen);
-    });
-    navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-        toggle.classList.remove('active');
-        toggle.setAttribute('aria-expanded', 'false');
+    // Populate forest grid from LNDB data
+    (function () {
+      var grid = document.getElementById('forest-grid');
+      if (!grid) return;
+
+      LNDB.treeOrder.forEach(function (key) {
+        var tree = LNDB.trees[key];
+        var card = document.createElement('a');
+        card.href = 'arboles/' + tree.slug + '.html';
+        card.className = 'forest-grid-item';
+
+        var img = document.createElement('img');
+        img.src = 'assets/images/trees/' + tree.illustration;
+        img.alt = tree.name;
+        img.loading = 'lazy';
+
+        var name = document.createElement('span');
+        name.className = 'forest-grid-item-name';
+        name.textContent = tree.name;
+
+        card.appendChild(img);
+        card.appendChild(name);
+        grid.appendChild(card);
       });
-    });
+    })();
   </script>
 
 </body>
