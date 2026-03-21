@@ -1336,6 +1336,11 @@ p:last-child {
     padding: 2rem 0 0;
   }
 
+  .hero-names-bg p {
+    font-size: 0.7rem;
+    line-height: 1.6;
+  }
+
   .hero-trees img {
     bottom: -28px;
   }
