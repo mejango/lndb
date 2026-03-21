@@ -1369,6 +1369,24 @@ p:last-child {
     bottom: -100px;
   }
 
+  @media (max-height: 700px) {
+    .hero-trees img:nth-child(1)  { height: 230px; }
+    .hero-trees img:nth-child(2)  { height: 200px; }
+    .hero-trees img:nth-child(3)  { height: 270px; }
+    .hero-trees img:nth-child(4)  { height: 185px; }
+    .hero-trees img:nth-child(5)  { height: 225px; }
+    .hero-trees img:nth-child(6)  { height: 210px; }
+    .hero-trees img:nth-child(7)  { height: 320px; bottom: -90px; }
+    .hero-trees img:nth-child(8)  { height: 205px; }
+    .hero-trees img:nth-child(9)  { height: 240px; }
+    .hero-trees img:nth-child(10) { height: 175px; }
+    .hero-trees img:nth-child(11) { height: 190px; }
+    .hero-trees img:nth-child(12) { height: 200px; }
+
+    .hero-trees img { bottom: -70px; }
+    .hero-trees { width: 650px; }
+  }
+
   .about-intro .intro-text p {
     text-align: center;
   }
