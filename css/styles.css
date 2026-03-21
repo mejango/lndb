@@ -1350,11 +1350,11 @@ p:last-child {
   }
 
   .hero-trees img {
-    bottom: -60px;
+    bottom: -100px;
   }
 
   .hero-trees img:nth-child(7) {
-    bottom: -80px;
+    bottom: -120px;
   }
 
   .about-intro .intro-text p {
