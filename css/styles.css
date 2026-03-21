@@ -1334,23 +1334,31 @@ p:last-child {
 
   .hero {
     padding: 2rem 0 0;
+    min-height: calc(100svh - 5rem);
+    display: flex;
+    flex-direction: column;
   }
 
   .hero-forest {
-    min-height: 420px;
+    min-height: 0;
+    flex: 1;
+  }
+
+  .hero-names-bg {
+    justify-content: center;
   }
 
   .hero-names-bg p {
-    font-size: 0.7rem;
-    line-height: 1.6;
+    font-size: 0.75rem;
+    line-height: 1.7;
   }
 
   .hero-trees img {
-    bottom: -28px;
+    bottom: -10px;
   }
 
   .hero-trees img:nth-child(7) {
-    bottom: -42px;
+    bottom: -30px;
   }
 
   .about-intro .intro-text p {
