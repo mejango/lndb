@@ -2065,9 +2065,11 @@ p:last-child {
 }
 
 .forest-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 0.5rem 0;
   max-width: var(--max-width);
   margin: 0 auto;
 }
@@ -2078,6 +2080,12 @@ p:last-child {
   cursor: pointer;
   text-decoration: none;
   color: inherit;
+  width: calc(25% - 1rem);
+  margin: 0 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .forest-grid-item:hover {
@@ -2086,10 +2094,11 @@ p:last-child {
 }
 
 .forest-grid-item img {
-  width: 100%;
-  max-height: 200px;
+  width: auto;
+  max-width: 100%;
+  height: var(--tree-size, 180px);
   object-fit: contain;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .forest-grid-item-name {
@@ -2108,6 +2117,7 @@ p:last-child {
   font-style: italic;
   color: var(--color-text-muted);
   margin-top: 0.15rem;
+  margin-bottom: 1rem;
 }
 
 /* Neighbor sway on hover */
@@ -2193,9 +2203,12 @@ p:last-child {
     max-width: 80%;
   }
 
-  .forest-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+  .forest-grid-item {
+    width: calc(33.33% - 1rem);
+  }
+
+  .forest-grid-item img {
+    height: calc(var(--tree-size, 180px) * 0.8);
   }
 }
 
@@ -2257,6 +2270,16 @@ p:last-child {
 
   .meditation-teaser h2 {
     font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .forest-grid-item {
+    width: calc(50% - 1rem);
+  }
+
+  .forest-grid-item img {
+    height: calc(var(--tree-size, 180px) * 0.6);
   }
 }
 

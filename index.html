@@ -130,11 +130,20 @@
       var grid = document.getElementById('forest-grid');
       if (!grid) return;
 
+      // Organic sizes — tall/large trees get bigger, shrubs smaller
+      var sizes = {
+        ceiba: 280, palma: 300, roble: 240, mango: 230,
+        guayacanA: 210, guayacanR: 220, caimito: 200, nogal: 190,
+        cenizo: 195, arrayan: 185, cerezo: 205, tamarindo: 175,
+        yarumo: 195, cacao: 185, eucalipto: 190, copal: 200
+      };
+
       LNDB.treeOrder.forEach(function (key) {
         var tree = LNDB.trees[key];
         var card = document.createElement('a');
         card.href = 'arboles/' + tree.slug + '.html';
         card.className = 'forest-grid-item';
+        card.style.setProperty('--tree-size', (sizes[key] || 180) + 'px');
 
         var picture = document.createElement('picture');
         var source = document.createElement('source');
