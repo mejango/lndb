@@ -39,18 +39,18 @@
         <p>Camila | Roble | Alina | Tamarindo | Gabriel | Arrayán | Norman | Copal | Patialen | Mango | Silvia | Eucalipto | Heliana | Cerezo | Marta Alicia | Nogal Cafetero | Isabel Cristina | Cenizo | Rocio | Palma de Cera | Oscar | Cacao</p>
       </div>
       <div class="hero-trees">
-        <img src="assets/images/trees/Roble.png" alt="Roble" loading="eager">
-        <img src="assets/images/trees/Nogal.png" alt="Nogal Cafetero" loading="eager">
-        <img src="assets/images/trees/PalmaCera.png" alt="Palma de Cera" loading="eager">
-        <img src="assets/images/trees/Cenizo.png" alt="Cenizo" loading="eager">
-        <img src="assets/images/trees/GuayacanA.png" alt="Guayacan Amarillo" loading="eager">
-        <img src="assets/images/trees/Mango.png" alt="Mango" loading="eager">
-        <img src="assets/images/trees/Ceiba.png" alt="Ceiba" loading="eager">
-        <img src="assets/images/trees/Eucalipto.png" alt="Eucalipto" loading="eager">
-        <img src="assets/images/trees/GuayacanR.png" alt="Guayacan Rosado" loading="eager">
-        <img src="assets/images/trees/Copal.png" alt="Copal" loading="eager">
-        <img src="assets/images/trees/Cerezo.png" alt="Cerezo" loading="eager">
-        <img src="assets/images/trees/Caimito.png" alt="Caimito" loading="eager">
+        <picture><source srcset="assets/images/trees/Roble.webp" type="image/webp"><img src="assets/images/trees/Roble.png" alt="Roble" loading="eager"></picture>
+        <picture><source srcset="assets/images/trees/Nogal.webp" type="image/webp"><img src="assets/images/trees/Nogal.png" alt="Nogal Cafetero" loading="eager"></picture>
+        <picture><source srcset="assets/images/trees/PalmaCera.webp" type="image/webp"><img src="assets/images/trees/PalmaCera.png" alt="Palma de Cera" loading="eager"></picture>
+        <picture><source srcset="assets/images/trees/Cenizo.webp" type="image/webp"><img src="assets/images/trees/Cenizo.png" alt="Cenizo" loading="eager"></picture>
+        <picture><source srcset="assets/images/trees/GuayacanA.webp" type="image/webp"><img src="assets/images/trees/GuayacanA.png" alt="Guayacan Amarillo" loading="eager"></picture>
+        <picture><source srcset="assets/images/trees/Mango.webp" type="image/webp"><img src="assets/images/trees/Mango.png" alt="Mango" loading="eager"></picture>
+        <picture><source srcset="assets/images/trees/Ceiba.webp" type="image/webp"><img src="assets/images/trees/Ceiba.png" alt="Ceiba" loading="eager"></picture>
+        <picture><source srcset="assets/images/trees/Eucalipto.webp" type="image/webp"><img src="assets/images/trees/Eucalipto.png" alt="Eucalipto" loading="eager"></picture>
+        <picture><source srcset="assets/images/trees/GuayacanR.webp" type="image/webp"><img src="assets/images/trees/GuayacanR.png" alt="Guayacan Rosado" loading="eager"></picture>
+        <picture><source srcset="assets/images/trees/Copal.webp" type="image/webp"><img src="assets/images/trees/Copal.png" alt="Copal" loading="eager"></picture>
+        <picture><source srcset="assets/images/trees/Cerezo.webp" type="image/webp"><img src="assets/images/trees/Cerezo.png" alt="Cerezo" loading="eager"></picture>
+        <picture><source srcset="assets/images/trees/Caimito.webp" type="image/webp"><img src="assets/images/trees/Caimito.png" alt="Caimito" loading="eager"></picture>
       </div>
     </div>
   </section>
@@ -59,7 +59,7 @@
   <section class="about-intro">
     <div class="container">
       <div class="intro-illustration">
-        <img src="assets/images/trees/Yarumo.png" alt="Yarumo" loading="lazy">
+        <picture><source srcset="assets/images/trees/Yarumo.webp" type="image/webp"><img src="assets/images/trees/Yarumo.png" alt="Yarumo" loading="lazy"></picture>
       </div>
       <div class="intro-text">
         <p>Creemos que entre nosotros caminan árboles.</p>
@@ -105,9 +105,9 @@
         <a href="quiz.html" class="btn btn-outline">Ver mi arbol</a>
       </div>
       <div class="quiz-images">
-        <img src="assets/images/trees/Caimito.png" alt="Caimito">
-        <img src="assets/images/trees/Cenizo.png" alt="Cenizo">
-        <img src="assets/images/trees/GuayacanR.png" alt="Guayacan Rosado">
+        <picture><source srcset="assets/images/trees/Caimito.webp" type="image/webp"><img src="assets/images/trees/Caimito.png" alt="Caimito"></picture>
+        <picture><source srcset="assets/images/trees/Cenizo.webp" type="image/webp"><img src="assets/images/trees/Cenizo.png" alt="Cenizo"></picture>
+        <picture><source srcset="assets/images/trees/GuayacanR.webp" type="image/webp"><img src="assets/images/trees/GuayacanR.png" alt="Guayacan Rosado"></picture>
       </div>
     </div>
   </section>
@@ -128,16 +128,22 @@
         card.href = 'arboles/' + tree.slug + '.html';
         card.className = 'forest-grid-item';
 
+        var picture = document.createElement('picture');
+        var source = document.createElement('source');
+        source.srcset = 'assets/images/trees/' + tree.illustration.replace('.png', '.webp');
+        source.type = 'image/webp';
         var img = document.createElement('img');
         img.src = 'assets/images/trees/' + tree.illustration;
         img.alt = tree.name;
         img.loading = 'lazy';
+        picture.appendChild(source);
+        picture.appendChild(img);
 
         var name = document.createElement('span');
         name.className = 'forest-grid-item-name';
         name.textContent = tree.name;
 
-        card.appendChild(img);
+        card.appendChild(picture);
         card.appendChild(name);
         grid.appendChild(card);
       });

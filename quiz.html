@@ -33,9 +33,9 @@
           <button id="quiz-start" class="btn btn-primary">Comenzar</button>
         </div>
         <div class="quiz-intro-trees">
-          <img src="assets/images/trees/Yarumo.png" alt="Yarumo">
-          <img src="assets/images/trees/GuayacanA.png" alt="Guayacan Amarillo">
-          <img src="assets/images/trees/Ceiba.png" alt="Ceiba">
+          <picture><source srcset="assets/images/trees/Yarumo.webp" type="image/webp"><img src="assets/images/trees/Yarumo.png" alt="Yarumo"></picture>
+          <picture><source srcset="assets/images/trees/GuayacanA.webp" type="image/webp"><img src="assets/images/trees/GuayacanA.png" alt="Guayacan Amarillo"></picture>
+          <picture><source srcset="assets/images/trees/Ceiba.webp" type="image/webp"><img src="assets/images/trees/Ceiba.png" alt="Ceiba"></picture>
         </div>
       </div>
 
@@ -54,7 +54,10 @@
         <div class="quiz-result-content">
           <div class="quiz-result-reveal" id="quiz-result-reveal"></div>
           <div class="quiz-result-image">
-            <img id="result-tree-img" src="" alt="">
+            <picture>
+              <source id="result-tree-webp" srcset="" type="image/webp">
+              <img id="result-tree-img" src="" alt="">
+            </picture>
           </div>
           <p class="quiz-result-description" id="result-tree-desc"></p>
           <div class="quiz-result-actions">
@@ -207,6 +210,7 @@
         currentWinnerKey = winner;
         var tree = trees[winner];
 
+        document.getElementById('result-tree-webp').srcset = 'assets/images/trees/' + tree.illustration.replace('.png', '.webp');
         document.getElementById('result-tree-img').src = 'assets/images/trees/' + tree.illustration;
         document.getElementById('result-tree-img').alt = tree.name;
         document.getElementById('result-tree-desc').textContent = descriptions[winner];
@@ -469,7 +473,7 @@
         html += '<h2 style="color:var(--color-forest);margin:2.5rem 0 1rem;">Descripciones de resultado</h2>';
         for (var key in trees) {
           html += '<div class="quiz-admin-card">' +
-            '<img src="assets/images/trees/' + trees[key].illustration + '" alt="' + trees[key].name + '">' +
+            '<picture><source srcset="assets/images/trees/' + trees[key].illustration.replace('.png', '.webp') + '" type="image/webp"><img src="assets/images/trees/' + trees[key].illustration + '" alt="' + trees[key].name + '"></picture>' +
             '<div class="quiz-admin-text">' +
             '<h3>' + trees[key].name + '</h3>' +
             '<p>' + descriptions[key] + '</p>' +
