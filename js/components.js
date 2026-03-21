@@ -21,6 +21,10 @@
     fetch(base + file)
       .then(function (r) { return r.text(); })
       .then(function (html) {
+        // Rewrite relative paths for subdirectory pages
+        if (base) {
+          html = html.replace(/(src|href)="(?!https?:\/\/|\/|#|mailto:)/g, '$1="' + base);
+        }
         el.innerHTML = html;
 
         // Mark active nav link
