@@ -213,6 +213,7 @@
       e.preventDefault();
       if (submitBtn.disabled) return;
 
+      var name = emailForm.querySelector('.tree-email-name').value;
       var email = emailForm.querySelector('.tree-email-input').value;
       var honeypot = emailForm.querySelector('.tree-email-honeypot');
       if (honeypot && honeypot.value) return; // bot
@@ -220,10 +221,11 @@
       submitBtn.disabled = true;
       submitBtn.textContent = '...';
 
-      fetch('https://formspree.io/f/YOUR_FORM_ID', {
+      fetch('https://formspree.io/f/mreyvela', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          name: name,
           email: email,
           tree: tree.name,
           _subject: 'Quiero visitar mi arbol: ' + tree.name

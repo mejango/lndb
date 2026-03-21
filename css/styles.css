@@ -1717,10 +1717,12 @@ p:last-child {
 
 .tree-email-form {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.75rem;
   align-items: center;
 }
 
+.tree-email-name,
 .tree-email-input {
   flex: 1;
   padding: 0.75rem 1rem;
@@ -1733,6 +1735,7 @@ p:last-child {
   transition: border-color var(--transition);
 }
 
+.tree-email-name:focus,
 .tree-email-input:focus {
   border-color: var(--color-sage);
 }
@@ -2120,6 +2123,7 @@ p:last-child {
     flex-direction: column;
   }
 
+  .tree-email-name,
   .tree-email-input,
   .tree-email-submit {
     width: 100%;
