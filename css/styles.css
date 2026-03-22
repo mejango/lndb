@@ -2499,13 +2499,15 @@ p:last-child {
   justify-content: center;
   align-items: flex-end;
   gap: 0;
+  margin-top: 1rem;
+  padding: 0 1rem;
 }
 
 .ag-intro-trees img {
-  height: 220px;
+  height: 260px;
   width: auto;
   object-fit: contain;
-  margin: 0 -1rem;
+  margin: 0 -1.5rem;
 }
 
 /* Builder */
@@ -2529,8 +2531,13 @@ p:last-child {
   background: var(--color-cream);
   border: 1px solid rgba(126, 142, 109, 0.3);
   border-radius: var(--border-radius);
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1.1rem;
   animation: agFadeIn 0.3s ease;
+  transition: box-shadow 0.2s;
+}
+
+.ag-member-card:hover {
+  box-shadow: 0 2px 8px rgba(59, 74, 58, 0.08);
 }
 
 @keyframes agFadeIn {
@@ -2539,10 +2546,13 @@ p:last-child {
 }
 
 .ag-member-thumb {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
   object-fit: contain;
   flex-shrink: 0;
+  background: rgba(126, 142, 109, 0.08);
+  border-radius: 50%;
+  padding: 6px;
 }
 
 .ag-member-info {
@@ -2608,7 +2618,7 @@ p:last-child {
   padding: 1rem 1.25rem;
   background: var(--color-cream);
   border-radius: var(--border-radius);
-  border-left: 3px solid var(--color-sage);
+  border: 1px solid rgba(126, 142, 109, 0.2);
   min-height: 2.5rem;
 }
 
@@ -2731,12 +2741,14 @@ p:last-child {
   border: 2px solid transparent;
   border-radius: var(--border-radius);
   cursor: pointer;
-  transition: border-color 0.2s, opacity 0.2s;
+  transition: border-color 0.2s, opacity 0.2s, transform 0.2s, box-shadow 0.2s;
   text-align: center;
 }
 
 .ag-tree-card:hover:not(:disabled) {
   border-color: var(--color-sage);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 74, 58, 0.1);
 }
 
 .ag-tree-card:disabled {
@@ -2749,8 +2761,8 @@ p:last-child {
 }
 
 .ag-tree-card img {
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   object-fit: contain;
 }
 
@@ -2815,15 +2827,26 @@ p:last-child {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
 }
 
 .ag-preview-actions .btn {
   text-align: center;
+  display: block;
 }
 
 .ag-print-btn {
   text-decoration: none;
+  color: var(--color-forest);
+  font-weight: 500;
+  border: 2px solid var(--color-sage);
+  background: transparent;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.ag-print-btn:hover {
+  background-color: rgba(126, 142, 109, 0.1);
+  border-color: var(--color-forest);
 }
 
 .ag-back-btn {
@@ -2878,7 +2901,8 @@ p:last-child {
   }
 
   .ag-intro-trees img {
-    height: 140px;
+    height: 160px;
+    margin: 0 -0.75rem;
   }
 
   .ag-page {
