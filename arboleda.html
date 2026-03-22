@@ -320,6 +320,12 @@
       function updateDedication() {
         var text = generateDedication();
         dedicationLive.textContent = text;
+        var preview = document.querySelector('.ag-dedication-preview');
+        if (grove.members.length > 0) {
+          preview.classList.add('ag-dedication-preview--visible');
+        } else {
+          preview.classList.remove('ag-dedication-preview--visible');
+        }
       }
 
       function updateButtons() {

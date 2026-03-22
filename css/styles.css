@@ -2650,7 +2650,11 @@ p:last-child {
   background: var(--color-cream);
   border-radius: var(--border-radius);
   border: 1px solid rgba(126, 142, 109, 0.2);
-  min-height: 2.5rem;
+  display: none;
+}
+
+.ag-dedication-preview--visible {
+  display: block;
 }
 
 .ag-dedication-live {
@@ -3010,6 +3014,19 @@ p:last-child {
 
   .ag-page {
     padding: 2rem 1rem;
+  }
+
+  .ag-picker-inner {
+    max-height: 95vh;
+    border-radius: 12px 12px 0 0;
+    padding-bottom: 2rem;
+  }
+
+  .ag-detail-select {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    margin-top: 1rem;
   }
 }
 
