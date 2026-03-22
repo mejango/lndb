@@ -77,6 +77,12 @@
             <a href="#" id="result-listen" class="btn btn-primary">Escuchar tu árbol</a>
           </div>
 
+          <!-- Arboleda CTA — secondary to email -->
+          <div class="quiz-result-arboleda">
+            <p class="quiz-result-arboleda-text">¿Quiénes son los árboles de tu vida?</p>
+            <a href="arboleda.html" class="btn btn-secondary">Crea tu arboleda</a>
+          </div>
+
           <!-- Secondary links -->
           <div class="quiz-result-secondary">
             <button id="result-share">Compartir</button>
@@ -358,22 +364,7 @@
         img.src = 'assets/images/trees/' + tree.illustration;
       }
 
-      function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-        var words = text.split(' ');
-        var line = '';
-        for (var n = 0; n < words.length; n++) {
-          var testLine = line + words[n] + ' ';
-          var metrics = ctx.measureText(testLine);
-          if (metrics.width > maxWidth && n > 0) {
-            ctx.fillText(line.trim(), x, y);
-            line = words[n] + ' ';
-            y += lineHeight;
-          } else {
-            line = testLine;
-          }
-        }
-        ctx.fillText(line.trim(), x, y);
-      }
+      var wrapText = LNDB.wrapText;
 
       // Share button
       shareBtn.addEventListener('click', function () {

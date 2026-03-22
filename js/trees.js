@@ -300,6 +300,24 @@ var LNDB = (function () {
     return treeOrder[prevIdx];
   }
 
+  // Canvas text helper — wraps text to fit within maxWidth
+  function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    var words = text.split(' ');
+    var line = '';
+    for (var n = 0; n < words.length; n++) {
+      var testLine = line + words[n] + ' ';
+      var metrics = ctx.measureText(testLine);
+      if (metrics.width > maxWidth && n > 0) {
+        ctx.fillText(line.trim(), x, y);
+        line = words[n] + ' ';
+        y += lineHeight;
+      } else {
+        line = testLine;
+      }
+    }
+    ctx.fillText(line.trim(), x, y);
+  }
+
   return {
     trees: trees,
     descriptions: descriptions,
@@ -307,6 +325,7 @@ var LNDB = (function () {
     treeOrder: treeOrder,
     getBySlug: getBySlug,
     getNextTree: getNextTree,
-    getPrevTree: getPrevTree
+    getPrevTree: getPrevTree,
+    wrapText: wrapText
   };
 })();
