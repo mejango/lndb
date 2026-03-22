@@ -2779,6 +2779,69 @@ p:last-child {
   line-height: 1.2;
 }
 
+/* Tree detail panel */
+.ag-tree-detail {
+  padding: 0.5rem 0;
+}
+
+.ag-detail-back {
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--color-sage);
+  cursor: pointer;
+  padding: 0.25rem 0;
+  margin-bottom: 1rem;
+}
+
+.ag-detail-back:hover {
+  color: var(--color-forest);
+}
+
+.ag-detail-content {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.ag-detail-img {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  margin-bottom: 1rem;
+}
+
+.ag-detail-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-forest);
+  margin: 0 0 0.25rem;
+}
+
+.ag-detail-blurb {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--color-sage);
+  margin: 0 0 1rem;
+}
+
+.ag-detail-desc {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-text-dark);
+  text-align: left;
+  margin: 0;
+}
+
+.ag-detail-select {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.ag-detail-select:disabled {
+  opacity: 0.5;
+}
+
 /* Preview screen */
 .ag-preview-layout {
   display: grid;

@@ -68,6 +68,19 @@
           </div>
           <p class="ag-picker-hint" id="ag-picker-hint">Escribe un nombre y elige su árbol</p>
           <div id="ag-tree-grid" class="ag-tree-grid"></div>
+          <div id="ag-tree-detail" class="ag-tree-detail" style="display:none">
+            <button id="ag-detail-back" class="ag-detail-back">&larr; Volver a los árboles</button>
+            <div class="ag-detail-content">
+              <picture id="ag-detail-picture">
+                <source id="ag-detail-srcset" type="image/webp">
+                <img id="ag-detail-img" class="ag-detail-img" alt="" width="200" height="200" loading="lazy">
+              </picture>
+              <h4 id="ag-detail-name" class="ag-detail-name"></h4>
+              <p id="ag-detail-blurb" class="ag-detail-blurb"></p>
+              <p id="ag-detail-desc" class="ag-detail-desc"></p>
+            </div>
+            <button id="ag-detail-select" class="btn btn-primary ag-detail-select" disabled>Elegir este árbol</button>
+          </div>
         </div>
       </div>
 
@@ -103,6 +116,7 @@
 
       var trees = LNDB.trees;
       var treeOrder = LNDB.treeOrder;
+      var descriptions = LNDB.descriptions;
 
       // State
       var grove = {
@@ -134,6 +148,15 @@
       var pickerHint = document.getElementById('ag-picker-hint');
       var minHint = document.getElementById('ag-min-hint');
       var treeGrid = document.getElementById('ag-tree-grid');
+      var treeDetail = document.getElementById('ag-tree-detail');
+      var detailBack = document.getElementById('ag-detail-back');
+      var detailSrcset = document.getElementById('ag-detail-srcset');
+      var detailImg = document.getElementById('ag-detail-img');
+      var detailName = document.getElementById('ag-detail-name');
+      var detailBlurb = document.getElementById('ag-detail-blurb');
+      var detailDesc = document.getElementById('ag-detail-desc');
+      var detailSelect = document.getElementById('ag-detail-select');
+      var currentDetailKey = null;
 
       // Screen management
       function showScreen(screen) {
@@ -160,7 +183,7 @@
             '<span class="ag-tree-card-name">' + tree.name + '</span>' +
             '<span class="ag-tree-card-blurb">' + tree.blurb + '</span>';
           card.addEventListener('click', function () {
-            selectTree(key);
+            showTreeDetail(key);
           });
           treeGrid.appendChild(card);
         });
@@ -169,7 +192,7 @@
       // Picker open/close
       function openPicker() {
         personNameInput.value = '';
-        pickerHint.style.display = '';
+        hideTreeDetail();
         updatePickerState();
         pickerEl.classList.add('ag-picker--open');
         document.body.style.overflow = 'hidden';
@@ -184,15 +207,61 @@
       function updatePickerState() {
         var name = personNameInput.value.trim();
         var cards = treeGrid.querySelectorAll('.ag-tree-card');
-        // Disable trees already used
         var usedKeys = grove.members.map(function (m) { return m.treeKey; });
         cards.forEach(function (card) {
           var isUsed = usedKeys.indexOf(card.dataset.key) !== -1;
           card.classList.toggle('ag-tree-card--used', isUsed);
-          card.disabled = isUsed || !name;
+          card.disabled = isUsed;
         });
-        pickerHint.style.display = name ? 'none' : '';
+        pickerHint.textContent = name
+          ? 'Toca un árbol para conocerlo y elegirlo'
+          : 'Toca un árbol para conocerlo. Escribe un nombre para elegirlo.';
+        // Update detail select button if detail is open
+        if (currentDetailKey) {
+          var isUsed = usedKeys.indexOf(currentDetailKey) !== -1;
+          detailSelect.disabled = !name || isUsed;
+          detailSelect.textContent = isUsed ? 'Árbol ya elegido' : (name ? 'Elegir para ' + name : 'Escribe un nombre primero');
+        }
       }
+
+      function showTreeDetail(key) {
+        var tree = trees[key];
+        var desc = descriptions[key] || tree.completionMessage;
+        currentDetailKey = key;
+
+        detailSrcset.srcset = 'assets/images/trees/thumb/' + tree.illustration.replace('.png', '.webp');
+        detailImg.src = 'assets/images/trees/thumb/' + tree.illustration;
+        detailImg.alt = tree.name;
+        detailName.textContent = tree.name;
+        detailBlurb.textContent = tree.blurb;
+        detailDesc.textContent = desc;
+
+        treeGrid.style.display = 'none';
+        pickerHint.style.display = 'none';
+        treeDetail.style.display = '';
+
+        var name = personNameInput.value.trim();
+        var usedKeys = grove.members.map(function (m) { return m.treeKey; });
+        var isUsed = usedKeys.indexOf(key) !== -1;
+        detailSelect.disabled = !name || isUsed;
+        detailSelect.textContent = isUsed ? 'Árbol ya elegido' : (name ? 'Elegir para ' + name : 'Escribe un nombre primero');
+      }
+
+      function hideTreeDetail() {
+        treeGrid.style.display = '';
+        pickerHint.style.display = '';
+        treeDetail.style.display = 'none';
+        currentDetailKey = null;
+        updatePickerState();
+      }
+
+      detailBack.addEventListener('click', hideTreeDetail);
+
+      detailSelect.addEventListener('click', function () {
+        if (currentDetailKey && personNameInput.value.trim()) {
+          selectTree(currentDetailKey);
+        }
+      });
 
       personNameInput.addEventListener('input', updatePickerState);
 
