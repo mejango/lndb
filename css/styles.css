@@ -1222,6 +1222,33 @@ p:last-child {
   color: var(--color-forest);
 }
 
+.quiz-result-arboleda {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(126, 142, 109, 0.15);
+  text-align: center;
+}
+
+.quiz-result-arboleda-text {
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  margin-bottom: 0.75rem;
+  font-style: italic;
+}
+
+.quiz-result-arboleda .btn-secondary {
+  background: transparent;
+  color: var(--color-sage);
+  border-color: var(--color-sage);
+  font-size: 0.85rem;
+  padding: 0.6rem 1.5rem;
+}
+
+.quiz-result-arboleda .btn-secondary:hover {
+  background: var(--color-sage);
+  color: var(--color-cream);
+}
+
 /* Admin view */
 .quiz-admin ~ .quiz-screen { display: none; }
 .quiz-page:has(.quiz-admin) .container {
