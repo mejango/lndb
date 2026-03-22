@@ -220,10 +220,11 @@
           card.innerHTML =
             '<img src="assets/images/trees/thumb/' + tree.illustration.replace('.png', '.webp') + '" alt="' + tree.name + '" class="ag-member-thumb" width="48" height="48">' +
             '<div class="ag-member-info">' +
-              '<span class="ag-member-name">' + member.personName + '</span>' +
+              '<span class="ag-member-name"></span>' +
               '<span class="ag-member-tree">' + tree.name + ' — ' + tree.blurb + '</span>' +
             '</div>' +
             '<button class="ag-member-remove" data-index="' + i + '">&times;</button>';
+          card.querySelector('.ag-member-name').textContent = member.personName;
           membersEl.appendChild(card);
         });
 
@@ -368,6 +369,7 @@
           ctx.fillText('Los Nombres del Bosque', W - 60, groundY + 155);
         }
 
+        var errors = 0;
         members.forEach(function (member, i) {
           var img = new Image();
           img.crossOrigin = 'anonymous';
@@ -377,33 +379,29 @@
             if (loaded === N) onAllLoaded();
           };
           img.onerror = function () {
+            errors++;
             loaded++;
-            if (loaded === N) onAllLoaded();
+            if (loaded === N) {
+              if (errors === N) {
+                alert('No se pudieron cargar las imágenes. Revisa tu conexión e intenta de nuevo.');
+                return;
+              }
+              onAllLoaded();
+            }
           };
           img.src = 'assets/images/trees/' + trees[member.treeKey].illustration.replace('.png', '.webp');
         });
       }
 
-      function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-        var words = text.split(' ');
-        var line = '';
-        for (var n = 0; n < words.length; n++) {
-          var testLine = line + words[n] + ' ';
-          var metrics = ctx.measureText(testLine);
-          if (metrics.width > maxWidth && n > 0) {
-            ctx.fillText(line.trim(), x, y);
-            line = words[n] + ' ';
-            y += lineHeight;
-          } else {
-            line = testLine;
-          }
-        }
-        ctx.fillText(line.trim(), x, y);
-      }
+      var wrapText = LNDB.wrapText;
 
       // Download
       function downloadCanvas() {
         canvas.toBlob(function (blob) {
+          if (!blob) {
+            alert('No se pudo generar la imagen. Intenta de nuevo.');
+            return;
+          }
           if (navigator.share && navigator.canShare) {
             var file = new File([blob], 'mi-arboleda.png', { type: 'image/png' });
             var shareData = { title: 'Mi arboleda', files: [file] };
