@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crea tu arboleda — Los Nombres del Bosque</title>
+  <meta name="description" content="Elige los árboles que representan a las personas que amas y crea tu propia arboleda del corazón.">
+  <meta property="og:title" content="Crea tu arboleda — Los Nombres del Bosque">
+  <meta property="og:description" content="Crea tu propia arboleda del corazón con los árboles del bosque.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/logos/favicon.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div id="header"></div>
+
+  <section class="ag-page">
+    <div class="container">
+
+      <!-- Screen 1: Intro -->
+      <div id="ag-intro" class="ag-screen ag-screen--active">
+        <div class="ag-intro-content">
+          <h1>Crea tu arboleda</h1>
+          <p>En este bosque hay dieciséis árboles que caminan entre nosotros. Elige los que sientas que representan a las personas que más quieres.</p>
+          <p>Se creará una composición única: tu propio bosque, con nombres y personalidad. Para guardar, imprimir o regalar.</p>
+          <div class="ag-name-field">
+            <label for="ag-creator-name">Tu nombre</label>
+            <input type="text" id="ag-creator-name" class="ag-name-input" placeholder="Escribe tu nombre" maxlength="30" autocomplete="given-name">
+          </div>
+          <button id="ag-start" class="btn btn-primary">Comenzar</button>
+        </div>
+        <div class="ag-intro-trees">
+          <picture><source srcset="assets/images/trees/thumb/Yarumo.webp" type="image/webp"><img src="assets/images/trees/Yarumo.png" alt="Yarumo" loading="lazy" width="500" height="472"></picture>
+          <picture><source srcset="assets/images/trees/thumb/GuayacanA.webp" type="image/webp"><img src="assets/images/trees/GuayacanA.png" alt="Guayacán Amarillo" loading="lazy" width="500" height="492"></picture>
+          <picture><source srcset="assets/images/trees/thumb/Ceiba.webp" type="image/webp"><img src="assets/images/trees/Ceiba.png" alt="Ceiba" loading="lazy" width="457" height="500"></picture>
+        </div>
+      </div>
+
+      <!-- Screen 2: Builder -->
+      <div id="ag-builder" class="ag-screen">
+        <h2 class="ag-builder-title">Tu arboleda</h2>
+
+        <!-- Member list -->
+        <div id="ag-members" class="ag-members"></div>
+
+        <button id="ag-add-btn" class="ag-add-btn">+ Agregar persona</button>
+
+        <!-- Live dedication preview -->
+        <div class="ag-dedication-preview">
+          <p id="ag-dedication-live" class="ag-dedication-live"></p>
+        </div>
+
+        <button id="ag-preview-btn" class="btn btn-primary ag-preview-btn" disabled>Ver mi arboleda</button>
+        <p class="ag-min-hint" id="ag-min-hint">Agrega al menos 3 personas para continuar</p>
+      </div>
+
+      <!-- Tree Picker Overlay -->
+      <div id="ag-picker" class="ag-picker">
+        <div class="ag-picker-inner">
+          <div class="ag-picker-header">
+            <h3>Elige un árbol</h3>
+            <button id="ag-picker-cancel" class="ag-picker-close">&times;</button>
+          </div>
+          <div class="ag-picker-name-field">
+            <label for="ag-person-name">Nombre de la persona</label>
+            <input type="text" id="ag-person-name" class="ag-name-input" placeholder="Ej: María" maxlength="20">
+          </div>
+          <p class="ag-picker-hint" id="ag-picker-hint">Escribe un nombre y elige su árbol</p>
+          <div id="ag-tree-grid" class="ag-tree-grid"></div>
+        </div>
+      </div>
+
+      <!-- Screen 3: Preview -->
+      <div id="ag-preview" class="ag-screen">
+        <div class="ag-preview-layout">
+          <div class="ag-preview-canvas-wrap">
+            <canvas id="ag-canvas" width="2800" height="1800"></canvas>
+          </div>
+          <div class="ag-preview-sidebar">
+            <h3>Dedicatoria</h3>
+            <textarea id="ag-dedication-edit" class="ag-dedication-edit" rows="4"></textarea>
+            <div class="ag-preview-actions">
+              <button id="ag-update-btn" class="btn btn-secondary">Actualizar imagen</button>
+              <button id="ag-download-btn" class="btn btn-primary">Descargar imagen</button>
+              <a id="ag-print-btn" class="btn btn-secondary ag-print-btn" href="#" target="_blank" rel="noopener">Pedir versión impresa</a>
+            </div>
+            <button id="ag-back-btn" class="ag-back-btn">&larr; Editar arboleda</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div id="footer"></div>
+
+  <script src="js/trees.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var trees = LNDB.trees;
+      var treeOrder = LNDB.treeOrder;
+
+      // State
+      var grove = {
+        creatorName: '',
+        members: [] // [{ personName: 'María', treeKey: 'cerezo' }]
+      };
+      var MAX_MEMBERS = 8;
+      var MIN_MEMBERS = 3;
+
+      // DOM refs
+      var introEl = document.getElementById('ag-intro');
+      var builderEl = document.getElementById('ag-builder');
+      var previewEl = document.getElementById('ag-preview');
+      var pickerEl = document.getElementById('ag-picker');
+      var startBtn = document.getElementById('ag-start');
+      var addBtn = document.getElementById('ag-add-btn');
+      var previewBtn = document.getElementById('ag-preview-btn');
+      var pickerCancel = document.getElementById('ag-picker-cancel');
+      var personNameInput = document.getElementById('ag-person-name');
+      var creatorNameInput = document.getElementById('ag-creator-name');
+      var membersEl = document.getElementById('ag-members');
+      var dedicationLive = document.getElementById('ag-dedication-live');
+      var dedicationEdit = document.getElementById('ag-dedication-edit');
+      var updateBtn = document.getElementById('ag-update-btn');
+      var downloadBtn = document.getElementById('ag-download-btn');
+      var printBtn = document.getElementById('ag-print-btn');
+      var backBtn = document.getElementById('ag-back-btn');
+      var canvas = document.getElementById('ag-canvas');
+      var pickerHint = document.getElementById('ag-picker-hint');
+      var minHint = document.getElementById('ag-min-hint');
+      var treeGrid = document.getElementById('ag-tree-grid');
+
+      // Screen management
+      function showScreen(screen) {
+        [introEl, builderEl, previewEl].forEach(function (el) {
+          el.classList.remove('ag-screen--active');
+        });
+        setTimeout(function () {
+          screen.classList.add('ag-screen--active');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 50);
+      }
+
+      // Build tree picker grid
+      function buildTreeGrid() {
+        treeGrid.innerHTML = '';
+        treeOrder.forEach(function (key) {
+          var tree = trees[key];
+          var card = document.createElement('button');
+          card.className = 'ag-tree-card';
+          card.dataset.key = key;
+          card.innerHTML =
+            '<picture><source srcset="assets/images/trees/thumb/' + tree.illustration.replace('.png', '.webp') + '" type="image/webp">' +
+            '<img src="assets/images/trees/thumb/' + tree.illustration + '" alt="' + tree.name + '" width="80" height="80" loading="lazy"></picture>' +
+            '<span class="ag-tree-card-name">' + tree.name + '</span>' +
+            '<span class="ag-tree-card-blurb">' + tree.blurb + '</span>';
+          card.addEventListener('click', function () {
+            selectTree(key);
+          });
+          treeGrid.appendChild(card);
+        });
+      }
+
+      // Picker open/close
+      function openPicker() {
+        personNameInput.value = '';
+        pickerHint.style.display = '';
+        updatePickerState();
+        pickerEl.classList.add('ag-picker--open');
+        document.body.style.overflow = 'hidden';
+        setTimeout(function () { personNameInput.focus(); }, 100);
+      }
+
+      function closePicker() {
+        pickerEl.classList.remove('ag-picker--open');
+        document.body.style.overflow = '';
+      }
+
+      function updatePickerState() {
+        var name = personNameInput.value.trim();
+        var cards = treeGrid.querySelectorAll('.ag-tree-card');
+        // Disable trees already used
+        var usedKeys = grove.members.map(function (m) { return m.treeKey; });
+        cards.forEach(function (card) {
+          var isUsed = usedKeys.indexOf(card.dataset.key) !== -1;
+          card.classList.toggle('ag-tree-card--used', isUsed);
+          card.disabled = isUsed || !name;
+        });
+        pickerHint.style.display = name ? 'none' : '';
+      }
+
+      personNameInput.addEventListener('input', updatePickerState);
+
+      function selectTree(key) {
+        var name = personNameInput.value.trim();
+        if (!name) return;
+        // Check if tree already used
+        var usedKeys = grove.members.map(function (m) { return m.treeKey; });
+        if (usedKeys.indexOf(key) !== -1) return;
+
+        grove.members.push({ personName: name, treeKey: key });
+        closePicker();
+        renderMembers();
+        updateDedication();
+        updateButtons();
+      }
+
+      // Render member list
+      function renderMembers() {
+        membersEl.innerHTML = '';
+        grove.members.forEach(function (member, i) {
+          var tree = trees[member.treeKey];
+          var card = document.createElement('div');
+          card.className = 'ag-member-card';
+          card.innerHTML =
+            '<img src="assets/images/trees/thumb/' + tree.illustration.replace('.png', '.webp') + '" alt="' + tree.name + '" class="ag-member-thumb" width="48" height="48">' +
+            '<div class="ag-member-info">' +
+              '<span class="ag-member-name">' + member.personName + '</span>' +
+              '<span class="ag-member-tree">' + tree.name + ' — ' + tree.blurb + '</span>' +
+            '</div>' +
+            '<button class="ag-member-remove" data-index="' + i + '">&times;</button>';
+          membersEl.appendChild(card);
+        });
+
+        // Remove buttons
+        membersEl.querySelectorAll('.ag-member-remove').forEach(function (btn) {
+          btn.addEventListener('click', function () {
+            grove.members.splice(parseInt(btn.dataset.index), 1);
+            renderMembers();
+            updateDedication();
+            updateButtons();
+          });
+        });
+      }
+
+      // Generate dedication text
+      function generateDedication() {
+        if (grove.members.length === 0) return '';
+        var parts = grove.members.map(function (m) {
+          return m.personName + ', mi ' + trees[m.treeKey].name;
+        });
+        return 'A mi arboleda: ' + parts.join('; ') + '.';
+      }
+
+      function updateDedication() {
+        var text = generateDedication();
+        dedicationLive.textContent = text;
+      }
+
+      function updateButtons() {
+        var count = grove.members.length;
+        previewBtn.disabled = count < MIN_MEMBERS;
+        minHint.style.display = count >= MIN_MEMBERS ? 'none' : '';
+        addBtn.disabled = count >= MAX_MEMBERS;
+        addBtn.textContent = count >= MAX_MEMBERS ? 'Arboleda completa (8/8)' : '+ Agregar persona';
+      }
+
+      // Canvas rendering
+      var heightFactors = {
+        palma: 1.25,
+        ceiba: 1.15,
+        eucalipto: 1.10,
+        roble: 1.05,
+        nogal: 1.05
+      };
+
+      function buildPreview() {
+        var W = 2800;
+        var H = 1800;
+        canvas.width = W;
+        canvas.height = H;
+        var ctx = canvas.getContext('2d');
+
+        // Background
+        ctx.fillStyle = '#F5EDE0';
+        ctx.fillRect(0, 0, W, H);
+
+        var members = grove.members;
+        var N = members.length;
+        var colW = W / N;
+        var groundY = H * 0.80;
+        var baseTreeH = H * 0.55;
+
+        // Ground line
+        ctx.strokeStyle = 'rgba(126, 142, 109, 0.3)';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([12, 16]);
+        ctx.beginPath();
+        ctx.moveTo(40, groundY);
+        ctx.lineTo(W - 40, groundY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Load all tree images, then draw
+        var loaded = 0;
+        var images = [];
+
+        function onAllLoaded() {
+          // Draw trees
+          for (var i = 0; i < N; i++) {
+            var member = members[i];
+            var tree = trees[member.treeKey];
+            var img = images[i];
+            var factor = heightFactors[member.treeKey] || 1.0;
+            var treeH = baseTreeH * factor;
+            var aspect = img.naturalWidth / img.naturalHeight;
+            var treeW = treeH * aspect;
+
+            // Cap to column width with padding
+            var maxW = colW * 0.85;
+            if (treeW > maxW) {
+              treeW = maxW;
+              treeH = treeW / aspect;
+            }
+
+            var cx = colW * i + colW / 2;
+            var tx = cx - treeW / 2;
+            var ty = groundY - treeH;
+
+            ctx.drawImage(img, tx, ty, treeW, treeH);
+
+            // Name above tree
+            var nameY = ty - 20;
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#3B4A3A';
+            ctx.font = '600 36px Mulish, system-ui, sans-serif';
+            ctx.fillText(member.personName, cx, nameY);
+
+            // Dotted connector line from name to tree top
+            var nameMetrics = ctx.measureText(member.personName);
+            var lineStartY = nameY + 10;
+            var lineEndY = ty;
+            if (lineEndY - lineStartY > 20) {
+              ctx.strokeStyle = 'rgba(126, 142, 109, 0.4)';
+              ctx.lineWidth = 2;
+              ctx.setLineDash([6, 8]);
+              ctx.beginPath();
+              ctx.moveTo(cx, lineStartY);
+              ctx.lineTo(cx, lineEndY);
+              ctx.stroke();
+              ctx.setLineDash([]);
+            }
+          }
+
+          // Dedication text (bottom left)
+          var dedication = dedicationEdit.value.trim() || generateDedication();
+          ctx.textAlign = 'left';
+          ctx.fillStyle = '#3B4A3A';
+          ctx.font = 'italic 28px Mulish, system-ui, sans-serif';
+          wrapText(ctx, dedication, 60, groundY + 60, W * 0.55, 40);
+
+          // "Mi arboleda" title + creator (bottom right)
+          ctx.textAlign = 'right';
+          ctx.fillStyle = '#3B4A3A';
+          ctx.font = 'italic 48px Mulish, system-ui, sans-serif';
+          ctx.fillText('Mi arboleda', W - 60, groundY + 70);
+
+          ctx.font = '400 30px Mulish, system-ui, sans-serif';
+          ctx.fillStyle = '#6B7A5C';
+          ctx.fillText(grove.creatorName, W - 60, groundY + 115);
+
+          ctx.font = '300 24px Mulish, system-ui, sans-serif';
+          ctx.fillText('Los Nombres del Bosque', W - 60, groundY + 155);
+        }
+
+        members.forEach(function (member, i) {
+          var img = new Image();
+          img.crossOrigin = 'anonymous';
+          images[i] = img;
+          img.onload = function () {
+            loaded++;
+            if (loaded === N) onAllLoaded();
+          };
+          img.onerror = function () {
+            loaded++;
+            if (loaded === N) onAllLoaded();
+          };
+          img.src = 'assets/images/trees/' + trees[member.treeKey].illustration.replace('.png', '.webp');
+        });
+      }
+
+      function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+        var words = text.split(' ');
+        var line = '';
+        for (var n = 0; n < words.length; n++) {
+          var testLine = line + words[n] + ' ';
+          var metrics = ctx.measureText(testLine);
+          if (metrics.width > maxWidth && n > 0) {
+            ctx.fillText(line.trim(), x, y);
+            line = words[n] + ' ';
+            y += lineHeight;
+          } else {
+            line = testLine;
+          }
+        }
+        ctx.fillText(line.trim(), x, y);
+      }
+
+      // Download
+      function downloadCanvas() {
+        canvas.toBlob(function (blob) {
+          if (navigator.share && navigator.canShare) {
+            var file = new File([blob], 'mi-arboleda.png', { type: 'image/png' });
+            var shareData = { title: 'Mi arboleda', files: [file] };
+            if (navigator.canShare(shareData)) {
+              navigator.share(shareData).catch(function () {
+                fallbackDownload(blob);
+              });
+              return;
+            }
+          }
+          fallbackDownload(blob);
+        }, 'image/png');
+      }
+
+      function fallbackDownload(blob) {
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'mi-arboleda.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
+      }
+
+      // WhatsApp print link
+      function buildWhatsAppLink() {
+        var names = grove.members.map(function (m) {
+          return m.personName + ' (' + trees[m.treeKey].name + ')';
+        }).join(', ');
+        var text = 'Hola, quiero pedir mi arboleda impresa.\n\n' +
+          'Nombre: ' + grove.creatorName + '\n' +
+          'Árboles: ' + names + '\n' +
+          'Dedicatoria: ' + (dedicationEdit.value.trim() || generateDedication());
+        return 'https://wa.me/573013784227?text=' + encodeURIComponent(text);
+      }
+
+      // Event listeners
+      startBtn.addEventListener('click', function () {
+        grove.creatorName = creatorNameInput.value.trim() || 'Anónimo';
+        showScreen(builderEl);
+        if (typeof plausible !== 'undefined') plausible('Arboleda Started');
+      });
+
+      creatorNameInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') startBtn.click();
+      });
+
+      addBtn.addEventListener('click', function () {
+        if (grove.members.length >= MAX_MEMBERS) return;
+        openPicker();
+      });
+
+      pickerCancel.addEventListener('click', closePicker);
+
+      pickerEl.addEventListener('click', function (e) {
+        if (e.target === pickerEl) closePicker();
+      });
+
+      previewBtn.addEventListener('click', function () {
+        dedicationEdit.value = generateDedication();
+        showScreen(previewEl);
+        buildPreview();
+        printBtn.href = buildWhatsAppLink();
+        if (typeof plausible !== 'undefined') plausible('Arboleda Preview');
+      });
+
+      updateBtn.addEventListener('click', function () {
+        buildPreview();
+        printBtn.href = buildWhatsAppLink();
+      });
+
+      downloadBtn.addEventListener('click', function () {
+        downloadCanvas();
+        if (typeof plausible !== 'undefined') plausible('Arboleda Download');
+      });
+
+      backBtn.addEventListener('click', function () {
+        showScreen(builderEl);
+      });
+
+      // Init
+      buildTreeGrid();
+      updateButtons();
+    })();
+  </script>
+
+</body>
+</html>
