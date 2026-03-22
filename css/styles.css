@@ -2579,7 +2579,11 @@ p:last-child {
   font-size: 1.4rem;
   color: var(--color-text-muted);
   cursor: pointer;
-  padding: 0.25rem 0.5rem;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
   transition: color 0.2s;
 }
@@ -2688,6 +2692,11 @@ p:last-child {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
+  position: sticky;
+  top: 0;
+  background: var(--color-cream-light);
+  z-index: 1;
+  padding-top: 0.25rem;
 }
 
 .ag-picker-header h3 {
@@ -2702,7 +2711,11 @@ p:last-child {
   color: var(--color-text-muted);
   cursor: pointer;
   line-height: 1;
-  padding: 0.25rem;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .ag-picker-name-field {
