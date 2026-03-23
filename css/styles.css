@@ -2201,7 +2201,7 @@ p:last-child {
 }
 
 .forest-grid-section h2 {
-  font-family: var(--font-display);
+  font-family: var(--font-heading);
   font-size: clamp(2rem, 5vw, 3.5rem);
   font-style: normal;
   text-align: center;
