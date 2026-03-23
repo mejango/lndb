@@ -345,7 +345,29 @@
         addBtn.textContent = count >= MAX_MEMBERS ? 'Arboleda completa (8/8)' : '+ Agregar persona';
       }
 
-      // Canvas rendering — trees scaled uniformly, preserving natural height ratios from image files
+      // Canvas rendering — species-aware sizing based on each tree's real-world physical profile
+
+      // Height multipliers reflecting real-world tree stature.
+      // Base height is the "medium" tree; factors push taller or shorter species
+      // away from the mean so the grove reads as a natural landscape.
+      var treeProfile = {
+        palma:      { hf: 1.30 },   // world's tallest palm (~60m), should tower above all
+        ceiba:      { hf: 1.18 },   // massive canopy tree (~70m), second tallest
+        eucalipto:  { hf: 1.12 },   // tall and columnar (~40m)
+        nogal:      { hf: 1.05 },   // sturdy timber tree (~25m)
+        roble:      { hf: 1.05 },   // wide and strong (~30m)
+        yarumo:     { hf: 1.00 },   // medium, broad silver leaves
+        guayacanA:  { hf: 1.00 },   // medium flowering tree
+        tamarindo:  { hf: 1.00 },   // medium spreading canopy
+        copal:      { hf: 1.00 },   // medium sacred tree
+        caimito:    { hf: 0.95 },   // medium fruit tree
+        guayacanR:  { hf: 0.95 },   // medium flowering
+        mango:      { hf: 0.92 },   // wide but not tall (~15m)
+        cenizo:     { hf: 0.88 },   // smaller ornamental shrub-tree
+        cerezo:     { hf: 0.85 },   // small flowering tree (~10m)
+        cacao:      { hf: 0.78 },   // small understory tree (~8m)
+        arrayan:    { hf: 0.78 }    // small aromatic bush-tree (~6m)
+      };
 
       function buildPreview() {
         var W = 2800;
@@ -361,7 +383,7 @@
         var members = grove.members;
         var N = members.length;
         var groundY = H * 0.82;
-        var baseTreeH = H * 0.58;
+        var baseTreeH = H * 0.55;
 
         // Ground line
         ctx.strokeStyle = 'rgba(126, 142, 109, 0.3)';
@@ -378,17 +400,19 @@
         var images = [];
 
         function onAllLoaded() {
-          // Find tallest image to compute uniform scale
+          // Find tallest natural image to set base scale
           var maxNatH = 0;
           for (var j = 0; j < N; j++) {
             if (images[j].naturalHeight > maxNatH) maxNatH = images[j].naturalHeight;
           }
-          var uniformScale = baseTreeH / maxNatH;
+          var baseScale = baseTreeH / maxNatH;
 
-          // Compute each tree's rendered dimensions
+          // Compute each tree's rendered dimensions using species-aware height factors
           var dims = [];
           for (var j = 0; j < N; j++) {
-            var h = images[j].naturalHeight * uniformScale;
+            var key = members[j].treeKey;
+            var hf = (treeProfile[key] && treeProfile[key].hf) || 1.0;
+            var h = images[j].naturalHeight * baseScale * hf;
             var a = images[j].naturalWidth / images[j].naturalHeight;
             dims.push({ w: h * a, h: h });
           }
