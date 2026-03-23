@@ -87,6 +87,38 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('../assets/fonts/PlayfairDisplay-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('../assets/fonts/PlayfairDisplay-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('../assets/fonts/PlayfairDisplay-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('../assets/fonts/PlayfairDisplay-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ===== DESIGN TOKENS ===== */
 :root {
   --color-sage: #7E8E6D;
@@ -102,6 +134,7 @@
   --color-text-muted: #6B7A5C;
 
   --font-display: 'Isaodelco', cursive;
+  --font-heading: 'Playfair Display', Georgia, serif;
   --font-body: 'Mulish', sans-serif;
 
   --max-width: 1200px;
@@ -182,7 +215,7 @@ ul {
 
 /* ===== TYPOGRAPHY ===== */
 h1, h2, h3 {
-  font-family: var(--font-body);
+  font-family: var(--font-heading);
   font-weight: 400;
   font-style: italic;
   line-height: 1.2;
