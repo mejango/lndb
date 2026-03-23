@@ -2868,7 +2868,8 @@ p:last-child {
   font-size: 0.9rem;
   color: var(--color-sage);
   cursor: pointer;
-  padding: 0.25rem 0;
+  padding: 0.75rem 0;
+  min-height: 44px;
   margin-bottom: 1rem;
 }
 
@@ -3002,7 +3003,8 @@ p:last-child {
   color: var(--color-text-muted);
   cursor: pointer;
   margin-top: 1.5rem;
-  padding: 0;
+  padding: 0.75rem 1rem;
+  min-height: 44px;
   transition: color 0.2s;
 }
 
