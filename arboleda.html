@@ -125,6 +125,7 @@
       };
       var MAX_MEMBERS = 8;
       var MIN_MEMBERS = 3;
+      var pickerForCreator = false;
 
       // DOM refs
       var introEl = document.getElementById('ag-intro');
@@ -190,37 +191,46 @@
       }
 
       // Picker open/close
-      function openPicker() {
-        personNameInput.value = '';
+      function openPicker(forCreator) {
+        pickerForCreator = !!forCreator;
         hideTreeDetail();
+        if (pickerForCreator) {
+          personNameInput.value = grove.creatorName;
+          personNameInput.readOnly = true;
+          personNameInput.parentElement.style.display = 'none';
+          document.querySelector('.ag-picker-header h3').textContent = 'Elige tu árbol';
+          pickerHint.textContent = 'Toca un árbol para conocerlo y elegirlo para ti';
+        } else {
+          personNameInput.value = '';
+          personNameInput.readOnly = false;
+          personNameInput.parentElement.style.display = '';
+          document.querySelector('.ag-picker-header h3').textContent = 'Elige un árbol';
+        }
         updatePickerState();
         pickerEl.classList.add('ag-picker--open');
         document.body.style.overflow = 'hidden';
-        setTimeout(function () { personNameInput.focus(); }, 100);
+        if (!pickerForCreator) {
+          setTimeout(function () { personNameInput.focus(); }, 100);
+        }
       }
 
       function closePicker() {
         pickerEl.classList.remove('ag-picker--open');
         document.body.style.overflow = '';
+        pickerForCreator = false;
       }
 
       function updatePickerState() {
         var name = personNameInput.value.trim();
-        var cards = treeGrid.querySelectorAll('.ag-tree-card');
-        var usedKeys = grove.members.map(function (m) { return m.treeKey; });
-        cards.forEach(function (card) {
-          var isUsed = usedKeys.indexOf(card.dataset.key) !== -1;
-          card.classList.toggle('ag-tree-card--used', isUsed);
-          card.disabled = isUsed;
-        });
-        pickerHint.textContent = name
-          ? 'Toca un árbol para conocerlo y elegirlo'
-          : 'Toca un árbol para conocerlo. Escribe un nombre para elegirlo.';
+        if (!pickerForCreator) {
+          pickerHint.textContent = name
+            ? 'Toca un árbol para conocerlo y elegirlo'
+            : 'Toca un árbol para conocerlo. Escribe un nombre para elegirlo.';
+        }
         // Update detail select button if detail is open
         if (currentDetailKey) {
-          var isUsed = usedKeys.indexOf(currentDetailKey) !== -1;
-          detailSelect.disabled = !name || isUsed;
-          detailSelect.textContent = isUsed ? 'Árbol ya elegido' : (name ? 'Elegir para ' + name : 'Escribe un nombre primero');
+          detailSelect.disabled = !name;
+          detailSelect.textContent = name ? (pickerForCreator ? 'Este es mi árbol' : 'Elegir para ' + name) : 'Escribe un nombre primero';
         }
       }
 
@@ -241,10 +251,8 @@
         treeDetail.style.display = '';
 
         var name = personNameInput.value.trim();
-        var usedKeys = grove.members.map(function (m) { return m.treeKey; });
-        var isUsed = usedKeys.indexOf(key) !== -1;
-        detailSelect.disabled = !name || isUsed;
-        detailSelect.textContent = isUsed ? 'Árbol ya elegido' : (name ? 'Elegir para ' + name : 'Escribe un nombre primero');
+        detailSelect.disabled = !name;
+        detailSelect.textContent = name ? (pickerForCreator ? 'Este es mi árbol' : 'Elegir para ' + name) : 'Escribe un nombre primero';
       }
 
       function hideTreeDetail() {
@@ -268,12 +276,13 @@
       function selectTree(key) {
         var name = personNameInput.value.trim();
         if (!name) return;
-        // Check if tree already used
-        var usedKeys = grove.members.map(function (m) { return m.treeKey; });
-        if (usedKeys.indexOf(key) !== -1) return;
 
-        grove.members.push({ personName: name, treeKey: key });
+        var wasCreatorPick = pickerForCreator;
+        grove.members.push({ personName: name, treeKey: key, isCreator: wasCreatorPick });
         closePicker();
+        if (wasCreatorPick) {
+          showScreen(builderEl);
+        }
         renderMembers();
         updateDedication();
         updateButtons();
@@ -285,12 +294,12 @@
         grove.members.forEach(function (member, i) {
           var tree = trees[member.treeKey];
           var card = document.createElement('div');
-          card.className = 'ag-member-card';
+          card.className = 'ag-member-card' + (member.isCreator ? ' ag-member-card--creator' : '');
           card.innerHTML =
             '<img src="assets/images/trees/thumb/' + tree.illustration.replace('.png', '.webp') + '" alt="' + tree.name + '" class="ag-member-thumb" width="48" height="48">' +
             '<div class="ag-member-info">' +
               '<span class="ag-member-name"></span>' +
-              '<span class="ag-member-tree">' + tree.name + ' — ' + tree.blurb + '</span>' +
+              '<span class="ag-member-tree">' + tree.name + ' — ' + tree.blurb + (member.isCreator ? ' (tú)' : '') + '</span>' +
             '</div>' +
             '<button class="ag-member-remove" data-index="' + i + '">&times;</button>';
           card.querySelector('.ag-member-name').textContent = member.personName;
@@ -336,14 +345,7 @@
         addBtn.textContent = count >= MAX_MEMBERS ? 'Arboleda completa (8/8)' : '+ Agregar persona';
       }
 
-      // Canvas rendering
-      var heightFactors = {
-        palma: 1.25,
-        ceiba: 1.15,
-        eucalipto: 1.10,
-        roble: 1.05,
-        nogal: 1.05
-      };
+      // Canvas rendering — trees scaled uniformly, preserving natural height ratios from image files
 
       function buildPreview() {
         var W = 2800;
@@ -363,7 +365,7 @@
         var groveLeft = (W - groveWidth) / 2;
         var colW = groveWidth / N;
         var groundY = H * 0.82;
-        var baseTreeH = H * 0.65;
+        var baseTreeH = H * 0.58;
 
         // Ground line
         ctx.strokeStyle = 'rgba(126, 142, 109, 0.3)';
@@ -380,13 +382,19 @@
         var images = [];
 
         function onAllLoaded() {
+          // Find tallest image to compute uniform scale
+          var maxNatH = 0;
+          for (var j = 0; j < N; j++) {
+            if (images[j].naturalHeight > maxNatH) maxNatH = images[j].naturalHeight;
+          }
+          var uniformScale = baseTreeH / maxNatH;
+
           // Draw trees
           for (var i = 0; i < N; i++) {
             var member = members[i];
             var tree = trees[member.treeKey];
             var img = images[i];
-            var factor = heightFactors[member.treeKey] || 1.0;
-            var treeH = baseTreeH * factor;
+            var treeH = img.naturalHeight * uniformScale;
             var aspect = img.naturalWidth / img.naturalHeight;
             var treeW = treeH * aspect;
 
@@ -444,6 +452,16 @@
 
           ctx.font = '300 44px Mulish, system-ui, sans-serif';
           ctx.fillText('Los Nombres del Bosque', W - 60, groundY + 230);
+
+          // LNDB logo (top left)
+          var logo = new Image();
+          logo.crossOrigin = 'anonymous';
+          logo.onload = function () {
+            var logoH = 200;
+            var logoW = logoH * (logo.naturalWidth / logo.naturalHeight);
+            ctx.drawImage(logo, 50, 40, logoW, logoH);
+          };
+          logo.src = 'assets/logos/Logo_Ppal_LNDB.png';
         }
 
         var errors = 0;
@@ -520,6 +538,7 @@
       startBtn.addEventListener('click', function () {
         grove.creatorName = creatorNameInput.value.trim() || 'Anónimo';
         showScreen(builderEl);
+        openPicker(true);
         if (typeof plausible !== 'undefined') plausible('Arboleda Started');
       });
 
@@ -532,10 +551,25 @@
         openPicker();
       });
 
-      pickerCancel.addEventListener('click', closePicker);
+      pickerCancel.addEventListener('click', function () {
+        if (pickerForCreator) {
+          // Go back to intro if canceling creator pick
+          closePicker();
+          showScreen(introEl);
+          return;
+        }
+        closePicker();
+      });
 
       pickerEl.addEventListener('click', function (e) {
-        if (e.target === pickerEl) closePicker();
+        if (e.target === pickerEl) {
+          if (pickerForCreator) {
+            closePicker();
+            showScreen(introEl);
+            return;
+          }
+          closePicker();
+        }
       });
 
       previewBtn.addEventListener('click', function () {

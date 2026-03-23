@@ -2881,6 +2881,11 @@ p:last-child {
   margin-bottom: 1.5rem;
 }
 
+.ag-detail-content picture {
+  display: flex;
+  justify-content: center;
+}
+
 .ag-detail-img {
   width: 160px;
   height: 160px;
