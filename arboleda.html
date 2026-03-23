@@ -360,10 +360,6 @@
 
         var members = grove.members;
         var N = members.length;
-        // Cluster trees in ~70% of canvas width so they touch/overlap
-        var groveWidth = W * (N <= 4 ? 0.65 : 0.75);
-        var groveLeft = (W - groveWidth) / 2;
-        var colW = groveWidth / N;
         var groundY = H * 0.82;
         var baseTreeH = H * 0.58;
 
@@ -389,25 +385,41 @@
           }
           var uniformScale = baseTreeH / maxNatH;
 
-          // Draw trees
+          // Compute each tree's rendered dimensions
+          var dims = [];
+          for (var j = 0; j < N; j++) {
+            var h = images[j].naturalHeight * uniformScale;
+            var a = images[j].naturalWidth / images[j].naturalHeight;
+            dims.push({ w: h * a, h: h });
+          }
+
+          // Cluster trees by actual width with slight overlap
+          var overlapFrac = 0.12;
+          var totalW = 0;
+          for (var j = 0; j < N; j++) totalW += dims[j].w;
+          var overlapSum = 0;
+          for (var j = 0; j < N - 1; j++) {
+            overlapSum += Math.min(dims[j].w, dims[j + 1].w) * overlapFrac;
+          }
+          var groupW = totalW - overlapSum;
+
+          // Scale down if group exceeds canvas
+          var maxGroupW = W * 0.82;
+          var sc = groupW > maxGroupW ? maxGroupW / groupW : 1;
+
+          // Draw trees left-to-right, clustered
+          var startX = (W - groupW * sc) / 2;
+          var curX = startX;
+
           for (var i = 0; i < N; i++) {
             var member = members[i];
-            var tree = trees[member.treeKey];
             var img = images[i];
-            var treeH = img.naturalHeight * uniformScale;
-            var aspect = img.naturalWidth / img.naturalHeight;
-            var treeW = treeH * aspect;
+            var treeW = dims[i].w * sc;
+            var treeH = dims[i].h * sc;
 
-            // Allow trees to exceed column — only cap at generous limit
-            var maxW = colW * 1.3;
-            if (treeW > maxW) {
-              treeW = maxW;
-              treeH = treeW / aspect;
-            }
-
-            var cx = groveLeft + colW * i + colW / 2;
-            var tx = cx - treeW / 2;
+            var tx = curX;
             var ty = groundY - treeH;
+            var cx = tx + treeW / 2;
 
             ctx.drawImage(img, tx, ty, treeW, treeH);
 
@@ -430,6 +442,12 @@
               ctx.lineTo(cx, lineEndY);
               ctx.stroke();
               ctx.setLineDash([]);
+            }
+
+            // Advance with overlap
+            if (i < N - 1) {
+              var overlap = Math.min(dims[i].w, dims[i + 1].w) * overlapFrac * sc;
+              curX += treeW - overlap;
             }
           }
 
