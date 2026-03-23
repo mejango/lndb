@@ -513,8 +513,8 @@ p:last-child {
 }
 
 .about-intro p.welcome {
-  font-family: var(--font-body);
-  font-style: italic;
+  font-family: var(--font-heading);
+  font-style: normal;
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   margin-top: 1.5rem;
   color: var(--color-cream);
