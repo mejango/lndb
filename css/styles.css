@@ -1669,6 +1669,14 @@ p:last-child {
     padding: var(--section-padding-mobile);
   }
 
+  .forest-grid-section {
+    padding: 3rem 0.5rem;
+  }
+
+  .forest-grid-section .container {
+    padding: 0 0.5rem;
+  }
+
   .hero {
     padding: 2rem 0 0;
   }
