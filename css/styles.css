@@ -1517,7 +1517,8 @@ p:last-child {
   }
 
   .arboleda-image img {
-    margin: 0 -6rem;
+    height: 220px;
+    margin: 0 -2rem;
   }
 }
 
@@ -1591,7 +1592,8 @@ p:last-child {
   }
 
   .arboleda-image img {
-    margin: 0 -8rem;
+    height: 190px;
+    margin: 0 -1.25rem;
   }
 
   .quiz-images img {
@@ -1603,7 +1605,8 @@ p:last-child {
   }
 
   .quiz-intro-trees img {
-    height: 160px;
+    height: 190px;
+    margin: 0 -1.25rem;
   }
 
   .quiz-tree-illustration {
@@ -3095,8 +3098,8 @@ p:last-child {
   }
 
   .ag-intro-trees img {
-    height: 160px;
-    margin: 0 -0.75rem;
+    height: 190px;
+    margin: 0 -1.25rem;
   }
 
   .ag-page {
