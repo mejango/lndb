@@ -1055,8 +1055,10 @@ p:last-child {
 .quiz-intro-trees img {
   height: 220px;
   width: auto;
+  max-width: none;
   object-fit: contain;
   margin: 0 -1rem;
+  flex-shrink: 0;
 }
 
 /* Progress */
@@ -1607,6 +1609,7 @@ p:last-child {
   .quiz-intro-trees img {
     height: 190px;
     margin: 0 -1.25rem;
+    flex-shrink: 0;
   }
 
   .quiz-tree-illustration {
@@ -2569,8 +2572,10 @@ p:last-child {
 .ag-intro-trees img {
   height: 260px;
   width: auto;
+  max-width: none;
   object-fit: contain;
   margin: 0 -1.5rem;
+  flex-shrink: 0;
 }
 
 /* Builder */
