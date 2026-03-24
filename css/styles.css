@@ -570,6 +570,7 @@ p:last-child {
 .tree-quiz {
   padding: var(--section-padding);
   background-color: var(--color-cream);
+  overflow: hidden;
 }
 
 .tree-quiz .container {
@@ -597,12 +598,22 @@ p:last-child {
   padding-left: 3.5rem;
 }
 
-.quiz-images img {
-  height: 250px;
-  width: auto;
-  object-fit: contain;
-  margin: 0 -1rem;
+.quiz-images picture {
+  flex-shrink: 0;
 }
+
+.quiz-images img {
+  height: auto;
+  max-width: none;
+  object-fit: contain;
+  margin: 0 -2.5rem;
+}
+
+/* Organic per-species sizing — homepage: Caimito, Cenizo, GuayacanR */
+.quiz-images picture:nth-child(1) img { width: 220px; } /* Caimito — large round canopy */
+.quiz-images picture:nth-child(2) img { width: 180px; } /* Cenizo — medium bushy */
+.quiz-images picture:nth-child(3) img { width: 280px; } /* Guayacán Rosado — tall flowering */
+.quiz-images picture:nth-child(3) { z-index: 1; align-self: flex-end; margin-bottom: -2vw; }
 
 /* ===== ABOUT PAGE ===== */
 .page-header {
@@ -771,8 +782,8 @@ p:last-child {
 
 .arboleda-section .container {
   display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  gap: 4rem;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 3rem;
   align-items: center;
 }
 
@@ -796,14 +807,21 @@ p:last-child {
   margin-left: -2rem;
 }
 
-.arboleda-image img {
-  height: 450px;
-  width: auto;
-  max-width: none;
-  object-fit: contain;
-  margin: 0 -4rem;
+.arboleda-image picture {
   flex-shrink: 0;
 }
+
+.arboleda-image img {
+  height: auto;
+  max-width: none;
+  object-fit: contain;
+  margin: 0 -2.5rem;
+}
+
+/* Organic per-species sizing — productos: Cacao, Cenizo, Cerezo */
+.arboleda-image picture:nth-child(1) img { width: 280px; } /* Cacao — large */
+.arboleda-image picture:nth-child(2) img { width: 220px; } /* Cenizo — smallest (middle) */
+.arboleda-image picture:nth-child(3) img { width: 320px; } /* Cerezo — large */
 
 /* ===== BUTTON HINT ===== */
 .btn-hint {
@@ -1052,14 +1070,21 @@ p:last-child {
   gap: 0;
 }
 
-.quiz-intro-trees img {
-  height: 220px;
-  width: auto;
-  max-width: none;
-  object-fit: contain;
-  margin: 0 -1rem;
+.quiz-intro-trees picture {
   flex-shrink: 0;
 }
+
+.quiz-intro-trees img {
+  height: auto;
+  max-width: none;
+  object-fit: contain;
+  margin: 0 -2.5rem;
+}
+
+/* Organic per-species sizing — quiz/arboleda intro: Yarumo, GuayacanA, Ceiba */
+.quiz-intro-trees picture:nth-child(1) img { width: 280px; } /* Yarumo — wide spreading */
+.quiz-intro-trees picture:nth-child(2) img { width: 300px; } /* Guayacán Amarillo — medium tall */
+.quiz-intro-trees picture:nth-child(3) img { width: 320px; } /* Ceiba — tallest tree */
 
 /* Progress */
 .quiz-progress {
@@ -1474,6 +1499,19 @@ p:last-child {
     bottom: -48px;
   }
 
+  .hero-trees picture:nth-child(1)  { --h: 280px; }
+  .hero-trees picture:nth-child(2)  { --h: 240px; }
+  .hero-trees picture:nth-child(3)  { --h: 320px; bottom: -60px; }
+  .hero-trees picture:nth-child(4)  { --h: 220px; }
+  .hero-trees picture:nth-child(5)  { --h: 270px; }
+  .hero-trees picture:nth-child(6)  { --h: 255px; }
+  .hero-trees picture:nth-child(7)  { --h: 385px; bottom: -90px; }
+  .hero-trees picture:nth-child(8)  { --h: 245px; }
+  .hero-trees picture:nth-child(9)  { --h: 290px; }
+  .hero-trees picture:nth-child(10) { --h: 215px; }
+  .hero-trees picture:nth-child(11) { --h: 230px; }
+  .hero-trees picture:nth-child(12) { --h: 240px; bottom: -55px; }
+
   .quiz-images {
     padding-left: 0;
     justify-content: center;
@@ -1518,10 +1556,10 @@ p:last-child {
     justify-content: center;
   }
 
-  .arboleda-image img {
-    height: 220px;
-    margin: 0 -2rem;
-  }
+  .arboleda-image picture:nth-child(1) img { width: 45vw; }
+  .arboleda-image picture:nth-child(2) img { width: 35vw; }
+  .arboleda-image picture:nth-child(3) img { width: 48vw; }
+  .arboleda-image img { margin: 0 -7vw; }
 }
 
 @media (max-width: 768px) {
@@ -1570,6 +1608,24 @@ p:last-child {
     bottom: -100px;
   }
 
+  @media (min-width: 481px) {
+    .hero-forest { min-height: 320px; }
+    .hero-trees { min-height: 320px; width: 750px; }
+    .hero-trees picture { bottom: -65px; }
+    .hero-trees picture:nth-child(1)  { --h: 220px; }
+    .hero-trees picture:nth-child(2)  { --h: 190px; }
+    .hero-trees picture:nth-child(3)  { --h: 255px; bottom: -55px; }
+    .hero-trees picture:nth-child(4)  { --h: 175px; }
+    .hero-trees picture:nth-child(5)  { --h: 215px; }
+    .hero-trees picture:nth-child(6)  { --h: 200px; }
+    .hero-trees picture:nth-child(7)  { --h: 305px; bottom: -80px; }
+    .hero-trees picture:nth-child(8)  { --h: 195px; }
+    .hero-trees picture:nth-child(9)  { --h: 230px; }
+    .hero-trees picture:nth-child(10) { --h: 170px; }
+    .hero-trees picture:nth-child(11) { --h: 180px; }
+    .hero-trees picture:nth-child(12) { --h: 190px; bottom: -55px; }
+  }
+
   @media (max-width: 480px) {
     .hero-trees picture:nth-child(1)  { --h: 230px; }
     .hero-trees picture:nth-child(2)  { --h: 200px; }
@@ -1593,24 +1649,29 @@ p:last-child {
     text-align: center;
   }
 
-  .arboleda-image img {
-    height: 190px;
-    margin: 0 -1.25rem;
-  }
+  /* Organic mobile sizing — productos: Cacao, Cenizo, Cerezo */
+  .arboleda-image picture:nth-child(1) img { width: 45vw; }
+  .arboleda-image picture:nth-child(2) img { width: 35vw; }
+  .arboleda-image picture:nth-child(3) img { width: 48vw; }
+  .arboleda-image img { margin: 0 -7vw; }
+  .arboleda-image { justify-content: center; }
 
-  .quiz-images img {
-    height: 200px;
-  }
+  /* Organic mobile sizing — homepage: Caimito, Cenizo, GuayacanR */
+  .quiz-images picture:nth-child(1) img { width: 38vw; }
+  .quiz-images picture:nth-child(2) img { width: 30vw; }
+  .quiz-images picture:nth-child(3) img { width: 45vw; }
+  .quiz-images img { margin: 0 -7vw; }
+  .quiz-images { padding-left: 0; justify-content: center; align-items: flex-end; }
 
   .quiz-page {
     padding: 2rem 1.25rem;
   }
 
-  .quiz-intro-trees img {
-    height: 190px;
-    margin: 0 -1.25rem;
-    flex-shrink: 0;
-  }
+  /* Organic mobile sizing — quiz intro: Yarumo, GuayacanA, Ceiba */
+  .quiz-intro-trees picture:nth-child(1) img { width: 48vw; }
+  .quiz-intro-trees picture:nth-child(2) img { width: 42vw; }
+  .quiz-intro-trees picture:nth-child(3) img { width: 55vw; }
+  .quiz-intro-trees img { margin: 0 -7vw; }
 
   .quiz-tree-illustration {
     width: 110px;
@@ -2569,14 +2630,21 @@ p:last-child {
   padding: 0 1rem;
 }
 
+.ag-intro-trees picture {
+  flex-shrink: 0;
+}
+
 .ag-intro-trees img {
-  height: 260px;
-  width: auto;
+  height: auto;
   max-width: none;
   object-fit: contain;
   margin: 0 -1.5rem;
-  flex-shrink: 0;
 }
+
+/* Organic per-species sizing — arboleda intro: Yarumo, GuayacanA, Ceiba */
+.ag-intro-trees picture:nth-child(1) img { width: 200px; } /* Yarumo — wide spreading */
+.ag-intro-trees picture:nth-child(2) img { width: 180px; } /* Guayacán Amarillo — medium tall */
+.ag-intro-trees picture:nth-child(3) img { width: 220px; } /* Ceiba — tallest tree */
 
 /* Builder */
 .ag-builder-title {
@@ -3102,10 +3170,11 @@ p:last-child {
     height: 64px;
   }
 
-  .ag-intro-trees img {
-    height: 190px;
-    margin: 0 -1.25rem;
-  }
+  /* Organic mobile sizing — arboleda intro: Yarumo, GuayacanA, Ceiba */
+  .ag-intro-trees picture:nth-child(1) img { width: 48vw; }
+  .ag-intro-trees picture:nth-child(2) img { width: 42vw; }
+  .ag-intro-trees picture:nth-child(3) img { width: 55vw; }
+  .ag-intro-trees img { margin: 0 -14vw; }
 
   .ag-page {
     padding: 2rem 1rem;
