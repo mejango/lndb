@@ -548,10 +548,10 @@ p:last-child {
 
 /* Core trees: Roble → Nogal → PalmaCera → Cenizo → GuayacanA → Mango → Ceiba → Eucalipto → GuayacanR */
 .hero-trees picture:nth-child(1)  { left: 5%;   --h: clamp(190px, 36vw, 460px); z-index: 3; } /* Roble */
-.hero-trees picture:nth-child(2)  { left: 14%;  --h: clamp(165px, 30vw, 390px); z-index: 4; } /* Nogal Cafetero */
-.hero-trees picture:nth-child(3)  { left: 22%;  --h: clamp(220px, 41vw, 520px); z-index: 1; bottom: -30px; } /* PalmaCera - tall, behind */
-.hero-trees picture:nth-child(4)  { left: 30%;  --h: clamp(160px, 29vw, 370px); z-index: 5; } /* Cenizo */
-.hero-trees picture:nth-child(5)  { left: 40%;  --h: clamp(185px, 34vw, 440px); z-index: 4; } /* GuayacanA */
+.hero-trees picture:nth-child(2)  { left: 18%;  --h: clamp(165px, 30vw, 390px); z-index: 4; } /* Nogal Cafetero */
+.hero-trees picture:nth-child(3)  { left: 24%;  --h: clamp(220px, 41vw, 520px); z-index: 1; bottom: -30px; } /* PalmaCera - tall, behind */
+.hero-trees picture:nth-child(4)  { left: 30%;  --h: clamp(105px, 19vw, 240px); z-index: 5; } /* Cenizo */
+.hero-trees picture:nth-child(5)  { left: 34%;  --h: clamp(185px, 34vw, 440px); z-index: 4; } /* GuayacanA */
 .hero-trees picture:nth-child(6)  { left: 50%;  --h: clamp(175px, 32vw, 410px); z-index: 5; } /* Mango - in front */
 .hero-trees picture:nth-child(7)  { left: 60%;  --h: clamp(260px, 49vw, 624px); z-index: 2; bottom: -65px; } /* Ceiba */
 .hero-trees picture:nth-child(8)  { left: 72%;  --h: clamp(170px, 32vw, 400px); z-index: 3; } /* Eucalipto */
@@ -709,7 +709,7 @@ p:last-child {
 
 /* Organic per-species sizing — homepage: Caimito, Cenizo, GuayacanR */
 .quiz-images picture:nth-child(1) img { width: 220px; } /* Caimito — large round canopy */
-.quiz-images picture:nth-child(2) img { width: 180px; } /* Cenizo — medium bushy */
+.quiz-images picture:nth-child(2) img { width: 140px; } /* Cenizo — small bushy shrub */
 .quiz-images picture:nth-child(3) img { width: 280px; } /* Guayacán Rosado — tall flowering */
 .quiz-images picture:nth-child(3) { z-index: 1; align-self: flex-end; margin-bottom: -2vw; }
 
@@ -918,7 +918,7 @@ p:last-child {
 
 /* Organic per-species sizing — productos: Cacao, Cenizo, Cerezo */
 .arboleda-image picture:nth-child(1) img { width: 280px; } /* Cacao — large */
-.arboleda-image picture:nth-child(2) img { width: 220px; } /* Cenizo — smallest (middle) */
+.arboleda-image picture:nth-child(2) img { width: 170px; } /* Cenizo — small shrub */
 .arboleda-image picture:nth-child(3) img { width: 320px; } /* Cerezo — large */
 
 /* ===== BUTTON HINT ===== */
@@ -1600,7 +1600,7 @@ p:last-child {
   .hero-trees picture:nth-child(1)  { --h: 280px; }
   .hero-trees picture:nth-child(2)  { --h: 240px; }
   .hero-trees picture:nth-child(3)  { --h: 320px; bottom: -60px; }
-  .hero-trees picture:nth-child(4)  { --h: 220px; }
+  .hero-trees picture:nth-child(4)  { --h: 145px; }
   .hero-trees picture:nth-child(5)  { --h: 270px; }
   .hero-trees picture:nth-child(6)  { --h: 255px; }
   .hero-trees picture:nth-child(7)  { --h: 385px; bottom: -90px; }
@@ -1655,7 +1655,7 @@ p:last-child {
   }
 
   .arboleda-image picture:nth-child(1) img { width: 45vw; }
-  .arboleda-image picture:nth-child(2) img { width: 35vw; }
+  .arboleda-image picture:nth-child(2) img { width: 27vw; }
   .arboleda-image picture:nth-child(3) img { width: 48vw; }
   .arboleda-image img { margin: 0 -7vw; }
 }
@@ -1700,7 +1700,7 @@ p:last-child {
   .hero-trees picture:nth-child(1)  { --h: 340px; }
   .hero-trees picture:nth-child(2)  { --h: 290px; }
   .hero-trees picture:nth-child(3)  { --h: 390px; bottom: -85px; }
-  .hero-trees picture:nth-child(4)  { --h: 270px; }
+  .hero-trees picture:nth-child(4)  { --h: 180px; }
   .hero-trees picture:nth-child(5)  { --h: 330px; }
   .hero-trees picture:nth-child(6)  { --h: 310px; }
   .hero-trees picture:nth-child(7)  { --h: 470px; bottom: -120px; }
@@ -1721,7 +1721,7 @@ p:last-child {
     .hero-trees picture:nth-child(1)  { --h: 220px; }
     .hero-trees picture:nth-child(2)  { --h: 190px; }
     .hero-trees picture:nth-child(3)  { --h: 255px; bottom: -55px; }
-    .hero-trees picture:nth-child(4)  { --h: 175px; }
+    .hero-trees picture:nth-child(4)  { --h: 115px; }
     .hero-trees picture:nth-child(5)  { --h: 215px; }
     .hero-trees picture:nth-child(6)  { --h: 200px; }
     .hero-trees picture:nth-child(7)  { --h: 305px; bottom: -80px; }
@@ -1736,7 +1736,7 @@ p:last-child {
     .hero-trees picture:nth-child(1)  { --h: 230px; }
     .hero-trees picture:nth-child(2)  { --h: 200px; }
     .hero-trees picture:nth-child(3)  { --h: 270px; }
-    .hero-trees picture:nth-child(4)  { --h: 185px; }
+    .hero-trees picture:nth-child(4)  { --h: 125px; }
     .hero-trees picture:nth-child(5)  { --h: 225px; }
     .hero-trees picture:nth-child(6)  { --h: 210px; }
     .hero-trees picture:nth-child(7)  { --h: 320px; bottom: -90px; }
@@ -1757,14 +1757,14 @@ p:last-child {
 
   /* Organic mobile sizing — productos: Cacao, Cenizo, Cerezo */
   .arboleda-image picture:nth-child(1) img { width: 45vw; }
-  .arboleda-image picture:nth-child(2) img { width: 35vw; }
+  .arboleda-image picture:nth-child(2) img { width: 27vw; }
   .arboleda-image picture:nth-child(3) img { width: 48vw; }
   .arboleda-image img { margin: 0 -7vw; }
   .arboleda-image { justify-content: center; }
 
   /* Organic mobile sizing — homepage: Caimito, Cenizo, GuayacanR */
   .quiz-images picture:nth-child(1) img { width: 38vw; }
-  .quiz-images picture:nth-child(2) img { width: 30vw; }
+  .quiz-images picture:nth-child(2) img { width: 24vw; }
   .quiz-images picture:nth-child(3) img { width: 45vw; }
   .quiz-images img { margin: 0 -7vw; }
   .quiz-images { padding-left: 0; justify-content: center; align-items: flex-end; }
