@@ -554,7 +554,7 @@ p:last-child {
 .hero-trees picture:nth-child(5)  { left: 34%;  --h: clamp(185px, 34vw, 440px); z-index: 4; } /* GuayacanA */
 .hero-trees picture:nth-child(6)  { left: 50%;  --h: clamp(175px, 32vw, 410px); z-index: 5; } /* Mango - in front */
 .hero-trees picture:nth-child(7)  { left: 60%;  --h: clamp(260px, 49vw, 624px); z-index: 2; bottom: -65px; } /* Ceiba */
-.hero-trees picture:nth-child(8)  { left: 72%;  --h: clamp(170px, 32vw, 400px); z-index: 3; } /* Eucalipto */
+.hero-trees picture:nth-child(8)  { left: 76%;  --h: clamp(170px, 32vw, 400px); z-index: 3; } /* Eucalipto */
 .hero-trees picture:nth-child(9)  { left: 84%;  --h: clamp(185px, 37vw, 470px); z-index: 2; } /* GuayacanR */
 /* Edge fill trees */
 .hero-trees picture:nth-child(10) { left: -2%;  --h: clamp(155px, 28vw, 360px); z-index: 5; } /* Copal - far left edge */
