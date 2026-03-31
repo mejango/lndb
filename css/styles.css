@@ -796,7 +796,7 @@ p:last-child {
 .together-section .container {
   max-width: var(--max-width);
   display: grid;
-  grid-template-columns: 200px 1fr 200px;
+  grid-template-columns: 1fr 2fr 1fr;
   gap: 2rem;
   align-items: center;
 }
@@ -816,8 +816,8 @@ p:last-child {
 }
 
 .together-trees img {
-  max-height: 500px;
-  width: auto;
+  max-height: none;
+  width: 100%;
   object-fit: contain;
   opacity: 1;
 }
