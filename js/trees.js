@@ -215,65 +215,65 @@ var LNDB = (function () {
   // Quiz scoring data
   var questions = [
     {
-      text: 'Como te describirian quienes te conocen bien?',
+      text: '¿Cómo te describirían quienes te conocen bien?',
       answers: [
-        { text: 'Tranquilo/a, generoso/a... no necesitas hablar para que se sienta tu presencia', scores: { yarumo: 3, cenizo: 2, eucalipto: 1 } },
-        { text: 'Fuerte, firme... siempre estas cuando mas se te necesita', scores: { roble: 3, ceiba: 2, nogal: 2, palma: 1 } },
-        { text: 'Luminoso/a, lleno/a de vida... alegras cualquier lugar con solo llegar', scores: { guayacanA: 3, guayacanR: 2, cerezo: 2 } },
-        { text: 'Dulce, carinoso/a... das lo mejor de ti sin pensarlo', scores: { caimito: 3, cacao: 2, arrayan: 2, mango: 1 } }
+        { text: 'Tranquilo/a, generoso/a… No necesitas hablar para que se sienta tu presencia', scores: { yarumo: 3, cenizo: 2, eucalipto: 1 } },
+        { text: 'Fuerte, firme… Siempre estás cuando más se te necesita', scores: { roble: 3, ceiba: 2, nogal: 2, palma: 1 } },
+        { text: 'Luminoso/a, lleno/a de vida… Alegras cualquier lugar con solo llegar', scores: { guayacanA: 3, guayacanR: 2, cerezo: 2 } },
+        { text: 'Dulce, cariñoso/a… Das lo mejor de ti sin pensarlo', scores: { caimito: 3, cacao: 2, arrayan: 2, mango: 1 } }
       ]
     },
     {
-      text: 'Como cuidas a quienes amas?',
+      text: '¿Cómo cuidas a quienes amas?',
       answers: [
         { text: 'Estando presente sin invadir. Dando espacio, dando sombra', scores: { yarumo: 3, eucalipto: 2, cenizo: 1 } },
-        { text: 'Protegiendo, guiando, ensenando con paciencia', scores: { nogal: 3, roble: 2, ceiba: 2 } },
-        { text: 'Con detalles pequenos, una palabra amable, un silencio que acompana', scores: { arrayan: 3, copal: 2, cenizo: 2 } },
+        { text: 'Protegiendo, guiando, enseñando con paciencia', scores: { nogal: 3, roble: 2, ceiba: 2 } },
+        { text: 'Con detalles pequeños, una palabra amable, un silencio que acompaña', scores: { arrayan: 3, copal: 2, cenizo: 2 } },
         { text: 'Compartiendo lo mejor: risas, sabores, abrazos apretados', scores: { mango: 3, caimito: 2, tamarindo: 2, cacao: 1 } }
       ]
     },
     {
-      text: 'Cuando la vida se pone dificil, tu...',
+      text: 'Cuando la vida se pone difícil, tu…',
       answers: [
         { text: 'Te mantienes firme. No importa el viento, sigues de pie', scores: { roble: 3, palma: 3 } },
         { text: 'Encuentras la risa incluso en la tormenta', scores: { tamarindo: 3, guayacanR: 2, mango: 1 } },
         { text: 'Te refugias en tu interior para volver renovado/a', scores: { eucalipto: 3, cerezo: 2, cenizo: 2 } },
-        { text: 'Abrazas mas fuerte a los tuyos', scores: { ceiba: 3, caimito: 2, arrayan: 2 } }
+        { text: 'Abrazas más fuerte a los tuyos', scores: { ceiba: 3, caimito: 2, arrayan: 2 } }
       ]
     },
     {
-      text: 'En una reunion con amigos, tu...',
+      text: 'En una reunión con amigos, tu…',
       answers: [
-        { text: 'Escucho mas de lo que hablo. Me gusta observar', scores: { cenizo: 3, yarumo: 2, copal: 2, palma: 1 } },
-        { text: 'Soy el alma de la fiesta. La musica, la risa, el baile', scores: { mango: 3, tamarindo: 2, guayacanR: 1 } },
-        { text: 'Lleno el espacio de buena energia sin darme cuenta', scores: { guayacanA: 3, guayacanR: 2, cerezo: 2 } },
-        { text: 'Me aseguro de que todos esten bien y comodos', scores: { nogal: 3, ceiba: 2, arrayan: 2, caimito: 1 } }
+        { text: 'Escucho más de lo que hablo. Me gusta observar', scores: { cenizo: 3, yarumo: 2, copal: 2, palma: 1 } },
+        { text: 'Soy el alma de la fiesta. La música, la risa, el baile', scores: { mango: 3, tamarindo: 2, guayacanR: 1 } },
+        { text: 'Lleno el espacio de buena energía sin darme cuenta', scores: { guayacanA: 3, guayacanR: 2, cerezo: 2 } },
+        { text: 'Me aseguro de que todos estén bien y cómodos', scores: { nogal: 3, ceiba: 2, arrayan: 2, caimito: 1 } }
       ]
     },
     {
-      text: 'Que valoras mas?',
+      text: '¿Qué valoras más?',
       answers: [
-        { text: 'La paz interior y la conexion con lo sagrado', scores: { copal: 3, eucalipto: 2, palma: 2 } },
-        { text: 'La alegria, la fiesta, hacer reir a quienes amo', scores: { tamarindo: 3, mango: 2, guayacanR: 2 } },
-        { text: 'La fortaleza para proteger a los mios', scores: { roble: 3, nogal: 2, ceiba: 1 } },
-        { text: 'La ternura y el carino en las cosas simples', scores: { caimito: 3, arrayan: 2, cacao: 2, cenizo: 1 } }
+        { text: 'La paz interior y la conexión con lo sagrado', scores: { copal: 3, eucalipto: 2, palma: 2 } },
+        { text: 'La alegría, la fiesta, hacer reír a quienes amo', scores: { tamarindo: 3, mango: 2, guayacanR: 2 } },
+        { text: 'La fortaleza para proteger a los míos', scores: { roble: 3, nogal: 2, ceiba: 1 } },
+        { text: 'La ternura y el cariño en las cosas simples', scores: { caimito: 3, arrayan: 2, cacao: 2, cenizo: 1 } }
       ]
     },
     {
-      text: 'Tu forma de brillar es...',
+      text: 'Tu forma de brillar es…',
       answers: [
-        { text: 'Sin hacer ruido. Quien presta atencion, lo nota', scores: { arrayan: 3, cenizo: 2, copal: 2, yarumo: 1 } },
+        { text: 'Sin hacer ruido. Quien presta atención, lo nota', scores: { arrayan: 3, cenizo: 2, copal: 2, yarumo: 1 } },
         { text: 'Con todo el color y la luz. No puedo evitarlo', scores: { guayacanA: 3, guayacanR: 3, cerezo: 2 } },
-        { text: 'Desde las raices. Mi fuerza habla por mi', scores: { palma: 3, roble: 2, ceiba: 2, nogal: 1 } },
-        { text: 'Creando algo unico que reconforta', scores: { cacao: 3, tamarindo: 2, mango: 1 } }
+        { text: 'Desde las raíces. Mi fuerza habla por mi', scores: { palma: 3, roble: 2, ceiba: 2, nogal: 1 } },
+        { text: 'Creando algo único que reconforta', scores: { cacao: 3, tamarindo: 2, mango: 1 } }
       ]
     },
     {
-      text: 'Que quisieras que sintieran los demas cerca de ti?',
+      text: '¿Qué quisieras que sintieran los demás cerca de ti?',
       answers: [
-        { text: 'Paz, como sentarse bajo la sombra de un arbol grande', scores: { yarumo: 3, eucalipto: 2, copal: 2 } },
-        { text: 'Ganas de sonreir. Que la vida es bella', scores: { guayacanR: 3, cerezo: 2, guayacanA: 2, tamarindo: 1 } },
-        { text: 'Seguridad. Que siempre habra alguien cuidandolos', scores: { nogal: 3, roble: 2, ceiba: 2, palma: 1 } },
+        { text: 'Paz, como sentarse bajo la sombra de un árbol grande', scores: { yarumo: 3, eucalipto: 2, copal: 2 } },
+        { text: 'Ganas de sonreír. Que la vida es bella', scores: { guayacanR: 3, cerezo: 2, guayacanA: 2, tamarindo: 1 } },
+        { text: 'Seguridad. Que siempre habrá alguien cuidándolos', scores: { nogal: 3, roble: 2, ceiba: 2, palma: 1 } },
         { text: 'Calidez, como un abrazo o el olor a algo dulce', scores: { caimito: 3, cacao: 2, arrayan: 2, mango: 1 } }
       ]
     }

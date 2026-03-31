@@ -499,11 +499,11 @@
         var html = '<h1 style="text-align:center;color:var(--color-forest);margin-bottom:0.5rem;">Los 16 arboles</h1>';
 
         html += '<div class="admin-section">';
-        html += '<h2 style="color:var(--color-forest);margin:2.5rem 0 1rem;">Mapa de puntuacion</h2>';
-        html += '<p style="color:var(--color-text-muted);margin-bottom:1.5rem;">Cada respuesta otorga puntos a ciertos arboles. El arbol con mas puntos al final gana. En caso de empate, gana el ultimo arbol que recibio puntos.</p>';
+        html += '<h2 style="color:var(--color-forest);margin:2.5rem 0 1rem;">Mapa de puntuación</h2>';
+        html += '<p style="color:var(--color-text-muted);margin-bottom:1.5rem;">Cada respuesta otorga puntos a ciertos árboles. El árbol con más puntos al final gana. En caso de empate, gana el último árbol que recibió puntos.</p>';
 
         html += '<div class="admin-max-table">';
-        html += '<h3 style="color:var(--color-forest);margin-bottom:0.75rem;">Puntaje maximo posible por arbol</h3>';
+        html += '<h3 style="color:var(--color-forest);margin-bottom:0.75rem;">Puntaje máximo posible por árbol</h3>';
         html += '<div class="admin-chips">';
         var sorted = treeKeys.slice().sort(function (a, b) { return maxPoints[b] - maxPoints[a]; });
         sorted.forEach(function (k) {
