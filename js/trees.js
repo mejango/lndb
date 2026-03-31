@@ -27,7 +27,7 @@ var LNDB = (function () {
       completionMessage: 'Gracias por quedarte bajo mi sombra. Lleva esta calma contigo.'
     },
     guayacanA: {
-      name: 'Guayacan Amarillo',
+      name: 'Guayacán Amarillo',
       slug: 'guayacan-amarillo',
       blurb: 'La alegría',
       illustration: 'GuayacanA.png',
@@ -115,7 +115,7 @@ var LNDB = (function () {
       completionMessage: 'Sigue creciendo hacia arriba. La altura no es soledad — es perspectiva.'
     },
     arrayan: {
-      name: 'Arrayan',
+      name: 'Arrayán',
       slug: 'arrayan',
       blurb: 'El hogar',
       illustration: 'Arrayan.png',
@@ -137,7 +137,7 @@ var LNDB = (function () {
       completionMessage: 'Gracias por escucharme. Lleva este momento contigo.'
     },
     guayacanR: {
-      name: 'Guayacan Rosado',
+      name: 'Guayacán Rosado',
       slug: 'guayacan-rosado',
       blurb: 'La magia',
       illustration: 'GuayacanR.png',
@@ -194,22 +194,22 @@ var LNDB = (function () {
   };
 
   var descriptions = {
-    yarumo: 'Imagina un ser que no necesita gritar para que lo escuchen. Asi eres tu: una presencia serena que cobija sin pedir nada a cambio. Como el Yarumo, tu sombra es generosa, tu silencio es un regalo, y quienes se acercan a ti encuentran paz sin saber bien por que. Caminas por el mundo con los pies firmes y el corazon abierto, regalando calma a cada paso.',
-    guayacanA: 'Hay personas que al llegar iluminan todo, como si cargaran un pedacito de sol entre las manos. Eso eres tu: luz que no se apaga ni en los dias grises. Como el Guayacan Amarillo, tu presencia es una celebracion. Floreces con fuerza, con alegria, y cada vez que el mundo necesita color, ahi estas tu, recordandole que la belleza siempre vuelve.',
-    cenizo: 'Eres de los que observan antes de hablar, de los que entienden sin que les expliquen. Como el Cenizo, habitas el silencio con elegancia. Tu fuerza no esta en el ruido sino en la profundidad. Eres un refugio discreto, un alma que acompana sin invadir, y quienes te conocen de verdad saben que en tu quietud vive una sabiduria que pocos alcanzan.',
-    nogal: 'Proteger es tu forma de amar. Como el Nogal Cafetero, cargas en tus ramas la responsabilidad de guiar, de ensenar, de cuidar a quienes crecen a tu sombra. Eres paciente como la tierra y sabio como las raices que nadie ve. Tu generosidad no tiene prisa: das lo mejor de ti poco a poco, como quien sabe que lo que se siembra con amor siempre da frutos.',
-    caimito: 'Dulzura pura, eso es lo que eres. Como el Caimito, das lo mejor de ti sin pensarlo dos veces. Tu carino es generoso, incondicional, y quienes prueban tu bondad no la olvidan jamas. Eres de esas almas que endulzan la vida de otros con gestos pequenos pero inolvidables: una palabra tierna, un abrazo largo, un "aqui estoy" que lo cambia todo.',
-    roble: 'Cuando el mundo tiembla, tu permaneces. Como el Roble, tu fortaleza no es rigidez sino raices profundas. Has aprendido que ser fuerte no es no sentir, sino seguir de pie cuando todo intenta derribarte. Eres el refugio al que vuelven los tuyos, el tronco que sostiene, la promesa silenciosa de que mientras estes ahi, nada se vendra abajo.',
-    tamarindo: 'La vida contigo sabe diferente: un poco acida, un poco dulce, siempre intensa. Como el Tamarindo, tienes el don de convertir cualquier momento en algo memorable. Tu risa es contagiosa, tu energia es inagotable, y donde llegas la fiesta comienza. Pero debajo de toda esa alegria hay un corazon sensible que sabe que la mejor medicina es hacer reir a quienes amas.',
-    cerezo: 'Floreces de una manera que nadie puede ignorar. Como el Cerezo, tu belleza no es solo lo que se ve: es la forma en que haces sentir a los demas. Eres delicado/a pero valiente, suave pero memorable. Cada vez que abres tu corazon es como una lluvia de petalos que cubre todo de esperanza, recordandole al mundo que lo efimero puede ser lo mas hermoso.',
+    yarumo: 'Imagina un ser que no necesita gritar para que lo escuchen. Así eres tú: una presencia serena que cobija sin pedir nada a cambio. Como el Yarumo, tu sombra es generosa, tu silencio es un regalo, y quienes se acercan a ti encuentran paz sin saber bien porqué. Caminas por el mundo con los pies firmes y el corazón abierto, regalando calma a cada paso.',
+    guayacanA: 'Hay personas que al llegar iluminan todo, como si cargaran un pedacito de sol entre las manos. Eso eres tú: luz que no se apaga ni en los días grises. Como el Guayacán Amarillo, tu presencia es una celebración. Floreces con fuerza, con alegría, y cada vez que el mundo necesita color, ahí estas tú, recordándole que la belleza siempre vuelve.',
+    cenizo: 'Eres de los que observan antes de hablar, de los que entienden sin que les expliquen. Como el Cenizo, habitas el silencio con elegancia. Tu fuerza no está en el ruido sino en la profundidad. Eres un refugio discreto, un alma que acompaña sin invadir, y quienes te conocen de verdad saben que en tu quietud vive una sabiduría que pocos alcanzan.',
+    nogal: 'Proteger es tu forma de amar. Como el Nogal Cafetero, cargas en tus ramas la responsabilidad de guiar, de enseñar, de cuidar a quienes crecen a tu sombra. Eres paciente como la tierra y sabio como las raíces que nadie ve. Tu generosidad no tiene prisa: das lo mejor de ti poco a poco, como quien sabe que lo que se siembra con amor siempre da frutos.',
+    caimito: 'Dulzura pura, eso es lo que eres. Como el Caimito, das lo mejor de ti sin pensarlo dos veces. Tu cariño es generoso, incondicional, y quienes prueban tu bondad no la olvidan jamás. Eres de esas almas que endulzan la vida de otros con gestos pequeños pero inolvidables: una palabra tierna, un abrazo largo, un "aquí estoy" que lo cambia todo.',
+    roble: 'Cuando el mundo tiembla, tu permaneces. Como el Roble, tu fortaleza no es rigidez sino raíces profundas. Has aprendido que ser fuerte no es no sentir, sino seguir de pie cuando todo intenta derribarte. Eres el refugio al que vuelven los tuyos, el tronco que sostiene, la promesa silenciosa de que mientras estes ahí, nada se vendrá abajo.',
+    tamarindo: 'La vida contigo sabe diferente: un poco acida, un poco dulce, siempre intensa. Como el Tamarindo, tienes el don de convertir cualquier momento en algo memorable. Tu risa es contagiosa, tu energía es inagotable, y donde llegas la fiesta comienza. Pero debajo de toda esa alegría hay un corazón sensible que sabe que la mejor medicina es hacer reír a quienes amas.',
+    cerezo: 'Floreces de una manera que nadie puede ignorar. Como el Cerezo, tu belleza no es solo lo que se ve: es la forma en que haces sentir a los demás. Eres delicado/a, pero valiente, suave pero memorable. Cada vez que abres tu corazón es como una lluvia de pétalos que cubre todo de esperanza, recordándole al mundo que lo efímero puede ser lo más hermoso.',
     palma: 'Te elevas sin pedir permiso. Como la Palma de Cera, creces hacia arriba con una dignidad que impone respeto. Has conocido vientos fuertes y alturas solitarias, pero nada te ha doblado. Tu fuerza viene de adentro, de un lugar profundo donde habita la certeza de que fuiste hecho/a para resistir, para llegar alto, para tocar el cielo sin dejar de abrazar la tierra.',
-    arrayan: 'Tu magia esta en lo sutil. Como el Arrayan, no necesitas ser el mas grande ni el mas visible para transformar un lugar. Tu presencia es como un aroma que envuelve sin que uno sepa de donde viene: reconfortante, intima, inolvidable. Cuidas con delicadeza, amas con ternura, y quienes tienen la fortuna de conocerte descubren un mundo entero en tu aparente sencillez.',
-    ceiba: 'Eres raiz y copa al mismo tiempo. Como la Ceiba, abrazas el mundo entero con tus ramas y al mismo tiempo te aferras a la tierra con una fuerza ancestral. Eres protector/a, imponente, sagrado/a para quienes te rodean. En ti caben todos: los que buscan refugio, los que necesitan sombra, los que quieren sonar. Eres el arbol al que todos quieren volver.',
-    guayacanR: 'El mundo se detiene cuando floreces. Como el Guayacan Rosado, tu forma de ser es un espectaculo de belleza y alegria que nadie puede pasar de largo. Irradias felicidad, pintas de rosa los dias grises, y tienes esa rara habilidad de hacer que cualquiera a tu lado se sienta especial. Tu corazon florece sin miedo, una y otra vez, como si supiera que la vida merece ser celebrada.',
-    mango: 'Generosidad es tu segundo nombre. Como el Mango, das sin medida: sabor, frescura, alegria. Eres el amigo que siempre tiene la puerta abierta, la mesa puesta, la risa lista. Tu energia es contagiosa y tu corazon no conoce la mezquindad. Donde estas tu hay abundancia, porque entiendes que la vida es mas dulce cuando se comparte con los demas.',
-    cacao: 'Hay algo sagrado en lo que creas. Como el Cacao, transformas lo simple en algo extraordinario. Tu esencia es rica, profunda, imposible de replicar. No buscas ser el mas llamativo, pero lo que ofreces al mundo tiene un valor que pocos entienden a primera vista. Eres el secreto mejor guardado: quien te descubre, te atesora para siempre.',
-    eucalipto: 'Sanar es tu vocacion silenciosa. Como el Eucalipto, tu presencia refresca, limpia, renueva. Eres de los que necesitan soledad para recargarse, de los que encuentran en su interior la medicina que luego comparten con el mundo. Tu espiritu es libre, tu aroma es inconfundible, y quienes se acercan a ti sienten que algo en ellos tambien sana.',
-    copal: 'Tu alma esta hecha de incienso y oracion. Como el Copal, todo en ti invita a la pausa, a lo sagrado, a lo que no se puede tocar pero se siente profundamente. Eres un ser espiritual que camina entre los demas regalando paz, conexion con algo mas grande. Tu presencia es como un ritual: transforma el espacio, eleva el espiritu, y deja una huella que no se borra.'
+    arrayan: 'Tu magia está en lo sutil. Como el Arrayán, no necesitas ser el más grande ni el más visible para transformar un lugar. Tu presencia es como un aroma que envuelve sin que uno sepa de donde viene: reconfortante, intima, inolvidable. Cuidas con delicadeza, amas con ternura, y quienes tienen la fortuna de conocerte descubren un mundo entero en tu aparente sencillez.',
+    ceiba: 'Eres raíz y copa al mismo tiempo. Como la Ceiba, abrazas el mundo entero con tus ramas y al mismo tiempo te aferras a la tierra con una fuerza ancestral. Eres protector/a, imponente, sagrado/a para quienes te rodean. En ti caben todos: los que buscan refugio, los que necesitan sombra, los que quieren soñar. Eres el árbol al que todos quieren volver.',
+    guayacanR: 'El mundo se detiene cuando floreces. Como el Guayacán Rosado, tu forma de ser es un espectáculo de belleza y alegría que nadie puede pasar de largo. Irradias felicidad, pintas de rosa los días grises, y tienes esa rara habilidad de hacer que cualquiera a tu lado se sienta especial. Tu corazón florece sin miedo, una y otra vez, como si supiera que la vida merece ser celebrada.',
+    mango: 'Generosidad es tu segundo nombre. Como el Mango, das sin medida: sabor, frescura, alegría. Eres el amigo que siempre tiene la puerta abierta, la mesa puesta, la risa lista. Tu energía es contagiosa y tu corazón no conoce la mezquindad. Donde estas tu hay abundancia, porque entiendes que la vida es más dulce cuando se comparte con los demás.',
+    cacao: 'Hay algo sagrado en lo que creas. Como el Cacao, transformas lo simple en algo extraordinario. Tu esencia es rica, profunda, imposible de replicar. No buscas ser el más llamativo, pero lo que ofreces al mundo tiene un valor que pocos entienden a primera vista. Eres el secreto mejor guardado: quien te descubre, te atesora para siempre.',
+    eucalipto: 'Sanar es tu vocación silenciosa. Como el Eucalipto, tu presencia refresca, limpia, renueva. Eres de los que necesitan soledad para recargarse, de los que encuentran en su interior la medicina que luego comparten con el mundo. Tu espíritu es libre, tu aroma es inconfundible, y quienes se acercan a ti sienten que algo en ellos también sana.',
+    copal: 'Tu alma está hecha de incienso y oración. Como el Copal, todo en ti invita a la pausa, a lo sagrado, a lo que no se puede tocar, pero se siente profundamente. Eres un ser espiritual que camina entre los demás regalando paz, conexión con algo más grande. Tu presencia es como un ritual: transforma el espacio, eleva el espíritu, y deja una huella que no se borra.'
   };
 
   // Quiz scoring data
