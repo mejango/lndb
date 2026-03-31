@@ -816,10 +816,10 @@ p:last-child {
 }
 
 .together-trees img {
-  max-height: 350px;
+  max-height: 500px;
   width: auto;
   object-fit: contain;
-  opacity: 0.6;
+  opacity: 1;
 }
 
 .together-trees-right img {
