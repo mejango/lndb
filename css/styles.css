@@ -901,6 +901,7 @@ p:last-child {
 .together-section p {
   opacity: 0.9;
   line-height: 1.8;
+  text-wrap: balance;
 }
 
 .together-trees img {
