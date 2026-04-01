@@ -911,6 +911,11 @@ p:last-child {
   opacity: 1;
 }
 
+.together-trees-left img {
+  transform: scale(1.15);
+  transform-origin: bottom center;
+}
+
 .together-trees-right img {
   margin-left: auto;
 }
