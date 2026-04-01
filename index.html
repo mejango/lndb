@@ -202,7 +202,7 @@
         fetch(form.action, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ name: name, email: email, _subject: 'Newsletter — Los Nombres del Bosque' })
+          body: JSON.stringify({ name: name, email: email, source: 'newsletter', _subject: 'Newsletter — Los Nombres del Bosque' })
         }).then(function (r) {
           if (r.ok) {
             form.style.display = 'none';
