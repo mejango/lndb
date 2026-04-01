@@ -68,12 +68,17 @@
         <div class="newsletter-signup">
           <p class="newsletter-label">Recibe semillas del bosque en tu correo</p>
           <form class="newsletter-form" action="https://formspree.io/f/mreyvela" method="POST">
+            <input type="text" class="newsletter-input" name="name" placeholder="Tu nombre" required aria-label="Tu nombre" aria-required="true">
             <input type="email" class="newsletter-input" name="email" placeholder="tu@correo.com" required aria-label="Tu correo electrónico" aria-required="true">
             <input type="hidden" name="_subject" value="Newsletter — Los Nombres del Bosque">
             <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
             <button type="submit" class="newsletter-submit">Suscribirme</button>
           </form>
-          <p class="newsletter-msg" role="status" aria-live="polite"></p>
+          <div class="newsletter-success" style="display:none;">
+            <p class="newsletter-msg">Gracias por unirte al bosque.</p>
+            <p class="newsletter-label">Ahora descubre qué árbol eres:</p>
+            <a href="quiz.html" class="newsletter-quiz-btn">Identificar mi árbol</a>
+          </div>
         </div>
       </div>
     </div>
@@ -185,30 +190,33 @@
       var form = document.querySelector('.newsletter-form');
       if (!form) return;
       var btn = form.querySelector('.newsletter-submit');
-      var msg = document.querySelector('.newsletter-msg');
+      var successEl = document.querySelector('.newsletter-success');
 
       form.addEventListener('submit', function (e) {
         e.preventDefault();
-        var email = form.querySelector('.newsletter-input').value;
+        var name = form.querySelector('[name="name"]').value;
+        var email = form.querySelector('[name="email"]').value;
         btn.disabled = true;
         btn.textContent = '...';
 
         fetch(form.action, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ email: email, _subject: 'Newsletter — Los Nombres del Bosque' })
+          body: JSON.stringify({ name: name, email: email, _subject: 'Newsletter — Los Nombres del Bosque' })
         }).then(function (r) {
           if (r.ok) {
-            msg.textContent = 'Gracias por unirte al bosque.';
-            form.reset();
+            form.style.display = 'none';
+            form.previousElementSibling.style.display = 'none'; // hide label
+            successEl.style.display = '';
           } else {
-            msg.textContent = 'Algo salió mal. Intenta de nuevo.';
+            btn.disabled = false;
+            btn.textContent = 'Suscribirme';
+            alert('Algo salió mal. Intenta de nuevo.');
           }
         }).catch(function () {
-          msg.textContent = 'Error de conexión. Intenta de nuevo.';
-        }).finally(function () {
           btn.disabled = false;
           btn.textContent = 'Suscribirme';
+          alert('Error de conexión. Intenta de nuevo.');
         });
       });
     })();
