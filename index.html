@@ -65,6 +65,16 @@
         <p>Árboles que se disfrazaron de personas para transitar el mundo desde otros lugares, para tocar corazones con su esencia, con la profundidad de sus raíces.</p>
         <p>Creemos que, una vez esos árboles te muestran su manera de ver la vida, te transforman. Una vez los conoces, los amas. Una vez los amas, los cuidas.</p>
         <p class="welcome">Bienvenidos a este bosque.</p>
+        <div class="newsletter-signup">
+          <p class="newsletter-label">Recibe semillas del bosque en tu correo</p>
+          <form class="newsletter-form" action="https://formspree.io/f/mreyvela" method="POST">
+            <input type="email" class="newsletter-input" name="email" placeholder="tu@correo.com" required aria-label="Tu correo electrónico" aria-required="true">
+            <input type="hidden" name="_subject" value="Newsletter — Los Nombres del Bosque">
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
+            <button type="submit" class="newsletter-submit">Suscribirme</button>
+          </form>
+          <p class="newsletter-msg" role="status" aria-live="polite"></p>
+        </div>
       </div>
     </div>
   </section>
@@ -167,6 +177,39 @@
         card.appendChild(name);
         card.appendChild(blurb);
         grid.appendChild(card);
+      });
+    })();
+
+    // Newsletter form
+    (function () {
+      var form = document.querySelector('.newsletter-form');
+      if (!form) return;
+      var btn = form.querySelector('.newsletter-submit');
+      var msg = document.querySelector('.newsletter-msg');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var email = form.querySelector('.newsletter-input').value;
+        btn.disabled = true;
+        btn.textContent = '...';
+
+        fetch(form.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ email: email, _subject: 'Newsletter — Los Nombres del Bosque' })
+        }).then(function (r) {
+          if (r.ok) {
+            msg.textContent = 'Gracias por unirte al bosque.';
+            form.reset();
+          } else {
+            msg.textContent = 'Algo salió mal. Intenta de nuevo.';
+          }
+        }).catch(function () {
+          msg.textContent = 'Error de conexión. Intenta de nuevo.';
+        }).finally(function () {
+          btn.disabled = false;
+          btn.textContent = 'Suscribirme';
+        });
       });
     })();
   </script>
