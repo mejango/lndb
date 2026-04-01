@@ -524,12 +524,22 @@ p:last-child {
 .arboleda-image picture:nth-child(3) img { animation: hero-sway-a 7.8s ease-in-out infinite 0.1s; }
 
 /* Quienes somos — flanking trees */
+@keyframes together-sway-a {
+  0%, 100% { transform: scale(2) rotate(0deg); }
+  40% { transform: scale(2) rotate(0.8deg); }
+  75% { transform: scale(2) rotate(-0.5deg); }
+}
+@keyframes together-sway-b {
+  0%, 100% { transform: scale(2) rotate(0deg); }
+  35% { transform: scale(2) rotate(-0.7deg); }
+  70% { transform: scale(2) rotate(0.6deg); }
+}
 .together-trees img {
   transform-origin: bottom center;
-  animation: hero-sway-a 8.0s ease-in-out infinite 0.5s;
+  animation: together-sway-a 8.0s ease-in-out infinite 0.5s;
 }
 .together-trees-right img {
-  animation-name: hero-sway-b;
+  animation-name: together-sway-b;
   animation-delay: 1.0s;
 }
 
@@ -909,7 +919,7 @@ p:last-child {
   width: 100%;
   object-fit: contain;
   opacity: 1;
-  transform: scale(2.5);
+  transform: scale(2);
   transform-origin: bottom center;
 }
 
