@@ -3443,21 +3443,35 @@ p:last-child {
 }
 
 /* ===== DISCOUNT CODE ===== */
+.discount-toggle {
+  font-size: 0.8rem;
+  color: var(--color-sage-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  margin-left: 0.25rem;
+}
+
+.discount-toggle:hover {
+  color: var(--color-coral);
+}
+
 .discount-field {
-  margin: 1rem 0 0.5rem;
+  display: inline-block;
+  margin-left: 0.5rem;
 }
 
 .discount-input {
   font-family: var(--font-body);
-  font-size: 0.95rem;
-  padding: 0.7rem 1rem;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.75rem;
   border: 1.5px solid rgba(0, 0, 0, 0.12);
   border-radius: 6px;
   background: rgba(0, 0, 0, 0.03);
   color: var(--color-text-dark);
-  width: 220px;
+  width: 160px;
   text-align: left;
-  min-height: 44px;
+  min-height: 36px;
   box-sizing: border-box;
   transition: border-color 0.2s;
 }
