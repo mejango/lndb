@@ -3429,8 +3429,8 @@ p:last-child {
 
 /* ===== PRODUCT PRICE ===== */
 .product-price {
-  font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
   color: var(--color-forest);
   margin-top: 1.5rem;
   margin-bottom: 0;
