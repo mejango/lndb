@@ -3429,15 +3429,14 @@ p:last-child {
 
 /* ===== PRODUCT PRICE ===== */
 .product-price {
-  font-family: var(--font-display);
-  font-size: 1.5rem;
-  color: var(--color-forest);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
   margin-top: 1.5rem;
   margin-bottom: 0;
 }
 
 .product-price-detail {
-  font-family: var(--font-body);
   font-size: 0.85rem;
   color: var(--color-text-muted);
   font-weight: 400;
@@ -3450,26 +3449,36 @@ p:last-child {
 
 .discount-input {
   font-family: var(--font-body);
-  font-size: 0.85rem;
-  padding: 0.65rem 1rem;
-  border: 1px solid var(--color-sage);
-  border-radius: 50px;
-  background: var(--color-cream-light);
+  font-size: 0.95rem;
+  padding: 0.7rem 1rem;
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.03);
   color: var(--color-text-dark);
-  width: 200px;
-  text-align: center;
+  width: 220px;
+  text-align: left;
   min-height: 44px;
   box-sizing: border-box;
+  transition: border-color 0.2s;
 }
 
-.discount-input:focus-visible {
-  outline: 2px solid var(--color-coral);
-  outline-offset: 2px;
+.discount-input:focus {
+  outline: none;
+  border-color: var(--color-sage);
 }
 
 .discount-input::placeholder {
   color: var(--color-text-muted);
-  opacity: 0.7;
+  opacity: 0.5;
+}
+
+/* ===== PRODUCT ACTIONS ===== */
+.product-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
 }
 
 /* ===== WHATSAPP ALT LINK ===== */
