@@ -3486,6 +3486,16 @@ p:last-child {
   opacity: 0.5;
 }
 
+.discount-input.discount-valid {
+  border-color: var(--color-sage);
+  background: rgba(126, 142, 109, 0.08);
+}
+
+.discount-input.discount-invalid {
+  border-color: var(--color-terracotta);
+  background: rgba(196, 130, 107, 0.06);
+}
+
 /* ===== PRODUCT ACTIONS ===== */
 .product-actions {
   display: flex;
