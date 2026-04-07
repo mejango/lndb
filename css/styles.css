@@ -3430,7 +3430,8 @@ p:last-child {
 /* ===== PRODUCT PRICE ===== */
 .product-price {
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: 1.35rem;
+  font-weight: 600;
   color: var(--color-forest);
   margin-top: 1.5rem;
   margin-bottom: 0;
