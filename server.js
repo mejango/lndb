@@ -46,7 +46,7 @@ app.post('/api/checkout', express.json(), (req, res) => {
   const bookPrice = hasDiscount
     ? parseInt(process.env.DISCOUNT_PRICE_CENTS || '6800000', 10)
     : parseInt(process.env.BOOK_PRICE_CENTS || '8000000', 10);
-  const shipping = parseInt(process.env.SHIPPING_COST_CENTS || '1500000', 10);
+  const shipping = parseInt(process.env.SHIPPING_COST_CENTS || '1800000', 10);
   const amountInCents = bookPrice + shipping;
   const currency = 'COP';
   const reference = `LNDB-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
