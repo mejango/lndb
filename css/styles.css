@@ -3497,6 +3497,8 @@ p:last-child {
 
 .success-tree {
   margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
 }
 
 .success-tree img {
