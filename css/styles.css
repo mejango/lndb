@@ -3495,6 +3495,16 @@ p:last-child {
   align-items: center;
 }
 
+.success-tree {
+  margin-bottom: 1.5rem;
+}
+
+.success-tree img {
+  width: 160px;
+  height: auto;
+  opacity: 0.85;
+}
+
 .success-content h1 {
   margin-bottom: 1rem;
 }
