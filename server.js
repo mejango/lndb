@@ -68,6 +68,34 @@ app.post('/api/checkout', express.json(), (req, res) => {
   });
 });
 
+// Wompi webhook — forward buyer email to Formspree on approved transactions
+app.post('/api/wompi-webhook', express.json(), (req, res) => {
+  res.sendStatus(200); // respond immediately so Wompi doesn't retry
+
+  const event = req.body;
+  if (!event || event.event !== 'transaction.updated') return;
+
+  const tx = event.data && event.data.transaction;
+  if (!tx || tx.status !== 'APPROVED' || !tx.customer_email) return;
+
+  const formspreeId = process.env.FORMSPREE_ID;
+  if (!formspreeId) {
+    console.log('Webhook: FORMSPREE_ID not set, skipping email forward');
+    return;
+  }
+
+  fetch(`https://formspree.io/f/${formspreeId}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: tx.customer_email,
+      _subject: 'Nueva compra — Los Nombres del Bosque',
+      reference: tx.reference,
+      amount: tx.amount_in_cents / 100
+    })
+  }).catch(err => console.error('Formspree error:', err.message));
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
