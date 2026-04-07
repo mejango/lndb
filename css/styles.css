@@ -3582,6 +3582,7 @@ p:last-child {
 
 .success-secondary {
   margin-top: 2rem;
+  padding-bottom: 3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
