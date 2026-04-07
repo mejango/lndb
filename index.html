@@ -105,7 +105,8 @@
         <p>En este bosque de páginas encontrarás dieciséis árboles que habitan en Colombia, cada uno con alma propia.</p>
         <p>Sus raíces, sus ramas y sus frutos te hablarán como si fueran personas...</p>
         <p>Quizá reconozcas en ellos a alguien que amas. Quizá te reconozcas a ti. Abre este libro, nómbralos, dibújate, y deja que crezca tu propia arboleda del corazón.</p>
-        <a href="productos.html" class="btn btn-primary" id="book-cta">Conócelo aquí</a>
+        <button class="btn btn-primary" data-checkout id="book-cta">Comprar libro</button>
+        <a href="productos.html" class="whatsapp-link">Mas informacion</a>
       </div>
     </div>
   </section>
@@ -130,14 +131,10 @@
 
   <script src="js/trees.js"></script>
   <script src="js/components.js"></script>
+  <script src="https://checkout.wompi.co/widget.js"></script>
+  <script src="js/checkout.js"></script>
   <script>
-    // Track Book CTA click on homepage
-    var bookCta = document.getElementById('book-cta');
-    if (bookCta) {
-      bookCta.addEventListener('click', function () {
-        plausible('Book CTA Click', { props: { source: 'homepage' } });
-      });
-    }
+    // Book CTA checkout tracking is handled by js/checkout.js
 
     // Populate forest grid from LNDB data
     (function () {

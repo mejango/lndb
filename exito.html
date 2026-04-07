@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compra exitosa - Los Nombres del Bosque</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/logos/favicon.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <div id="header"></div>
+
+  <section class="success-section">
+    <div class="container">
+      <div class="success-content">
+        <h1>Gracias por tu compra</h1>
+        <p>Tu pedido ha sido recibido. Pronto recibirás un correo de confirmación.</p>
+        <p>Prepararemos tu libro con mucho cariño y te avisaremos cuando esté en camino.</p>
+        <p class="success-ref" id="success-ref"></p>
+        <div class="success-actions">
+          <a href="index.html" class="btn btn-primary">Volver al bosque</a>
+          <a href="https://wa.me/573013784227?text=Hola%2C%20acabo%20de%20comprar%20el%20libro%20y%20tengo%20una%20pregunta" target="_blank" rel="noopener" class="whatsapp-link">¿Tienes preguntas? Escríbenos por WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="footer"></div>
+
+  <script src="js/components.js"></script>
+  <script>
+    // Show reference if present
+    var params = new URLSearchParams(window.location.search);
+    var ref = params.get('ref');
+    if (ref) {
+      document.getElementById('success-ref').textContent = 'Referencia: ' + ref;
+    }
+  </script>
+
+</body>
+</html>

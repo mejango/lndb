@@ -16,3 +16,7 @@ Thumbs.db
 
 # Playwright MCP logs
 .playwright-mcp/
+
+# Node
+node_modules/
+.env

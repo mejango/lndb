@@ -3426,3 +3426,71 @@ p:last-child {
     animation: none;
   }
 }
+
+/* ===== DISCOUNT CODE ===== */
+.discount-field {
+  margin: 1rem 0 0.5rem;
+}
+
+.discount-input {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--color-sage);
+  border-radius: 50px;
+  background: var(--color-cream-light);
+  color: var(--color-text-dark);
+  width: 200px;
+  text-align: center;
+}
+
+.discount-input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.7;
+}
+
+/* ===== WHATSAPP ALT LINK ===== */
+.whatsapp-link {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--color-sage-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.whatsapp-link:hover {
+  color: var(--color-coral);
+}
+
+/* ===== SUCCESS PAGE ===== */
+.success-section {
+  padding: calc(var(--section-padding) * 1.5) 0;
+  text-align: center;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+}
+
+.success-content h1 {
+  margin-bottom: 1rem;
+}
+
+.success-content p {
+  max-width: 480px;
+  margin: 0.5rem auto;
+}
+
+.success-ref {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 1.5rem;
+}
+
+.success-actions {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
