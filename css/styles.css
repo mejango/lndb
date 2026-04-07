@@ -3522,17 +3522,18 @@ p:last-child {
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  gap: 0;
   margin-bottom: 2rem;
 }
 
-.success-trees picture:nth-child(1) img { width: 120px; }
-.success-trees picture:nth-child(2) img { width: 180px; }
-.success-trees picture:nth-child(3) img { width: 130px; }
+.success-trees picture { flex-shrink: 0; }
+.success-trees picture:nth-child(1) img { width: 140px; }
+.success-trees picture:nth-child(2) img { width: 200px; }
+.success-trees picture:nth-child(3) img { width: 150px; }
 
 .success-trees img {
   height: auto;
-  margin: 0 -1rem;
+  max-width: none;
+  margin: 0 -1.5rem;
   transform-origin: bottom center;
 }
 
