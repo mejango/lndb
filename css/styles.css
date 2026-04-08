@@ -3649,15 +3649,19 @@ p:last-child {
 
 .checkout-modal-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 0.5rem;
+  right: 0.5rem;
   background: none;
   border: none;
   font-size: 1.4rem;
   color: var(--color-text-muted);
   cursor: pointer;
   line-height: 1;
-  padding: 0.25rem;
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: color var(--transition);
 }
 
