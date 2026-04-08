@@ -3610,6 +3610,8 @@ p:last-child {
   align-items: center;
   justify-content: center;
   padding: 1rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   animation: checkout-fade-in 0.2s ease;
 }
 
