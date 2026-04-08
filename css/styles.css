@@ -3599,3 +3599,162 @@ p:last-child {
   align-items: center;
   gap: 0.75rem;
 }
+
+/* ===== CHECKOUT MODAL ===== */
+.checkout-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  animation: checkout-fade-in 0.2s ease;
+}
+
+@keyframes checkout-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.checkout-modal {
+  background: var(--color-cream);
+  border-radius: 12px;
+  padding: 2.5rem 2rem 2rem;
+  max-width: 440px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  animation: checkout-slide-up 0.25s ease;
+}
+
+@keyframes checkout-slide-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.checkout-modal h2 {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  color: var(--color-text-dark);
+  margin-bottom: 0.25rem;
+}
+
+.checkout-steps-indicator {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.checkout-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.25rem;
+  transition: color var(--transition);
+}
+
+.checkout-modal-close:hover {
+  color: var(--color-text-dark);
+}
+
+.checkout-step {
+  display: none;
+}
+
+.checkout-step.active {
+  display: block;
+}
+
+.checkout-modal-field {
+  margin-bottom: 1rem;
+}
+
+.checkout-modal-field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  margin-bottom: 0.3rem;
+}
+
+.checkout-modal-field input,
+.checkout-modal-field select,
+.checkout-modal-field textarea {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.65rem 0.85rem;
+  border: 1.5px solid rgba(107, 122, 92, 0.3);
+  border-radius: 6px;
+  background: var(--color-cream-light);
+  color: var(--color-text-dark);
+  transition: border-color 0.2s;
+}
+
+.checkout-modal-field input:focus,
+.checkout-modal-field select:focus,
+.checkout-modal-field textarea:focus {
+  outline: none;
+  border-color: var(--color-sage);
+}
+
+.checkout-modal-field input::placeholder,
+.checkout-modal-field textarea::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.5;
+}
+
+.checkout-modal-field select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236B7A5C' d='M1.4 0L6 4.6 10.6 0 12 1.4l-6 6-6-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  padding-right: 2.5rem;
+}
+
+.checkout-modal .btn-primary {
+  width: 100%;
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  padding: 0.8rem 1.5rem;
+}
+
+.checkout-modal .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.checkout-modal-back {
+  background: none;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  margin-top: 0.75rem;
+  display: inline-block;
+  transition: color var(--transition);
+}
+
+.checkout-modal-back:hover {
+  color: var(--color-text-dark);
+}
+
+@media (max-width: 480px) {
+  .checkout-modal {
+    padding: 2rem 1.25rem 1.5rem;
+    border-radius: 10px;
+  }
+
+  .checkout-modal h2 {
+    font-size: 1.4rem;
+  }
+}

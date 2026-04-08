@@ -69,6 +69,9 @@ app.post('/api/checkout', express.json(), (req, res) => {
     .update(`${reference}${amountInCents}${currency}${secret}`)
     .digest('hex');
 
+  // Pass through shipping address for Wompi widget
+  const shippingAddress = (req.body && req.body.shippingAddress) || null;
+
   res.json({
     reference,
     amountInCents,
@@ -76,7 +79,8 @@ app.post('/api/checkout', express.json(), (req, res) => {
     signature,
     publicKey: process.env.WOMPI_PUBLIC_KEY,
     redirectUrl: `${process.env.DOMAIN || ''}/exito.html`,
-    discountApplied: hasDiscount
+    discountApplied: hasDiscount,
+    shippingAddress
   });
 });
 
