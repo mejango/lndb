@@ -180,22 +180,22 @@
         phone: collected.phone
       };
 
-      // POST to Formspree, then /api/checkout, then open Wompi
+      // POST to Formspree (fire-and-forget — don't block checkout)
       fetch(FORMSPREE_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(formData)
-      })
-        .then(function () {
-          return fetch('/api/checkout', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              discountCode: discountCode,
-              shippingAddress: shippingAddress
-            })
-          });
+      }).catch(function () {});
+
+      // Call /api/checkout, then open Wompi
+      fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          discountCode: discountCode,
+          shippingAddress: shippingAddress
         })
+      })
         .then(function (r) { return r.json(); })
         .then(function (data) {
           if (data.error) throw new Error(data.error);
