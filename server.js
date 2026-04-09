@@ -46,7 +46,8 @@ app.post('/api/validate-code', express.json(), (req, res) => {
 // Checkout endpoint
 app.post('/api/checkout', express.json(), (req, res) => {
   const secret = process.env.WOMPI_INTEGRITY_SECRET;
-  if (!secret) {
+  const publicKey = process.env.WOMPI_PUBLIC_KEY;
+  if (!secret || !publicKey) {
     return res.status(500).json({ error: 'Checkout not configured' });
   }
 
@@ -77,7 +78,7 @@ app.post('/api/checkout', express.json(), (req, res) => {
     amountInCents,
     currency,
     signature,
-    publicKey: process.env.WOMPI_PUBLIC_KEY,
+    publicKey,
     redirectUrl: `${process.env.DOMAIN || ''}/exito.html`,
     discountApplied: hasDiscount,
     shippingAddress

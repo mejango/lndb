@@ -16,6 +16,12 @@
 
   var FORMSPREE_URL = 'https://formspree.io/f/mreyvela';
 
+  function track(eventName, props) {
+    if (typeof window.plausible === 'function') {
+      window.plausible(eventName, props);
+    }
+  }
+
   // ---- Modal HTML ----
   function buildModal() {
     var deptOptions = '<option value="">Seleccionar...</option>';
@@ -174,10 +180,12 @@
 
       var shippingAddress = {
         addressLine1: collected.address,
+        addressLine2: collected.notes || undefined,
         city: collected.city,
         region: collected.department,
         country: 'CO',
-        phone: collected.phone
+        phoneNumber: collected.phone,
+        name: collected.name
       };
 
       // POST to Formspree (fire-and-forget — don't block checkout)
@@ -196,11 +204,29 @@
           shippingAddress: shippingAddress
         })
       })
-        .then(function (r) { return r.json(); })
+        .then(function (r) {
+          return r.json().catch(function () {
+            throw new Error('Respuesta invalida del servidor');
+          }).then(function (data) {
+            if (!r.ok) {
+              throw new Error((data && data.error) || 'No pudimos preparar el checkout');
+            }
+            return data;
+          });
+        })
         .then(function (data) {
           if (data.error) throw new Error(data.error);
+          if (typeof window.WidgetCheckout !== 'function') {
+            throw new Error('Widget de Wompi no disponible');
+          }
+          if (!data.publicKey) {
+            throw new Error('Llave publica de Wompi faltante');
+          }
+          if (!data.signature) {
+            throw new Error('Firma de integridad faltante');
+          }
 
-          plausible('Checkout Started', {
+          track('Checkout Started', {
             props: { discount: data.discountApplied ? 'yes' : 'no' }
           });
 
@@ -225,12 +251,13 @@
           checkout.open(function (result) {
             var tx = result.transaction;
             if (tx && tx.status === 'APPROVED') {
-              plausible('Purchase Completed', { props: { reference: data.reference } });
+              track('Purchase Completed', { props: { reference: data.reference } });
               window.location.href = data.redirectUrl + '?ref=' + data.reference;
             }
           });
         })
-        .catch(function () {
+        .catch(function (err) {
+          console.error('Checkout init failed', err);
           payBtn.disabled = false;
           payBtn.textContent = 'Pagar';
           alert('No pudimos iniciar el pago. Escríbenos por WhatsApp para completar tu compra.');
