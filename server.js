@@ -13,6 +13,8 @@ try {
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+const HTML_CACHE_SECONDS = parseInt(process.env.HTML_CACHE_SECONDS || '0', 10);
+const ASSET_CACHE_SECONDS = parseInt(process.env.ASSET_CACHE_SECONDS || '3600', 10);
 
 // Security headers
 app.use((req, res, next) => {
@@ -23,10 +25,16 @@ app.use((req, res, next) => {
 
 // Static files with caching
 app.use(express.static('.', {
-  maxAge: '7d',
   setHeaders(res, filePath) {
+    if (/\.html$/.test(filePath)) {
+      res.setHeader('Cache-Control', HTML_CACHE_SECONDS > 0
+        ? `public, max-age=${HTML_CACHE_SECONDS}, must-revalidate`
+        : 'no-cache, must-revalidate');
+      return;
+    }
+
     if (/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|webp|mp3)$/.test(filePath)) {
-      res.setHeader('Cache-Control', 'public, max-age=604800, immutable');
+      res.setHeader('Cache-Control', `public, max-age=${ASSET_CACHE_SECONDS}, must-revalidate`);
     }
   }
 }));
