@@ -14,8 +14,8 @@ try {
 const app = express();
 const PORT = process.env.PORT || 8080;
 const HTML_CACHE_SECONDS = parseInt(process.env.HTML_CACHE_SECONDS || '0', 10);
-const ASSET_CACHE_SECONDS = parseInt(process.env.ASSET_CACHE_SECONDS || '300', 10);
-const TREE_IMAGE_CACHE_SECONDS = parseInt(process.env.TREE_IMAGE_CACHE_SECONDS || '604800', 10);
+const CODE_ASSET_CACHE_SECONDS = parseInt(process.env.CODE_ASSET_CACHE_SECONDS || '300', 10);
+const STATIC_ASSET_CACHE_SECONDS = parseInt(process.env.STATIC_ASSET_CACHE_SECONDS || '604800', 10);
 
 // Security headers
 app.use((req, res, next) => {
@@ -27,8 +27,6 @@ app.use((req, res, next) => {
 // Static files with caching
 app.use(express.static('.', {
   setHeaders(res, filePath) {
-    const normalizedPath = filePath.replace(/\\/g, '/');
-
     if (/\.html$/.test(filePath)) {
       res.setHeader('Cache-Control', HTML_CACHE_SECONDS > 0
         ? `public, max-age=${HTML_CACHE_SECONDS}, must-revalidate`
@@ -36,13 +34,13 @@ app.use(express.static('.', {
       return;
     }
 
-    if (normalizedPath.includes('/assets/images/trees/')) {
-      res.setHeader('Cache-Control', `public, max-age=${TREE_IMAGE_CACHE_SECONDS}, must-revalidate`);
+    if (/\.(css|js)$/.test(filePath)) {
+      res.setHeader('Cache-Control', `public, max-age=${CODE_ASSET_CACHE_SECONDS}, must-revalidate`);
       return;
     }
 
-    if (/\.(css|js|png|jpg|jpeg|gif|svg|ico|woff|woff2|webp|mp3)$/.test(filePath)) {
-      res.setHeader('Cache-Control', `public, max-age=${ASSET_CACHE_SECONDS}, must-revalidate`);
+    if (/\.(png|jpg|jpeg|gif|svg|ico|woff|woff2|webp|mp3)$/.test(filePath)) {
+      res.setHeader('Cache-Control', `public, max-age=${STATIC_ASSET_CACHE_SECONDS}, must-revalidate`);
     }
   }
 }));
