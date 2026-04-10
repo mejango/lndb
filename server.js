@@ -14,7 +14,8 @@ try {
 const app = express();
 const PORT = process.env.PORT || 8080;
 const HTML_CACHE_SECONDS = parseInt(process.env.HTML_CACHE_SECONDS || '0', 10);
-const ASSET_CACHE_SECONDS = parseInt(process.env.ASSET_CACHE_SECONDS || '3600', 10);
+const ASSET_CACHE_SECONDS = parseInt(process.env.ASSET_CACHE_SECONDS || '300', 10);
+const TREE_IMAGE_CACHE_SECONDS = parseInt(process.env.TREE_IMAGE_CACHE_SECONDS || '604800', 10);
 
 // Security headers
 app.use((req, res, next) => {
@@ -26,10 +27,17 @@ app.use((req, res, next) => {
 // Static files with caching
 app.use(express.static('.', {
   setHeaders(res, filePath) {
+    const normalizedPath = filePath.replace(/\\/g, '/');
+
     if (/\.html$/.test(filePath)) {
       res.setHeader('Cache-Control', HTML_CACHE_SECONDS > 0
         ? `public, max-age=${HTML_CACHE_SECONDS}, must-revalidate`
         : 'no-cache, must-revalidate');
+      return;
+    }
+
+    if (normalizedPath.includes('/assets/images/trees/')) {
+      res.setHeader('Cache-Control', `public, max-age=${TREE_IMAGE_CACHE_SECONDS}, must-revalidate`);
       return;
     }
 
