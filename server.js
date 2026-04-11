@@ -188,7 +188,7 @@ function buildConfirmationEmail({ reference, amount, paymentMethod, shippingAddr
       <tr>
         <td align="center" style="padding:24px 32px;">
           <p style="margin:0 0 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#7E8E6D;">¿Preguntas sobre tu pedido?</p>
-          <a href="https://wa.me/573001234567" style="display:inline-block;padding:12px 28px;background-color:#D4856E;color:#FFFFFF;font-family:Arial,Helvetica,sans-serif;font-size:14px;text-decoration:none;border-radius:6px;">Escríbenos por WhatsApp</a>
+          <a href="https://wa.me/573013784227" style="display:inline-block;padding:12px 28px;background-color:#D4856E;color:#FFFFFF;font-family:Arial,Helvetica,sans-serif;font-size:14px;text-decoration:none;border-radius:6px;">Escríbenos por WhatsApp</a>
         </td>
       </tr>
       <!-- Footer -->
