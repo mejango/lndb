@@ -54,7 +54,7 @@ app.post('/api/validate-code', express.json(), (req, res) => {
   const validCodes = (process.env.DISCOUNT_CODES || '').toUpperCase().split(',').map(c => c.trim()).filter(Boolean);
   const valid = isTest || !!(discountCode && validCodes.includes(discountCode));
   const bookPrice = isTest
-    ? 200
+    ? 200000
     : valid
       ? parseInt(process.env.DISCOUNT_PRICE_CENTS || '6800000', 10)
       : parseInt(process.env.BOOK_PRICE_CENTS || '8000000', 10);
@@ -78,7 +78,7 @@ app.post('/api/checkout', express.json(), (req, res) => {
   }
 
   const bookPrice = isTestMode
-    ? 200
+    ? 200000
     : hasDiscount
       ? parseInt(process.env.DISCOUNT_PRICE_CENTS || '6800000', 10)
       : parseInt(process.env.BOOK_PRICE_CENTS || '8000000', 10);
