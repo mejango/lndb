@@ -61,16 +61,18 @@ app.post('/api/validate-code', express.json(), (req, res) => {
 
 // Checkout endpoint
 app.post('/api/checkout', express.json(), (req, res) => {
-  const secret = process.env.WOMPI_INTEGRITY_SECRET;
-  const publicKey = process.env.WOMPI_PUBLIC_KEY;
+  // Discount code validation
+  const discountCode = ((req.body && req.body.discountCode) || '').trim().toUpperCase();
+  const isTestMode = discountCode === 'TEST';
+  const validCodes = (process.env.DISCOUNT_CODES || '').toUpperCase().split(',').map(c => c.trim()).filter(Boolean);
+  const hasDiscount = !!(discountCode && !isTestMode && validCodes.includes(discountCode));
+
+  // Use test credentials when TEST promo code is entered
+  const secret = isTestMode ? process.env.WOMPI_TEST_INTEGRITY_SECRET : process.env.WOMPI_INTEGRITY_SECRET;
+  const publicKey = isTestMode ? process.env.WOMPI_TEST_PUBLIC_KEY : process.env.WOMPI_PUBLIC_KEY;
   if (!secret || !publicKey) {
     return res.status(500).json({ error: 'Checkout not configured' });
   }
-
-  // Discount code validation
-  const discountCode = ((req.body && req.body.discountCode) || '').trim().toUpperCase();
-  const validCodes = (process.env.DISCOUNT_CODES || '').toUpperCase().split(',').map(c => c.trim()).filter(Boolean);
-  const hasDiscount = !!(discountCode && validCodes.includes(discountCode));
 
   const bookPrice = hasDiscount
     ? parseInt(process.env.DISCOUNT_PRICE_CENTS || '6800000', 10)
@@ -215,10 +217,10 @@ app.post('/api/wompi-webhook', express.json(), async (req, res) => {
     const transaction = event.data && event.data.transaction;
     if (!transaction || transaction.status !== 'APPROVED') return;
 
-    // Verify checksum
-    const eventsSecret = process.env.WOMPI_EVENTS_SECRET;
-    if (!eventsSecret) {
-      console.error('[webhook] WOMPI_EVENTS_SECRET not configured');
+    // Verify checksum (try production secret, then test secret)
+    const secrets = [process.env.WOMPI_EVENTS_SECRET, process.env.WOMPI_TEST_EVENTS_SECRET].filter(Boolean);
+    if (secrets.length === 0) {
+      console.error('[webhook] No WOMPI_EVENTS_SECRET configured');
       return;
     }
 
@@ -231,10 +233,13 @@ app.post('/api/wompi-webhook', express.json(), async (req, res) => {
       for (const key of keys) val = val && val[key];
       return val;
     });
-    const concat = values.join('') + sig.timestamp + eventsSecret;
-    const computed = crypto.createHash('sha256').update(concat).digest('hex');
+    const checksumValid = secrets.some(secret => {
+      const concat = values.join('') + sig.timestamp + secret;
+      const computed = crypto.createHash('sha256').update(concat).digest('hex');
+      return computed.toUpperCase() === sig.checksum.toUpperCase();
+    });
 
-    if (computed.toUpperCase() !== sig.checksum.toUpperCase()) {
+    if (!checksumValid) {
       console.error('[webhook] Invalid checksum for ref:', transaction.reference);
       return;
     }
