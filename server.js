@@ -50,11 +50,14 @@ app.use(express.static('.', {
 // Validate discount code
 app.post('/api/validate-code', express.json(), (req, res) => {
   const discountCode = ((req.body && req.body.code) || '').trim().toUpperCase();
+  const isTest = discountCode === 'TEST';
   const validCodes = (process.env.DISCOUNT_CODES || '').toUpperCase().split(',').map(c => c.trim()).filter(Boolean);
-  const valid = !!(discountCode && validCodes.includes(discountCode));
-  const bookPrice = valid
-    ? parseInt(process.env.DISCOUNT_PRICE_CENTS || '6800000', 10)
-    : parseInt(process.env.BOOK_PRICE_CENTS || '8000000', 10);
+  const valid = isTest || !!(discountCode && validCodes.includes(discountCode));
+  const bookPrice = isTest
+    ? 100
+    : valid
+      ? parseInt(process.env.DISCOUNT_PRICE_CENTS || '6800000', 10)
+      : parseInt(process.env.BOOK_PRICE_CENTS || '8000000', 10);
   var price = (bookPrice / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   res.json({ valid, priceFormatted: '$' + price });
 });
@@ -74,10 +77,12 @@ app.post('/api/checkout', express.json(), (req, res) => {
     return res.status(500).json({ error: 'Checkout not configured' });
   }
 
-  const bookPrice = hasDiscount
-    ? parseInt(process.env.DISCOUNT_PRICE_CENTS || '6800000', 10)
-    : parseInt(process.env.BOOK_PRICE_CENTS || '8000000', 10);
-  const shipping = parseInt(process.env.SHIPPING_COST_CENTS || '1800000', 10);
+  const bookPrice = isTestMode
+    ? 100
+    : hasDiscount
+      ? parseInt(process.env.DISCOUNT_PRICE_CENTS || '6800000', 10)
+      : parseInt(process.env.BOOK_PRICE_CENTS || '8000000', 10);
+  const shipping = isTestMode ? 0 : parseInt(process.env.SHIPPING_COST_CENTS || '1800000', 10);
   const amountInCents = bookPrice + shipping;
   const currency = 'COP';
   const reference = `LNDB-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
