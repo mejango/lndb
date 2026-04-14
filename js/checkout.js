@@ -124,6 +124,7 @@
       }
       collected.name = nameInput.value.trim();
       collected.email = emailInput.value.trim();
+      track('Checkout Contact Submitted');
 
       step1.classList.remove('active');
       step2.classList.add('active');
@@ -156,6 +157,7 @@
       collected.department = dept.value;
       collected.phone = phone.value.trim();
       collected.notes = notes.value.trim();
+      track('Checkout Address Submitted');
 
       payBtn.disabled = true;
       payBtn.textContent = 'Procesando...';
