@@ -57,6 +57,7 @@
     var fill = playerSection.querySelector('.tree-player-fill');
     var timeEl = playerSection.querySelector('.tree-player-time');
     var playing = false;
+    var meditationStarted = false;
 
     function formatTime(s) {
       var m = Math.floor(s / 60);
@@ -74,6 +75,10 @@
           audio.play().then(function () {
             playBtn.textContent = '\u275A\u275A';
             playing = true;
+            if (!meditationStarted) {
+              meditationStarted = true;
+              plausible('Meditation Started', { props: { tree: tree.name } });
+            }
           }).catch(function () {});
         }
       });
@@ -91,6 +96,7 @@
       playing = false;
       if (playBtn) playBtn.textContent = '\u25B6';
       if (fill) fill.style.width = '100%';
+      plausible('Meditation Completed', { props: { tree: tree.name } });
       showCompletionRitual();
     });
 
@@ -135,10 +141,12 @@
         soundToggle.textContent = '\uD83D\uDD0A';
         soundToggle.classList.remove('pulsing');
         soundToggle.setAttribute('aria-label', 'Silenciar sonido ambiente');
+        plausible('Sound Toggle', { props: { action: 'on', tree: tree.name } });
       } else {
         ambientAudio.muted = true;
         soundToggle.textContent = '\uD83D\uDD07';
         soundToggle.setAttribute('aria-label', 'Activar sonido ambiente');
+        plausible('Sound Toggle', { props: { action: 'off', tree: tree.name } });
       }
     });
   }
@@ -235,7 +243,7 @@
         })
       }).then(function (r) {
         if (r.ok) {
-          plausible('Email Signup', { props: { tree: tree.name } });
+          plausible('Email Signup', { props: { tree: tree.name, source: 'tree' } });
           if (msgEl) {
             msgEl.textContent = 'Gracias. Te avisaremos cuando sea el momento.';
             msgEl.className = 'tree-email-msg success';

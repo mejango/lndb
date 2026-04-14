@@ -86,6 +86,11 @@
   <script src="https://checkout.wompi.co/widget.js"></script>
   <script src="js/checkout.js?v=8aaa91e"></script>
   <script>
+    // Track arboleda CTA
+    document.querySelector('.arboleda-section .btn-primary').addEventListener('click', function () {
+      plausible('CTA Click', { props: { type: 'arboleda', source: 'productos' } });
+    });
+
     // Track WhatsApp CTA clicks
     document.querySelectorAll('[data-whatsapp]').forEach(function (el) {
       el.addEventListener('click', function () {

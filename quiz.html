@@ -460,11 +460,20 @@
 
       // Retry button
       retryBtn.addEventListener('click', function () {
+        plausible('Quiz Retry');
         resetScores();
         nameInput.value = '';
         userName = '';
         nameInput.setAttribute('placeholder', 'Escribe tu nombre');
         showScreen(introEl);
+      });
+
+      // CTA tracking
+      listenBtn.addEventListener('click', function () {
+        plausible('Quiz CTA Click', { props: { type: 'listen', tree: trees[currentWinnerKey].name } });
+      });
+      document.querySelector('.quiz-result-arboleda .btn-secondary').addEventListener('click', function () {
+        plausible('Quiz CTA Click', { props: { type: 'arboleda' } });
       });
 
       // Allow Enter key on name input to start quiz

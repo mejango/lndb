@@ -46,6 +46,17 @@
     if (ref) {
       document.getElementById('success-ref').textContent = 'Referencia: ' + ref;
     }
+
+    // Track CTAs
+    document.querySelector('.success-arboleda .btn-primary').addEventListener('click', function () {
+      plausible('CTA Click', { props: { type: 'arboleda', source: 'exito' } });
+    });
+    document.querySelector('.whatsapp-link').addEventListener('click', function () {
+      plausible('WhatsApp Click', { props: { source: 'exito' } });
+    });
+    document.querySelector('.success-secondary .btn-outline').addEventListener('click', function () {
+      plausible('CTA Click', { props: { type: 'home', source: 'exito' } });
+    });
   </script>
 
 </body>

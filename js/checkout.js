@@ -257,6 +257,7 @@
           });
         })
         .catch(function (err) {
+          track('Checkout Error');
           console.error('Checkout init failed', err);
           payBtn.disabled = false;
           payBtn.textContent = 'Pagar';
@@ -327,6 +328,7 @@
             .then(function (r) { return r.json(); })
             .then(function (data) {
               if (data.valid) {
+                track('Discount Code Applied', { props: { code: code } });
                 priceEl.childNodes[0].textContent = data.priceFormatted + ' ';
                 codeInput.classList.add('discount-valid');
                 codeInput.classList.remove('discount-invalid');

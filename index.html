@@ -137,7 +137,16 @@
   <script src="https://checkout.wompi.co/widget.js"></script>
   <script src="js/checkout.js?v=8aaa91e"></script>
   <script>
-    // Book CTA checkout tracking is handled by js/checkout.js
+    // CTA tracking
+    document.getElementById('book-cta').addEventListener('click', function () {
+      plausible('CTA Click', { props: { type: 'book', source: 'homepage' } });
+    });
+    document.querySelector('.tree-quiz .btn-outline').addEventListener('click', function () {
+      plausible('CTA Click', { props: { type: 'quiz', source: 'homepage' } });
+    });
+    document.querySelector('.product-actions .btn-outline').addEventListener('click', function () {
+      plausible('CTA Click', { props: { type: 'productos', source: 'homepage' } });
+    });
 
     // Populate forest grid from LNDB data
     (function () {
@@ -178,6 +187,9 @@
         blurb.className = 'forest-grid-item-blurb';
         blurb.textContent = tree.blurb;
 
+        card.addEventListener('click', function () {
+          plausible('Forest Tree Click', { props: { tree: tree.name } });
+        });
         card.appendChild(picture);
         card.appendChild(name);
         card.appendChild(blurb);
@@ -205,6 +217,7 @@
           body: JSON.stringify({ name: name, email: email, source: 'newsletter', _subject: 'Newsletter — Los Nombres del Bosque' })
         }).then(function (r) {
           if (r.ok) {
+            plausible('Newsletter Signup');
             form.style.display = 'none';
             form.previousElementSibling.style.display = 'none'; // hide label
             successEl.style.display = '';

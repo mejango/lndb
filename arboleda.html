@@ -277,6 +277,7 @@
         var name = personNameInput.value.trim();
         if (!name) return;
 
+        if (typeof plausible !== 'undefined') plausible('Arboleda Tree Selected', { props: { tree: trees[key].name } });
         var wasCreatorPick = pickerForCreator;
         grove.members.push({ personName: name, treeKey: key, isCreator: wasCreatorPick });
         closePicker();
@@ -605,6 +606,10 @@
 
       backBtn.addEventListener('click', function () {
         showScreen(builderEl);
+      });
+
+      printBtn.addEventListener('click', function () {
+        if (typeof plausible !== 'undefined') plausible('Arboleda Print CTA');
       });
 
       // Init
