@@ -303,10 +303,85 @@
     });
   }
 
+  // ---- Quantity helpers ----
+  var MIN_QTY = 1;
+  var MAX_QTY = 10;
+  var SHIPPING_CENTS = 1800000; // $18.000 — must match SHIPPING_COST_CENTS on server
+  var DEFAULT_UNIT_CENTS = 8000000; // $80.000 — full price
+
+  function formatCop(cents) {
+    return '$' + (cents / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
+  function parseCop(str) {
+    // "$80.000" or "$80.000 " → 8000000 (cents)
+    var digits = (str || '').replace(/[^0-9]/g, '');
+    var cents = digits ? parseInt(digits, 10) * 100 : DEFAULT_UNIT_CENTS;
+    return cents;
+  }
+
+  function getUnitCents(section) {
+    var priceEl = section ? section.querySelector('.product-price') : null;
+    if (!priceEl) return DEFAULT_UNIT_CENTS;
+    return parseCop(priceEl.childNodes[0].textContent);
+  }
+
+  function getQty(section) {
+    var valueEl = section ? section.querySelector('[data-qty-value]') : null;
+    if (!valueEl) return 1;
+    var n = parseInt(valueEl.textContent, 10);
+    return n >= MIN_QTY && n <= MAX_QTY ? n : 1;
+  }
+
+  function renderTotal(section) {
+    if (!section) return;
+    var totalEl = section.querySelector('[data-product-total]');
+    if (!totalEl) return;
+    var qty = getQty(section);
+    var unit = getUnitCents(section);
+    var total = unit * qty + SHIPPING_CENTS;
+    totalEl.innerHTML = '<span class="product-total-label">Total:</span>' + formatCop(total);
+  }
+
+  function updateStepperButtons(section) {
+    if (!section) return;
+    var qty = getQty(section);
+    var minus = section.querySelector('[data-qty-minus]');
+    var plus = section.querySelector('[data-qty-plus]');
+    if (minus) minus.disabled = qty <= MIN_QTY;
+    if (plus) plus.disabled = qty >= MAX_QTY;
+  }
+
+  function setQty(section, qty) {
+    if (!section) return;
+    var clamped = Math.max(MIN_QTY, Math.min(MAX_QTY, qty | 0));
+    var valueEl = section.querySelector('[data-qty-value]');
+    if (valueEl) valueEl.textContent = String(clamped);
+    updateStepperButtons(section);
+    renderTotal(section);
+  }
+
   // ---- Bind buttons ----
   document.querySelectorAll('[data-checkout]').forEach(function (btn) {
     // Preserve discount code real-time validation (unchanged)
     var section = btn.closest('.product-text, .book-section, section');
+
+    // Stepper wiring (no-op if the markup is absent)
+    var minusBtn = section ? section.querySelector('[data-qty-minus]') : null;
+    var plusBtn = section ? section.querySelector('[data-qty-plus]') : null;
+    if (minusBtn) {
+      minusBtn.addEventListener('click', function () {
+        setQty(section, getQty(section) - 1);
+      });
+    }
+    if (plusBtn) {
+      plusBtn.addEventListener('click', function () {
+        setQty(section, getQty(section) + 1);
+      });
+    }
+    updateStepperButtons(section);
+    renderTotal(section);
+
     var codeInput = section ? section.querySelector('[data-discount-code]') : null;
     var priceEl = section ? section.querySelector('.product-price') : null;
     var originalPrice = priceEl ? priceEl.childNodes[0].textContent.trim() : '';
@@ -319,6 +394,7 @@
         if (!code) {
           if (priceEl) priceEl.childNodes[0].textContent = originalPrice + ' ';
           codeInput.classList.remove('discount-valid', 'discount-invalid');
+          renderTotal(section);
           return;
         }
         debounceTimer = setTimeout(function () {
@@ -339,6 +415,7 @@
                 codeInput.classList.add('discount-invalid');
                 codeInput.classList.remove('discount-valid');
               }
+              renderTotal(section);
             })
             .catch(function () {});
         }, 400);
