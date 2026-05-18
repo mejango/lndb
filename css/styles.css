@@ -3764,3 +3764,96 @@ p:last-child {
     font-size: 1.4rem;
   }
 }
+
+/* ===== QUANTITY STEPPER ===== */
+.qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.qty-stepper-btn {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.03);
+  color: var(--color-forest);
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, background 0.2s;
+  padding: 0;
+}
+
+.qty-stepper-btn:hover:not(:disabled) {
+  border-color: var(--color-sage);
+}
+
+.qty-stepper-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.qty-stepper-value {
+  min-width: 28px;
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-forest);
+  user-select: none;
+}
+
+.product-total {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-forest);
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+}
+
+.product-total-label {
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-right: 0.25rem;
+}
+
+/* Modal variant: full-width row inside the modal step */
+.checkout-modal .qty-stepper-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.checkout-modal .qty-stepper-row-label {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-forest);
+  font-weight: 500;
+}
+
+.checkout-modal .checkout-total-line {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-forest);
+  font-weight: 600;
+  margin: 0.5rem 0 1rem;
+  text-align: right;
+}
+
+.checkout-modal .checkout-total-line .checkout-total-label {
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-right: 0.25rem;
+}
