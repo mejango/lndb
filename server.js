@@ -70,6 +70,11 @@ app.post('/api/checkout', express.json(), (req, res) => {
   const validCodes = (process.env.DISCOUNT_CODES || '').toUpperCase().split(',').map(c => c.trim()).filter(Boolean);
   const hasDiscount = !!(discountCode && !isTestMode && validCodes.includes(discountCode));
 
+  // Quantity: integer clamped to [1, 10]; anything else falls back to 1
+  const rawQty = req.body && req.body.quantity;
+  const parsedQty = Number.isFinite(rawQty) ? Math.floor(rawQty) : parseInt(rawQty, 10);
+  const quantity = Number.isFinite(parsedQty) && parsedQty >= 1 && parsedQty <= 10 ? parsedQty : 1;
+
   // Use test credentials when TEST promo code is entered
   const secret = isTestMode ? process.env.WOMPI_TEST_INTEGRITY_SECRET : process.env.WOMPI_INTEGRITY_SECRET;
   const publicKey = isTestMode ? process.env.WOMPI_TEST_PUBLIC_KEY : process.env.WOMPI_PUBLIC_KEY;
@@ -77,15 +82,15 @@ app.post('/api/checkout', express.json(), (req, res) => {
     return res.status(500).json({ error: 'Checkout not configured' });
   }
 
-  const bookPrice = isTestMode
+  const unitPrice = isTestMode
     ? 200000
     : hasDiscount
       ? parseInt(process.env.DISCOUNT_PRICE_CENTS || '6800000', 10)
       : parseInt(process.env.BOOK_PRICE_CENTS || '8000000', 10);
   const shipping = isTestMode ? 0 : parseInt(process.env.SHIPPING_COST_CENTS || '1800000', 10);
-  const amountInCents = bookPrice + shipping;
+  const amountInCents = unitPrice * quantity + shipping;
   const currency = 'COP';
-  const reference = `LNDB-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
+  const reference = `LNDB-Q${quantity}-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
 
   // Wompi integrity signature: SHA256(reference + amountInCents + currency + integrity_secret)
   const signature = crypto
@@ -107,6 +112,7 @@ app.post('/api/checkout', express.json(), (req, res) => {
     publicKey,
     redirectUrl: `${process.env.DOMAIN || ''}/exito.html`,
     discountApplied: hasDiscount,
+    quantity,
     shippingAddress
   });
 });
