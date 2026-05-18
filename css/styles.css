@@ -3444,6 +3444,13 @@ p:last-child {
 }
 
 /* ===== DISCOUNT CODE ===== */
+/* Discount codes temporarily disabled — hide the entry point.
+   Revert this single rule (and the .discount-field rule below) to re-enable. */
+.discount-toggle,
+.discount-field {
+  display: none !important;
+}
+
 .discount-toggle {
   font-size: 0.8rem;
   color: var(--color-sage-dark);
