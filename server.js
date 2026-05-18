@@ -129,7 +129,7 @@ const PAYMENT_METHOD_LABELS = {
   BANCOLOMBIA_COLLECT: 'Bancolombia',
 };
 
-function buildConfirmationEmail({ reference, amount, paymentMethod, shippingAddress }) {
+function buildConfirmationEmail({ reference, amount, paymentMethod, shippingAddress, quantity }) {
   const domain = process.env.DOMAIN || '';
   const formatted = '$' + (amount / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   const method = PAYMENT_METHOD_LABELS[paymentMethod] || paymentMethod || '—';
@@ -183,6 +183,10 @@ function buildConfirmationEmail({ reference, amount, paymentMethod, shippingAddr
               <td style="padding:6px 0;font-family:Georgia,'Times New Roman',serif;font-size:14px;color:#7E8E6D;">Referencia</td>
               <td align="right" style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#3B4A3A;">${reference}</td>
             </tr>
+            ${quantity && quantity > 0 ? `<tr>
+              <td style="padding:6px 0;font-family:Georgia,'Times New Roman',serif;font-size:14px;color:#7E8E6D;">Cantidad</td>
+              <td align="right" style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#3B4A3A;">${quantity} ${quantity === 1 ? 'libro' : 'libros'}</td>
+            </tr>` : ''}
             <tr>
               <td style="padding:6px 0;font-family:Georgia,'Times New Roman',serif;font-size:14px;color:#7E8E6D;">Total</td>
               <td align="right" style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#3B4A3A;font-weight:bold;">${formatted}</td>
@@ -262,6 +266,10 @@ app.post('/api/wompi-webhook', express.json(), async (req, res) => {
     }
     processedReferences.add(transaction.reference);
 
+    // Parse quantity from reference (format: LNDB-Q<n>-<ts>-<rand>; legacy: LNDB-<ts>-<rand>)
+    const qtyMatch = /^LNDB-Q(\d+)-/.exec(transaction.reference || '');
+    const quantity = qtyMatch ? parseInt(qtyMatch[1], 10) : 1;
+
     // Send confirmation email
     const email = transaction.customer_email;
     if (!email) {
@@ -283,6 +291,7 @@ app.post('/api/wompi-webhook', express.json(), async (req, res) => {
         amount: transaction.amount_in_cents,
         paymentMethod: transaction.payment_method_type,
         shippingAddress: transaction.shipping_address,
+        quantity,
       }),
     });
 
