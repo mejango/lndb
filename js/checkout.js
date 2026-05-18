@@ -38,6 +38,14 @@
 
           // Step 1
           '<div class="checkout-step active" id="checkout-step-1">' +
+            '<div class="qty-stepper-row">' +
+              '<span class="qty-stepper-row-label">Cantidad</span>' +
+              '<span class="qty-stepper" data-modal-qty-stepper>' +
+                '<button type="button" class="qty-stepper-btn" data-modal-qty-minus aria-label="Disminuir cantidad">−</button>' +
+                '<span class="qty-stepper-value" data-modal-qty-value>1</span>' +
+                '<button type="button" class="qty-stepper-btn" data-modal-qty-plus aria-label="Aumentar cantidad">+</button>' +
+              '</span>' +
+            '</div>' +
             '<div class="checkout-modal-field">' +
               '<label for="checkout-name">Nombre completo</label>' +
               '<input type="text" id="checkout-name" required placeholder="Tu nombre">' +
@@ -71,6 +79,7 @@
               '<label for="checkout-notes">Notas <span style="font-weight:400;color:var(--color-text-muted)">(opcional)</span></label>' +
               '<input type="text" id="checkout-notes" placeholder="Apto, edificio, referencias">' +
             '</div>' +
+            '<p class="checkout-total-line" id="checkout-total-line"><span class="checkout-total-label">Total:</span>$98.000</p>' +
             '<button class="btn btn-primary" id="checkout-pay">Pagar</button>' +
             '<button class="checkout-modal-back" id="checkout-back">&larr; Volver</button>' +
           '</div>' +
@@ -104,6 +113,40 @@
     var backBtn = overlay.querySelector('#checkout-back');
     var payBtn = overlay.querySelector('#checkout-pay');
     var closeBtn = overlay.querySelector('#checkout-close');
+
+    // Modal qty stepper
+    var modalQtyValue = overlay.querySelector('[data-modal-qty-value]');
+    var modalQtyMinus = overlay.querySelector('[data-modal-qty-minus]');
+    var modalQtyPlus = overlay.querySelector('[data-modal-qty-plus]');
+    var modalTotalLine = overlay.querySelector('#checkout-total-line');
+
+    // Pre-fill from the product page section the button belongs to
+    var section = btn.closest('.product-text, .book-section, section');
+    var initialQty = getQty(section);
+    var modalQty = initialQty;
+
+    function renderModalTotal() {
+      var unit = getUnitCents(section);
+      var total = unit * modalQty + SHIPPING_CENTS;
+      if (modalTotalLine) {
+        modalTotalLine.innerHTML = '<span class="checkout-total-label">Total:</span>' + formatCop(total);
+      }
+      if (modalQtyValue) modalQtyValue.textContent = String(modalQty);
+      if (modalQtyMinus) modalQtyMinus.disabled = modalQty <= MIN_QTY;
+      if (modalQtyPlus) modalQtyPlus.disabled = modalQty >= MAX_QTY;
+    }
+
+    if (modalQtyMinus) {
+      modalQtyMinus.addEventListener('click', function () {
+        if (modalQty > MIN_QTY) { modalQty--; renderModalTotal(); }
+      });
+    }
+    if (modalQtyPlus) {
+      modalQtyPlus.addEventListener('click', function () {
+        if (modalQty < MAX_QTY) { modalQty++; renderModalTotal(); }
+      });
+    }
+    renderModalTotal();
 
     // Close handlers
     closeBtn.addEventListener('click', closeModal);
@@ -171,12 +214,12 @@
         department: collected.department,
         phone: collected.phone,
         notes: collected.notes || '',
+        quantity: modalQty,
         _subject: 'Nueva orden',
         source: 'checkout'
       };
 
       // Read discount code from the page (outside modal)
-      var section = currentBtn.closest('.product-text, .book-section, section');
       var codeInput = section ? section.querySelector('[data-discount-code]') : null;
       var discountCode = codeInput ? codeInput.value.trim() : '';
 
@@ -202,6 +245,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          quantity: modalQty,
           discountCode: discountCode,
           shippingAddress: shippingAddress
         })
