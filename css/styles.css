@@ -1023,6 +1023,43 @@ p:last-child {
 .arboleda-image picture:nth-child(2) img { width: 170px; } /* Cenizo — small shrub */
 .arboleda-image picture:nth-child(3) img { width: 320px; } /* Cerezo — large */
 
+.drawing-guide {
+  padding: var(--section-padding);
+  background-color: var(--color-cream-light);
+  border-top: 1px solid rgba(64, 74, 55, 0.12);
+}
+
+.drawing-guide .container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+.drawing-guide-image img {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  margin: 0 auto;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.1);
+}
+
+.drawing-guide-content h2 {
+  margin-bottom: 1.5rem;
+}
+
+.drawing-guide-content p {
+  line-height: 1.8;
+}
+
+.drawing-guide-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
 /* ===== BUTTON HINT ===== */
 .btn-hint {
   display: block;
@@ -1690,7 +1727,8 @@ p:last-child {
   .book-section .container,
   .tree-quiz .container,
   .product-detail .container,
-  .arboleda-section .container {
+  .arboleda-section .container,
+  .drawing-guide .container {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
