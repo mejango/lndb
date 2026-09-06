@@ -80,7 +80,7 @@
           <!-- Arboleda CTA — secondary to email -->
           <div class="quiz-result-arboleda">
             <p class="quiz-result-arboleda-text">¿Quiénes son los árboles de tu vida?</p>
-            <a href="arboleda.html" class="btn btn-secondary">Crea tu arboleda</a>
+            <a href="/arboleda" class="btn btn-secondary">Crea tu arboleda</a>
           </div>
 
           <!-- Secondary links -->
@@ -101,7 +101,7 @@
   <div id="footer"></div>
 
   <script src="js/trees.js"></script>
-  <script src="js/components.js"></script>
+  <script src="js/components.js?v=clean1"></script>
   <script>
     (function () {
       'use strict';
@@ -257,7 +257,7 @@
         document.getElementById('result-tree-desc').textContent = descriptions[winner];
 
         // Set up listen link
-        listenBtn.href = 'arboles/' + tree.slug + '.html?from=quiz';
+        listenBtn.href = '/arboles/' + tree.slug + '?from=quiz';
 
         plausible('Quiz Completed', { props: { tree: tree.name } });
 

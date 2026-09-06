@@ -75,7 +75,7 @@
           <div class="newsletter-success" style="display:none;">
             <p class="newsletter-msg">Gracias por unirte al bosque.</p>
             <p class="newsletter-label">Ahora descubre qué árbol eres:</p>
-            <a href="quiz.html" class="newsletter-quiz-btn">Identificar mi árbol</a>
+            <a href="/quiz" class="newsletter-quiz-btn">Identificar mi árbol</a>
           </div>
         </div>
       </div>
@@ -114,7 +114,7 @@
         <p class="product-total" data-product-total><span class="product-total-label">Total:</span>$98.000</p>
         <div class="product-actions">
           <button class="btn btn-primary" data-checkout id="book-cta">Comprar libro</button>
-          <a href="productos.html" class="btn btn-outline">Más información</a>
+          <a href="/productos" class="btn btn-outline">Más información</a>
         </div>
       </div>
     </div>
@@ -126,7 +126,7 @@
       <div>
         <h2>¿Qué árbol eres?</h2>
         <p>¿Un Caimito? ¿Un Cenizo? Cada persona se reconoce en un árbol, identifícate con el tuyo.</p>
-        <a href="quiz.html" class="btn btn-outline">Ver mi árbol</a>
+        <a href="/quiz" class="btn btn-outline">Ver mi árbol</a>
       </div>
       <div class="quiz-images">
         <picture><source srcset="assets/images/trees/thumb/Caimito.webp" type="image/webp"><img src="assets/images/trees/Caimito.png" alt="Caimito" loading="lazy" width="449" height="500"></picture>
@@ -139,7 +139,7 @@
   <div id="footer"></div>
 
   <script src="js/trees.js"></script>
-  <script src="js/components.js"></script>
+  <script src="js/components.js?v=clean1"></script>
   <script src="https://checkout.wompi.co/widget.js"></script>
   <script src="js/checkout.js?v=ml1"></script>
   <script>
@@ -170,7 +170,7 @@
       LNDB.treeOrder.forEach(function (key) {
         var tree = LNDB.trees[key];
         var card = document.createElement('a');
-        card.href = 'arboles/' + tree.slug + '.html';
+        card.href = '/arboles/' + tree.slug;
         card.className = 'forest-grid-item';
         card.style.setProperty('--tree-size', (sizes[key] || 180) + 'px');
 

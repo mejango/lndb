@@ -26,6 +26,28 @@ app.use((req, res, next) => {
   next();
 });
 
+// Public pages use extensionless URLs; keep old links and query parameters working.
+const publicPages = new Map();
+for (const file of fs.readdirSync(__dirname).filter(file => file.endsWith('.html'))) {
+  publicPages.set(file === 'index.html' ? '/' : '/' + file.slice(0, -5), '/' + file);
+}
+for (const file of fs.readdirSync(__dirname + '/arboles').filter(file => file.endsWith('.html'))) {
+  publicPages.set('/arboles/' + file.slice(0, -5), '/arboles/' + file);
+}
+
+app.use((req, res, next) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+  let canonical = req.path.replace(/\/$/, '').replace(/\.html$/, '') || '/';
+  if (canonical === '/index') canonical = '/';
+  const file = publicPages.get(canonical);
+  if (!file) return next();
+  const queryIndex = req.url.indexOf('?');
+  const query = queryIndex === -1 ? '' : req.url.slice(queryIndex);
+  if (req.path !== canonical) return res.redirect(301, canonical + query);
+  req.url = file + query;
+  next();
+});
+
 // Static files with caching
 app.use(express.static('.', {
   setHeaders(res, filePath) {
@@ -152,7 +174,7 @@ app.post('/api/checkout', express.json(), (req, res) => {
     currency,
     signature,
     publicKey,
-    redirectUrl: `${process.env.DOMAIN || ''}/exito.html`,
+    redirectUrl: `${process.env.DOMAIN || ''}/exito`,
     discountApplied: hasDiscount,
     quantity,
     shippingAddress

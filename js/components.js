@@ -48,11 +48,12 @@
 
   function initNav(header) {
     // Set active link based on current page
-    var current = window.location.pathname.split('/').pop() || 'index.html';
+    var current = window.location.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+    if (current === '/index') current = '/';
     var links = header.querySelectorAll('.nav-links a');
     links.forEach(function (a) {
-      var href = a.getAttribute('href');
-      if (href === current || (current === '' && href === 'index.html')) {
+      var href = new URL(a.href, window.location.href).pathname;
+      if (href === current) {
         a.classList.add('active');
       } else {
         a.classList.remove('active');
