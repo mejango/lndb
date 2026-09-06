@@ -36,7 +36,7 @@
         if (id === 'footer') {
           el.querySelectorAll('[data-social]').forEach(function (link) {
             link.addEventListener('click', function () {
-              plausible('Social Click', { props: { type: link.dataset.social } });
+              window.lndbTrack('Social Click', { props: { type: link.dataset.social, placement: 'footer' } });
             });
           });
         }
@@ -82,12 +82,4 @@
   inject('header', 'components/header.html');
   inject('footer', 'components/footer.html');
 
-  // ── Plausible analytics ──
-  var pa = document.createElement('script');
-  pa.async = true;
-  pa.src = 'https://plausible.io/js/pa-u_DKYx2k3O_ZCnip5FONF.js';
-  document.head.appendChild(pa);
-  window.plausible = window.plausible || function () { (plausible.q = plausible.q || []).push(arguments); };
-  plausible.init = plausible.init || function (i) { plausible.o = i || {}; };
-  plausible.init();
 })();

@@ -40,7 +40,7 @@
         </p>
         <p class="product-total" data-product-total><span class="product-total-label">Total:</span>$98.000</p>
         <div class="product-actions">
-          <button class="btn btn-primary" data-checkout>Comprar libro</button>
+          <button class="btn btn-primary" data-checkout data-track-event="CTA Click" data-track-type="book" data-track-placement="product_detail">Comprar libro</button>
           <a href="https://wa.me/573013784227?text=Hola%2C%20quiero%20conocer%20el%20libro%20Los%20Nombres%20del%20Bosque" target="_blank" rel="noopener" class="btn btn-outline" data-whatsapp="libro">Escríbenos por WhatsApp</a>
         </div>
       </div>
@@ -77,8 +77,8 @@
         <h2 id="drawing-guide-title">Dibujar también es una forma de conocer un árbol</h2>
         <p>Descarga aquí una guía práctica para ilustrar un mango.</p>
         <div class="drawing-guide-actions">
-          <a href="assets/downloads/guia-ilustrar-mango.pdf" download="Guia-para-ilustrar-un-mango.pdf" class="btn btn-primary">Descargar guía</a>
-          <a href="assets/downloads/guia-ilustrar-mango.pdf" target="_blank" rel="noopener" class="btn btn-outline" aria-label="Abrir guía PDF para imprimir (nueva pestaña)">Abrir e imprimir</a>
+          <a href="assets/downloads/guia-ilustrar-mango.pdf" download="Guia-para-ilustrar-un-mango.pdf" data-track-event="Guide Download Click" data-track-action="download" data-track-asset="mango-guide" data-track-format="pdf" data-track-placement="drawing_guide" class="btn btn-primary">Descargar guía</a>
+          <a href="assets/downloads/guia-ilustrar-mango.pdf" target="_blank" rel="noopener" class="btn btn-outline" aria-label="Abrir guía PDF para imprimir (nueva pestaña)" data-track-event="Guide Print Click" data-track-action="open_print" data-track-asset="mango-guide" data-track-format="pdf" data-track-placement="drawing_guide">Abrir e imprimir</a>
         </div>
         <span class="btn-hint">Gratis · PDF de una página · Tamaño carta</span>
       </div>
@@ -108,19 +108,20 @@
 
   <div id="footer"></div>
 
-  <script src="js/components.js?v=clean1"></script>
+  <script src="js/analytics.js?v=cta1"></script>
+  <script src="js/components.js?v=cta1"></script>
   <script src="https://checkout.wompi.co/widget.js"></script>
-  <script src="js/checkout.js?v=ml1"></script>
+  <script src="js/checkout.js?v=cta1"></script>
   <script>
     // Track arboleda CTA
     document.querySelector('.arboleda-section .btn-primary').addEventListener('click', function () {
-      plausible('CTA Click', { props: { type: 'arboleda', source: 'productos' } });
+      window.lndbTrack('CTA Click', { props: { type: 'arboleda', source: 'productos', placement: 'arboleda' } });
     });
 
     // Track WhatsApp CTA clicks
     document.querySelectorAll('[data-whatsapp]').forEach(function (el) {
       el.addEventListener('click', function () {
-        plausible('WhatsApp Click', { props: { source: el.dataset.whatsapp } });
+        window.lndbTrack('WhatsApp Click', { props: { source: 'productos', type: el.dataset.whatsapp, placement: 'product_detail' } });
       });
     });
   </script>

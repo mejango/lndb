@@ -139,19 +139,20 @@
   <div id="footer"></div>
 
   <script src="js/trees.js"></script>
-  <script src="js/components.js?v=clean1"></script>
+  <script src="js/analytics.js?v=cta1"></script>
+  <script src="js/components.js?v=cta1"></script>
   <script src="https://checkout.wompi.co/widget.js"></script>
-  <script src="js/checkout.js?v=ml1"></script>
+  <script src="js/checkout.js?v=cta1"></script>
   <script>
     // CTA tracking
     document.getElementById('book-cta').addEventListener('click', function () {
-      plausible('CTA Click', { props: { type: 'book', source: 'homepage' } });
+      window.lndbTrack('CTA Click', { props: { type: 'book', source: 'homepage', placement: 'book' } });
     });
     document.querySelector('.tree-quiz .btn-outline').addEventListener('click', function () {
-      plausible('CTA Click', { props: { type: 'quiz', source: 'homepage' } });
+      window.lndbTrack('CTA Click', { props: { type: 'quiz', source: 'homepage', placement: 'quiz' } });
     });
     document.querySelector('.product-actions .btn-outline').addEventListener('click', function () {
-      plausible('CTA Click', { props: { type: 'productos', source: 'homepage' } });
+      window.lndbTrack('CTA Click', { props: { type: 'productos', source: 'homepage', placement: 'book' } });
     });
 
     // Populate forest grid from LNDB data
@@ -194,7 +195,7 @@
         blurb.textContent = tree.blurb;
 
         card.addEventListener('click', function () {
-          plausible('Forest Tree Click', { props: { tree: tree.name } });
+          window.lndbTrack('Forest Tree Click', { props: { tree: tree.name, placement: 'forest_grid' } });
         });
         card.appendChild(picture);
         card.appendChild(name);
@@ -214,6 +215,8 @@
         e.preventDefault();
         var name = form.querySelector('[name="name"]').value;
         var email = form.querySelector('[name="email"]').value;
+        if (btn.disabled) return;
+        window.lndbTrack('Signup Submitted', { props: { group: 'newsletter', placement: 'homepage_form' } });
         btn.disabled = true;
         btn.textContent = '...';
 
@@ -223,16 +226,18 @@
           body: JSON.stringify({ name: name, email: email })
         }).then(function (r) {
           if (r.ok) {
-            plausible('Newsletter Signup');
+            window.lndbTrack('Newsletter Signup', { props: { group: 'newsletter', placement: 'homepage_form' } });
             form.style.display = 'none';
             form.previousElementSibling.style.display = 'none'; // hide label
             successEl.style.display = '';
           } else {
+            window.lndbTrack('Signup Error', { props: { group: 'newsletter', reason: 'server' } });
             btn.disabled = false;
             btn.textContent = 'Suscribirme';
             alert('Algo salió mal. Intenta de nuevo.');
           }
         }).catch(function () {
+          window.lndbTrack('Signup Error', { props: { group: 'newsletter', reason: 'network' } });
           btn.disabled = false;
           btn.textContent = 'Suscribirme';
           alert('Error de conexión. Intenta de nuevo.');

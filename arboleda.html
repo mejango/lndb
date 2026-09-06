@@ -109,7 +109,8 @@
   <div id="footer"></div>
 
   <script src="js/trees.js"></script>
-  <script src="js/components.js?v=clean1"></script>
+  <script src="js/analytics.js?v=cta1"></script>
+  <script src="js/components.js?v=cta1"></script>
   <script>
     (function () {
       'use strict';
@@ -263,7 +264,7 @@
         updatePickerState();
       }
 
-      detailBack.addEventListener('click', hideTreeDetail);
+      detailBack.addEventListener('click', function () { window.lndbTrack('Arboleda Picker Action', { props: { action: 'back_to_trees' } }); hideTreeDetail(); });
 
       detailSelect.addEventListener('click', function () {
         if (currentDetailKey && personNameInput.value.trim()) {
@@ -277,7 +278,7 @@
         var name = personNameInput.value.trim();
         if (!name) return;
 
-        if (typeof plausible !== 'undefined') plausible('Arboleda Tree Selected', { props: { tree: trees[key].name } });
+        if (typeof plausible !== 'undefined') window.lndbTrack('Arboleda Tree Selected', { props: { tree: trees[key].name, member_count: grove.members.length + 1 } });
         var wasCreatorPick = pickerForCreator;
         grove.members.push({ personName: name, treeKey: key, isCreator: wasCreatorPick });
         closePicker();
@@ -310,6 +311,7 @@
         // Remove buttons
         membersEl.querySelectorAll('.ag-member-remove').forEach(function (btn) {
           btn.addEventListener('click', function () {
+            window.lndbTrack('Arboleda Member Removed', { props: { member_count: grove.members.length - 1 } });
             grove.members.splice(parseInt(btn.dataset.index), 1);
             renderMembers();
             updateDedication();
@@ -467,6 +469,8 @@
           ctx.font = '300 44px Mulish, system-ui, sans-serif';
           ctx.fillText('Los Nombres del Bosque', W - 60, groundY + 230);
 
+          window.lndbTrack('Arboleda Preview Ready', { props: { member_count: N, outcome: errors ? 'partial' : 'ready' } });
+
           // LNDB logo (top left)
           var logo = new Image();
           logo.crossOrigin = 'anonymous';
@@ -508,6 +512,7 @@
       function downloadCanvas() {
         canvas.toBlob(function (blob) {
           if (!blob) {
+            window.lndbTrack('Arboleda Export Result', { props: { member_count: grove.members.length, outcome: 'error', reason: 'image_generation' } });
             alert('No se pudo generar la imagen. Intenta de nuevo.');
             return;
           }
@@ -515,8 +520,11 @@
             var file = new File([blob], 'mi-arboleda.png', { type: 'image/png' });
             var shareData = { title: 'Mi arboleda', files: [file] };
             if (navigator.canShare(shareData)) {
-              navigator.share(shareData).catch(function () {
-                fallbackDownload(blob);
+              navigator.share(shareData).then(function () {
+                window.lndbTrack('Arboleda Export Result', { props: { member_count: grove.members.length, method: 'native_file', outcome: 'shared' } });
+              }).catch(function (err) {
+                window.lndbTrack('Arboleda Export Result', { props: { member_count: grove.members.length, method: 'native_file', outcome: err.name === 'AbortError' ? 'cancelled' : 'error' } });
+                if (err.name !== 'AbortError') fallbackDownload(blob);
               });
               return;
             }
@@ -532,6 +540,7 @@
         a.download = 'mi-arboleda.png';
         document.body.appendChild(a);
         a.click();
+        window.lndbTrack('Arboleda Export Result', { props: { member_count: grove.members.length, method: 'image_download', outcome: 'download_started' } });
         document.body.removeChild(a);
         setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
       }
@@ -553,7 +562,7 @@
         grove.creatorName = creatorNameInput.value.trim() || 'Anónimo';
         showScreen(builderEl);
         openPicker(true);
-        if (typeof plausible !== 'undefined') plausible('Arboleda Started');
+        if (typeof plausible !== 'undefined') window.lndbTrack('Arboleda Started', { props: { member_count: grove.members.length } });
       });
 
       creatorNameInput.addEventListener('keydown', function (e) {
@@ -562,10 +571,12 @@
 
       addBtn.addEventListener('click', function () {
         if (grove.members.length >= MAX_MEMBERS) return;
+        window.lndbTrack('Arboleda Add Person', { props: { member_count: grove.members.length } });
         openPicker();
       });
 
       pickerCancel.addEventListener('click', function () {
+        window.lndbTrack('Arboleda Picker Action', { props: { action: 'cancel', member_count: grove.members.length } });
         if (pickerForCreator) {
           // Go back to intro if canceling creator pick
           closePicker();
@@ -591,25 +602,27 @@
         showScreen(previewEl);
         buildPreview();
         printBtn.href = buildWhatsAppLink();
-        if (typeof plausible !== 'undefined') plausible('Arboleda Preview');
+        if (typeof plausible !== 'undefined') window.lndbTrack('Arboleda Preview', { props: { member_count: grove.members.length } });
       });
 
       updateBtn.addEventListener('click', function () {
+        window.lndbTrack('Arboleda Updated', { props: { member_count: grove.members.length } });
         buildPreview();
         printBtn.href = buildWhatsAppLink();
       });
 
       downloadBtn.addEventListener('click', function () {
         downloadCanvas();
-        if (typeof plausible !== 'undefined') plausible('Arboleda Download');
+        if (typeof plausible !== 'undefined') window.lndbTrack('Arboleda Download', { props: { member_count: grove.members.length, outcome: 'intent' } });
       });
 
       backBtn.addEventListener('click', function () {
+        window.lndbTrack('Arboleda Edit', { props: { member_count: grove.members.length } });
         showScreen(builderEl);
       });
 
       printBtn.addEventListener('click', function () {
-        if (typeof plausible !== 'undefined') plausible('Arboleda Print CTA');
+        if (typeof plausible !== 'undefined') window.lndbTrack('Arboleda Print CTA', { props: { member_count: grove.members.length } });
       });
 
       // Init

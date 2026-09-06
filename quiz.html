@@ -101,7 +101,8 @@
   <div id="footer"></div>
 
   <script src="js/trees.js"></script>
-  <script src="js/components.js?v=clean1"></script>
+  <script src="js/analytics.js?v=cta1"></script>
+  <script src="js/components.js?v=cta1"></script>
   <script>
     (function () {
       'use strict';
@@ -147,7 +148,10 @@
         }, 50);
       }
 
+      var answerLocked = false;
       function showQuestion(inPlace) {
+        answerLocked = false;
+        window.lndbTrack('Quiz Question Viewed', { props: { question: currentQuestion + 1 } });
         var q = questions[currentQuestion];
         var progress = ((currentQuestion) / questions.length) * 100;
         progressBar.style.width = progress + '%';
@@ -185,6 +189,9 @@
       }
 
       function selectAnswer(index) {
+        if (answerLocked) return;
+        answerLocked = true;
+        window.lndbTrack('Quiz Answered', { props: { question: currentQuestion + 1, answer: index + 1 } });
         var answer = questions[currentQuestion].answers[index];
 
         var cards = answersEl.querySelectorAll('.quiz-answer-card');
@@ -259,7 +266,7 @@
         // Set up listen link
         listenBtn.href = '/arboles/' + tree.slug + '?from=quiz';
 
-        plausible('Quiz Completed', { props: { tree: tree.name } });
+        window.lndbTrack('Quiz Completed', { props: { tree: tree.name } });
 
         // Build the reveal text with typewriter
         revealEl.innerHTML = '';
@@ -368,7 +375,7 @@
 
       // Share button
       shareBtn.addEventListener('click', function () {
-        plausible('Quiz Shared');
+        window.lndbTrack('Quiz Shared', { props: { tree: trees[currentWinnerKey].name, outcome: 'intent' } });
         var tree = trees[currentWinnerKey];
         var name = userName.trim();
         var title = name ? name + ', eres ' + tree.name : 'Eres ' + tree.name;
@@ -383,14 +390,14 @@
               files: [file]
             };
             if (navigator.canShare(shareData)) {
-              navigator.share(shareData).catch(function () {});
+              navigator.share(shareData).then(function () { window.lndbTrack('Share Result', { props: { method: 'native_file', outcome: 'shared', tree: tree.name } }); }).catch(function (err) { window.lndbTrack('Share Result', { props: { method: 'native_file', outcome: err.name === 'AbortError' ? 'cancelled' : 'error', tree: tree.name } }); });
             } else {
               // Share without file
               navigator.share({
                 title: title,
                 text: title + ' — Los Nombres del Bosque',
                 url: window.location.href
-              }).catch(function () {});
+              }).then(function () { window.lndbTrack('Share Result', { props: { method: 'native_link', outcome: 'shared', tree: tree.name } }); }).catch(function (err) { window.lndbTrack('Share Result', { props: { method: 'native_link', outcome: err.name === 'AbortError' ? 'cancelled' : 'error', tree: tree.name } }); });
             }
           });
         } else {
@@ -402,6 +409,7 @@
             a.download = 'mi-arbol-' + tree.slug + '.png';
             document.body.appendChild(a);
             a.click();
+            window.lndbTrack('Share Result', { props: { method: 'image_download', outcome: 'download_started', tree: tree.name } });
             document.body.removeChild(a);
             setTimeout(function () { URL.revokeObjectURL(url); }, 5000);
           });
@@ -420,6 +428,7 @@
         var honeypot = quizEmailForm.querySelector('.tree-email-honeypot');
         if (honeypot && honeypot.value) return;
 
+        window.lndbTrack('Signup Submitted', { props: { group: 'quiz', tree: trees[currentWinnerKey].name } });
         submitBtn.disabled = true;
         submitBtn.textContent = '...';
 
@@ -434,7 +443,7 @@
           })
         }).then(function (r) {
           if (r.ok) {
-            plausible('Email Signup', { props: { tree: trees[currentWinnerKey].name, source: 'quiz' } });
+            window.lndbTrack('Email Signup', { props: { tree: trees[currentWinnerKey].name, source: 'quiz', group: 'quiz' } });
             quizEmailMsg.textContent = 'Gracias. Te avisaremos cuando sea el momento.';
             quizEmailMsg.className = 'tree-email-msg success';
             submitBtn.textContent = 'Enviado';
@@ -442,6 +451,7 @@
             throw new Error('fail');
           }
         }).catch(function () {
+          window.lndbTrack('Signup Error', { props: { group: 'quiz', reason: 'request_failed', tree: trees[currentWinnerKey].name } });
           quizEmailMsg.textContent = 'No se pudo enviar. Intenta de nuevo.';
           quizEmailMsg.className = 'tree-email-msg error';
           submitBtn.disabled = false;
@@ -453,13 +463,13 @@
       startBtn.addEventListener('click', function () {
         userName = nameInput.value;
         resetScores();
+        window.lndbTrack('Quiz Started');
         showQuestion();
-        plausible('Quiz Started');
       });
 
       // Retry button
       retryBtn.addEventListener('click', function () {
-        plausible('Quiz Retry');
+        window.lndbTrack('Quiz Retry');
         resetScores();
         nameInput.value = '';
         userName = '';
@@ -469,10 +479,10 @@
 
       // CTA tracking
       listenBtn.addEventListener('click', function () {
-        plausible('Quiz CTA Click', { props: { type: 'listen', tree: trees[currentWinnerKey].name } });
+        window.lndbTrack('Quiz CTA Click', { props: { type: 'listen', tree: trees[currentWinnerKey].name } });
       });
       document.querySelector('.quiz-result-arboleda .btn-secondary').addEventListener('click', function () {
-        plausible('Quiz CTA Click', { props: { type: 'arboleda' } });
+        window.lndbTrack('Quiz CTA Click', { props: { type: 'arboleda', tree: trees[currentWinnerKey].name } });
       });
 
       // Allow Enter key on name input to start quiz

@@ -16,9 +16,10 @@
 
   var FORMSPREE_URL = 'https://formspree.io/f/mreyvela';
 
-  function track(eventName, props) {
-    if (typeof window.plausible === 'function') {
-      window.plausible(eventName, props);
+  var checkoutContext = {};
+  function track(eventName, options) {
+    if (typeof window.lndbTrack === 'function') {
+      window.lndbTrack(eventName, { props: Object.assign({}, checkoutContext, options && options.props) });
     }
   }
 
@@ -124,6 +125,8 @@
     var section = btn.closest('.product-text, .book-section, section');
     var initialQty = getQty(section);
     var modalQty = initialQty;
+    checkoutContext = { quantity: modalQty, step: 'contact', type: 'book' };
+    track('Checkout Opened');
 
     function renderModalTotal() {
       var unit = getUnitCents(section);
@@ -138,36 +141,39 @@
 
     if (modalQtyMinus) {
       modalQtyMinus.addEventListener('click', function () {
-        if (modalQty > MIN_QTY) { modalQty--; renderModalTotal(); }
+        if (modalQty > MIN_QTY) { modalQty--; renderModalTotal(); checkoutContext.quantity = modalQty; track('Quantity Changed', { props: { placement: 'checkout', action: 'decrease' } }); }
       });
     }
     if (modalQtyPlus) {
       modalQtyPlus.addEventListener('click', function () {
-        if (modalQty < MAX_QTY) { modalQty++; renderModalTotal(); }
+        if (modalQty < MAX_QTY) { modalQty++; renderModalTotal(); checkoutContext.quantity = modalQty; track('Quantity Changed', { props: { placement: 'checkout', action: 'increase' } }); }
       });
     }
     renderModalTotal();
 
     // Close handlers
-    closeBtn.addEventListener('click', closeModal);
+    closeBtn.addEventListener('click', function () { closeModal('close_button'); });
     overlay.addEventListener('click', function (e) {
-      if (e.target === overlay) closeModal();
+      if (e.target === overlay) closeModal('backdrop');
     });
     document.addEventListener('keydown', escHandler);
 
     // Step 1 → Step 2
     nextBtn.addEventListener('click', function () {
       if (!nameInput.value.trim() || !emailInput.value.trim()) {
+        track('Checkout Validation Error', { props: { reason: 'missing_contact' } });
         highlightEmpty([nameInput, emailInput]);
         return;
       }
       if (!isValidEmail(emailInput.value.trim())) {
+        track('Checkout Validation Error', { props: { reason: 'invalid_email' } });
         emailInput.style.borderColor = 'var(--color-coral)';
         return;
       }
       collected.name = nameInput.value.trim();
       collected.email = emailInput.value.trim();
       track('Checkout Contact Submitted');
+      checkoutContext.step = 'address';
 
       step1.classList.remove('active');
       step2.classList.add('active');
@@ -177,6 +183,8 @@
 
     // Back
     backBtn.addEventListener('click', function () {
+      track('Checkout Back');
+      checkoutContext.step = 'contact';
       step2.classList.remove('active');
       step1.classList.add('active');
       stepText.textContent = 'Paso 1 de 2';
@@ -191,6 +199,7 @@
       var notes = overlay.querySelector('#checkout-notes');
 
       if (!address.value.trim() || !city.value.trim() || !dept.value || !phone.value.trim()) {
+        track('Checkout Validation Error', { props: { reason: 'missing_address' } });
         highlightEmpty([address, city, dept, phone]);
         return;
       }
@@ -240,13 +249,17 @@
         body: JSON.stringify(formData)
       }).catch(function () {});
 
-      // Add to MailerLite (fire-and-forget)
+      // MailerLite signup outcome is separate from the payment outcome.
+      track('Signup Submitted', { props: { group: 'checkout' } });
       fetch('/api/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: collected.name, email: collected.email, group: 'checkout' })
-      }).catch(function () {});
+      }).then(function (r) {
+        track(r.ok ? 'Email Signup' : 'Signup Error', { props: { group: 'checkout', reason: r.ok ? 'accepted' : 'server' } });
+      }).catch(function () { track('Signup Error', { props: { group: 'checkout', reason: 'network' } }); });
 
+      var errorReason = 'network';
       // Call /api/checkout, then open Wompi
       fetch('/api/checkout', {
         method: 'POST',
@@ -259,15 +272,18 @@
       })
         .then(function (r) {
           return r.json().catch(function () {
+            errorReason = 'invalid_response';
             throw new Error('Respuesta invalida del servidor');
           }).then(function (data) {
             if (!r.ok) {
+              errorReason = 'server';
               throw new Error((data && data.error) || 'No pudimos preparar el checkout');
             }
             return data;
           });
         })
         .then(function (data) {
+          errorReason = 'payment_configuration';
           if (data.error) throw new Error(data.error);
           if (typeof window.WidgetCheckout !== 'function') {
             throw new Error('Widget de Wompi no disponible');
@@ -279,11 +295,7 @@
             throw new Error('Firma de integridad faltante');
           }
 
-          track('Checkout Started', {
-            props: { discount: data.discountApplied ? 'yes' : 'no' }
-          });
-
-          closeModal();
+          closeModal('payment');
 
           var checkout = new WidgetCheckout({
             currency: data.currency,
@@ -301,16 +313,26 @@
             }
           });
 
+          checkoutContext.step = 'payment';
+          var purchaseTracked = false;
           checkout.open(function (result) {
-            var tx = result.transaction;
+            var tx = result && result.transaction;
+            var status = tx && ['APPROVED', 'DECLINED', 'VOIDED', 'ERROR', 'PENDING'].includes(tx.status) ? tx.status : 'closed';
+            var paymentMethod = tx && ['CARD', 'NEQUI', 'PSE', 'BANCOLOMBIA_TRANSFER', 'BANCOLOMBIA_COLLECT', 'DAVIPLATA'].includes(tx.payment_method_type) ? tx.payment_method_type : 'other';
+            var paymentProps = { status: status, quantity: data.quantity, amount: data.amountInCents / 100, currency: data.currency, discount: data.discountApplied ? 'yes' : 'no', payment_method: paymentMethod, type: data.publicKey.indexOf('pub_test') === 0 ? 'test' : 'book' };
+            track('Checkout Payment Result', { props: paymentProps });
             if (tx && tx.status === 'APPROVED') {
-              track('Purchase Completed', { props: { reference: data.reference } });
+              if (paymentProps.type !== 'test' && !purchaseTracked) {
+                purchaseTracked = true;
+                track('Purchase Completed', { props: paymentProps });
+              }
               window.location.href = data.redirectUrl + '?ref=' + data.reference;
             }
           });
+          track('Checkout Started', { props: { discount: data.discountApplied ? 'yes' : 'no', quantity: data.quantity, amount: data.amountInCents / 100, currency: data.currency } });
         })
         .catch(function (err) {
-          track('Checkout Error');
+          track('Checkout Error', { props: { reason: errorReason } });
           console.error('Checkout init failed', err);
           payBtn.disabled = false;
           payBtn.textContent = 'Pagar';
@@ -321,8 +343,9 @@
     setTimeout(function () { nameInput.focus(); }, 50);
   }
 
-  function closeModal() {
+  function closeModal(reason) {
     if (overlay) {
+      if (reason !== 'payment') track('Checkout Closed', { props: { reason: reason || 'close' } });
       document.body.removeChild(overlay);
       document.body.style.overflow = '';
       overlay = null;
@@ -331,7 +354,7 @@
   }
 
   function escHandler(e) {
-    if (e.key === 'Escape') closeModal();
+    if (e.key === 'Escape') closeModal('escape');
   }
 
   function isValidEmail(email) {
@@ -423,11 +446,13 @@
     if (minusBtn) {
       minusBtn.addEventListener('click', function () {
         setQty(section, getQty(section) - 1);
+        window.lndbTrack('Quantity Changed', { props: { quantity: getQty(section), placement: 'product', action: 'decrease' } });
       });
     }
     if (plusBtn) {
       plusBtn.addEventListener('click', function () {
         setQty(section, getQty(section) + 1);
+        window.lndbTrack('Quantity Changed', { props: { quantity: getQty(section), placement: 'product', action: 'increase' } });
       });
     }
     updateStepperButtons(section);
@@ -457,11 +482,12 @@
             .then(function (r) { return r.json(); })
             .then(function (data) {
               if (data.valid) {
-                track('Discount Code Applied', { props: { code: code } });
+                track('Discount Code Applied', { props: { discount: 'yes' } });
                 priceEl.childNodes[0].textContent = data.priceFormatted + ' ';
                 codeInput.classList.add('discount-valid');
                 codeInput.classList.remove('discount-invalid');
               } else {
+                track('Discount Code Rejected', { props: { reason: 'invalid' } });
                 priceEl.childNodes[0].textContent = originalPrice + ' ';
                 codeInput.classList.add('discount-invalid');
                 codeInput.classList.remove('discount-valid');
