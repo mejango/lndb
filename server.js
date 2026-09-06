@@ -62,6 +62,48 @@ app.post('/api/validate-code', express.json(), (req, res) => {
   res.json({ valid, priceFormatted: '$' + price });
 });
 
+// Subscribe → MailerLite. Group names map to IDs in the LNDB MailerLite account.
+const ML_GROUPS = {
+  newsletter: '192259452343158031',
+  quiz: '192259452631516863',
+  checkout: '192259452881078128',
+  visita: '192259453129589778'
+};
+
+// json for fetch calls, urlencoded for the no-JS <form> fallback on tree pages
+app.post('/api/subscribe', express.json(), express.urlencoded({ extended: false }), async (req, res) => {
+  const email = ((req.body && req.body.email) || '').trim();
+  const name = ((req.body && req.body.name) || '').trim().slice(0, 100);
+  if (req.body && req.body._gotcha) return res.json({ ok: true }); // honeypot: pretend success
+  const groupId = ML_GROUPS[(req.body && req.body.group)] || ML_GROUPS.newsletter;
+  const tree = ((req.body && req.body.tree) || '').trim().slice(0, 50);
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ ok: false });
+  if (!process.env.MAILERLITE_API_KEY) {
+    console.error('[subscribe] MAILERLITE_API_KEY not configured');
+    return res.status(500).json({ ok: false });
+  }
+  try {
+    const r = await fetch('https://connect.mailerlite.com/api/subscribers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + process.env.MAILERLITE_API_KEY
+      },
+      body: JSON.stringify({ email, fields: tree ? { name, tree } : { name }, groups: [groupId] })
+    });
+    if (!r.ok) {
+      console.error('[subscribe] MailerLite error:', r.status, await r.text());
+      return res.status(502).json({ ok: false });
+    }
+    console.log('[subscribe] Added:', email, '→ group', groupId);
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('[subscribe]', err);
+    res.status(502).json({ ok: false });
+  }
+});
+
 // Checkout endpoint
 app.post('/api/checkout', express.json(), (req, res) => {
   // Discount code validation

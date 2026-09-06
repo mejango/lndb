@@ -240,6 +240,13 @@
         body: JSON.stringify(formData)
       }).catch(function () {});
 
+      // Add to MailerLite (fire-and-forget)
+      fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: collected.name, email: collected.email, group: 'checkout' })
+      }).catch(function () {});
+
       // Call /api/checkout, then open Wompi
       fetch('/api/checkout', {
         method: 'POST',

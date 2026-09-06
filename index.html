@@ -67,11 +67,9 @@
         <p class="welcome">Bienvenidos a este bosque.</p>
         <div class="newsletter-signup">
           <p class="newsletter-label">Recibe semillas del bosque en tu correo</p>
-          <form class="newsletter-form" action="https://formspree.io/f/mreyvela" method="POST">
+          <form class="newsletter-form" action="/api/subscribe" method="POST">
             <input type="text" class="newsletter-input" name="name" placeholder="Tu nombre" required aria-label="Tu nombre" aria-required="true">
             <input type="email" class="newsletter-input" name="email" placeholder="tu@correo.com" required aria-label="Tu correo electrónico" aria-required="true">
-            <input type="hidden" name="_subject" value="Newsletter — Los Nombres del Bosque">
-            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
             <button type="submit" class="newsletter-submit">Suscribirme</button>
           </form>
           <div class="newsletter-success" style="display:none;">
@@ -143,7 +141,7 @@
   <script src="js/trees.js"></script>
   <script src="js/components.js"></script>
   <script src="https://checkout.wompi.co/widget.js"></script>
-  <script src="js/checkout.js?v=1db34d3"></script>
+  <script src="js/checkout.js?v=ml1"></script>
   <script>
     // CTA tracking
     document.getElementById('book-cta').addEventListener('click', function () {
@@ -222,7 +220,7 @@
         fetch(form.action, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({ name: name, email: email, source: 'newsletter', _subject: 'Newsletter — Los Nombres del Bosque' })
+          body: JSON.stringify({ name: name, email: email })
         }).then(function (r) {
           if (r.ok) {
             plausible('Newsletter Signup');

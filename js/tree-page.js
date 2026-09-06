@@ -232,14 +232,14 @@
       submitBtn.disabled = true;
       submitBtn.textContent = '...';
 
-      fetch('https://formspree.io/f/mreyvela', {
+      fetch('/api/subscribe', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: name,
           email: email,
-          tree: tree.name,
-          _subject: 'Quiero visitar mi arbol: ' + tree.name
+          group: 'visita',
+          tree: tree.name
         })
       }).then(function (r) {
         if (r.ok) {
