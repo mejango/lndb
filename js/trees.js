@@ -329,3 +329,6 @@ var LNDB = (function () {
     wrapText: wrapText
   };
 })();
+
+// ponytail: let server.js reuse the same tree data without a build step
+if (typeof module !== 'undefined') module.exports = LNDB;

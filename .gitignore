@@ -20,3 +20,6 @@ Thumbs.db
 # Node
 node_modules/
 .env
+
+# Book page photos (source material, not for web)
+book/*.HEIC

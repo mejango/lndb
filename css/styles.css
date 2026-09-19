@@ -1069,6 +1069,202 @@ p:last-child {
   opacity: 0.8;
 }
 
+/* ===== ¿QUÉ ÁRBOL ERES? ===== */
+.tree-match {
+  padding: var(--section-padding);
+  background-color: var(--color-cream-light);
+  border-top: 1px solid rgba(64, 74, 55, 0.12);
+}
+
+.tree-match .container {
+  max-width: 960px;
+  text-align: center;
+}
+
+.tree-match h2 {
+  margin-bottom: 1rem;
+}
+
+.tree-match-form textarea {
+  display: block;
+  width: 100%;
+  margin: 1.5rem 0 1rem;
+  padding: 1rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-dark);
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  border-radius: var(--border-radius);
+  background: #fff;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.tree-match-form textarea:focus {
+  outline: none;
+  border-color: var(--color-sage);
+}
+
+.tree-match-output {
+  display: grid;
+  grid-template-columns: 1fr 260px;
+  gap: 3rem;
+  align-items: start;
+  margin-top: 2.5rem;
+}
+
+.tree-match-top {
+  display: block;
+  position: sticky;
+  top: 6rem;
+  transition: opacity 0.15s ease;
+}
+
+@media (max-width: 720px) {
+  .tree-match-output {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .tree-match-top {
+    position: static;
+    order: -1;
+    width: 180px;
+    margin: 0 auto;
+  }
+}
+
+.tree-match-top.is-swapping {
+  opacity: 0;
+}
+
+.tree-match-top img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: bottom center;
+  animation: hero-sway-a 6.5s ease-in-out infinite;
+}
+
+.tree-match-results {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.tree-match-row {
+  transition: transform 0.3s ease;
+  display: grid;
+  grid-template-columns: minmax(0, 11rem) 1fr 3rem;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.5rem 1.25rem;
+}
+
+.tree-match-name {
+  color: var(--color-forest);
+  text-decoration: none;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.tree-match-name small {
+  display: block;
+  font-weight: 400;
+  color: var(--color-text-muted);
+}
+
+.tree-match-bar {
+  height: 0.75rem;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.tree-match-bar span {
+  display: block;
+  height: 100%;
+  width: var(--pct);
+  background: var(--accent);
+  border-radius: inherit;
+  transition: width 0.3s ease;
+}
+
+.tree-match-pct {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text-muted);
+}
+
+/* Top match: bigger, bolder, tinted with the tree's accent — same accent frames the illustration */
+.tree-match-row.is-top {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: var(--border-radius);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.tree-match-row.is-top .tree-match-name {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.tree-match-row.is-top .tree-match-name small {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.tree-match-row.is-top .tree-match-bar {
+  height: 1.1rem;
+}
+
+.tree-match-row.is-top .tree-match-pct {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.tree-match-top-caption {
+  display: block;
+  margin-top: 1rem;
+  text-align: center;
+  color: var(--color-forest);
+}
+
+.tree-match-top-caption strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  color: var(--accent);
+}
+
+.tree-match-top-caption small {
+  color: var(--color-text-muted);
+}
+
+.tree-match-top {
+  text-decoration: none;
+  padding: 1.5rem 1rem;
+  border-radius: var(--border-radius);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+@media (max-width: 600px) {
+  .tree-match-row {
+    grid-template-columns: 1fr 3rem;
+  }
+  .tree-match-name {
+    grid-column: 1 / -1;
+  }
+}
+
 /* ===== CONTACT SECTION ===== */
 .contact-section {
   padding: var(--section-padding);

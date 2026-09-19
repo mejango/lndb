@@ -126,6 +126,61 @@ app.post('/api/subscribe', express.json(), express.urlencoded({ extended: false 
   }
 });
 
+// Which tree are you? → TypeSafe Jev picks one of the 16 trees from the book's "Imagina que … es una persona" text
+// (book/personalidades.json, server-only), the site portrait, and the site quiz traits.
+// Options use opaque keys and tree names are scrubbed so the model judges personality, never tree physique.
+const LNDB = require('./js/trees.js');
+const BOOK = require('./book/personalidades.json');
+const TREE_KEYS = Object.keys(LNDB.descriptions);
+const TREE_NAMES = new RegExp('(?:el |la )?(?:Árbol de )?(?:' + TREE_KEYS.map(k => LNDB.trees[k].name).join('|') + ')', 'g');
+const scrub = text => text.replace(/Como (?:el|la) [^,]+, /g, '').replace(TREE_NAMES, 'esta persona');
+const TREE_CRITERIA = {};
+TREE_KEYS.forEach((key, i) => {
+  const traits = [];
+  LNDB.questions.forEach(q => q.answers.forEach(a => { if ((a.scores[key] || 0) >= 2) traits.push(a.text); }));
+  TREE_CRITERIA['p' + (i + 1)] = {
+    book: BOOK[key] ? scrub(BOOK[key]) : undefined, // ponytail: Arrayán has no book page yet; site portrait carries it
+    portrait: scrub(LNDB.descriptions[key]),
+    traits
+  };
+});
+app.post('/api/arbol', express.json(), async (req, res) => {
+  const text = ((req.body && req.body.text) || '').trim().slice(0, 1500);
+  if (text.length < 3) return res.status(400).json({ ok: false });
+  if (!process.env.TYPESAFE_API_KEY) {
+    console.error('[arbol] TYPESAFE_API_KEY not configured');
+    return res.status(500).json({ ok: false });
+  }
+  try {
+    const r = await fetch('https://api.typesafe.ai/v1/systemone', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + process.env.TYPESAFE_API_KEY },
+      body: JSON.stringify({
+        model: 'jev-latest',
+        state: { self_description: text },
+        questions: {
+          tree: {
+            type: 'choice',
+            instructions: 'A person describes themselves in `self_description`. Which personality fits them best? Each option has `book` (the author\'s "imagine this tree is a person" text), `portrait` (a second-person sketch) and `traits` (short self-descriptions typical of that personality). Judge only character: temperament, values, how they treat others, how they face hardship. Ignore physical traits such as height, body, looks, age; nature imagery is metaphor for character, not appearance.',
+            criteria: TREE_CRITERIA
+          }
+        }
+      })
+    });
+    if (!r.ok) {
+      console.error('[arbol] TypeSafe error:', r.status, await r.text());
+      return res.status(502).json({ ok: false });
+    }
+    const data = await r.json();
+    const probabilities = {};
+    TREE_KEYS.forEach((key, i) => { probabilities[key] = data.answers.tree.probabilities['p' + (i + 1)]; });
+    res.json({ ok: true, probabilities });
+  } catch (err) {
+    console.error('[arbol]', err);
+    res.status(502).json({ ok: false });
+  }
+});
+
 // Checkout endpoint
 app.post('/api/checkout', express.json(), (req, res) => {
   // Discount code validation

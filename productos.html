@@ -6,7 +6,7 @@
   <title>Productos - Los Nombres del Bosque</title>
   <meta name="description" content="Descubre el libro Los Nombres del Bosque, crea tu propia arboleda y descarga una guía para ilustrar un mango.">
   <link rel="icon" type="image/png" sizes="48x48" href="assets/logos/favicon.png">
-  <link rel="stylesheet" href="css/styles.css?v=mango-guide1">
+  <link rel="stylesheet" href="css/styles.css?v=match9">
 </head>
 <body>
 
@@ -106,17 +106,124 @@
     </div>
   </section>
 
+  <!-- ¿QUÉ ÁRBOL ERES? -->
+  <section class="tree-match" aria-labelledby="tree-match-title">
+    <div class="container">
+      <h2 id="tree-match-title">¿Qué árbol eres?</h2>
+      <p>Cuéntanos cómo eres, con tus palabras. El bosque te dirá qué tanto te pareces a cada uno de sus dieciséis árboles.</p>
+      <div class="tree-match-form" data-tree-match>
+        <label class="sr-only" for="tree-match-text">Cuéntanos sobre ti</label>
+        <textarea id="tree-match-text" rows="5" maxlength="1500" placeholder="Soy de las que escuchan más de lo que hablan, me gusta cuidar a los míos y…"></textarea>
+        <span class="btn-hint" data-tree-match-status>Escribe y el bosque responde mientras escribes · No guardamos lo que escribes</span>
+      </div>
+      <div class="tree-match-output">
+        <ol class="tree-match-results" data-tree-match-results hidden></ol>
+        <a class="tree-match-top" data-tree-match-top hidden>
+          <picture><source data-webp type="image/webp"><img alt=""></picture>
+          <span class="tree-match-top-caption"><strong data-top-name></strong><small data-top-blurb></small></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <div id="footer"></div>
 
   <script src="js/analytics.js?v=cta1"></script>
   <script src="js/components.js?v=cta1"></script>
   <script src="https://checkout.wompi.co/widget.js"></script>
   <script src="js/checkout.js?v=cta1"></script>
+  <script src="js/trees.js?v=match9"></script>
   <script>
     // Track arboleda CTA
     document.querySelector('.arboleda-section .btn-primary').addEventListener('click', function () {
       window.lndbTrack('CTA Click', { props: { type: 'arboleda', source: 'productos', placement: 'arboleda' } });
     });
+
+    // ¿Qué árbol eres? — open-ended text → per-tree probabilities from /api/arbol, live as you type
+    (function () {
+      var box = document.querySelector('[data-tree-match]');
+      var input = box.querySelector('textarea');
+      var status = box.querySelector('[data-tree-match-status]');
+      var results = document.querySelector('[data-tree-match-results]');
+      var top = document.querySelector('[data-tree-match-top]');
+      var topKey;
+      function showTop(key) {
+        if (key === topKey) return;
+        topKey = key;
+        var t = LNDB.trees[key];
+        var file = t.illustration.replace('.png', '');
+        top.href = '/arboles/' + t.slug;
+        top.style.setProperty('--accent', t.accentColor);
+        top.querySelector('[data-top-name]').textContent = t.name;
+        top.querySelector('[data-top-blurb]').textContent = t.blurb;
+        top.classList.add('is-swapping');
+        setTimeout(function () {
+          top.querySelector('source').srcset = 'assets/images/trees/' + file + '.webp';
+          top.querySelector('img').src = 'assets/images/trees/' + file + '.png';
+          top.querySelector('img').alt = t.name;
+          top.hidden = false;
+          top.classList.remove('is-swapping');
+        }, 150);
+      }
+      var idle = status.textContent;
+      var rows = {};
+      // Render all 16 rows once; later updates only touch --pct, order and the % label so bars animate in place.
+      results.innerHTML = LNDB.treeOrder.map(function (key) {
+        var t = LNDB.trees[key];
+        return '<li class="tree-match-row" data-key="' + key + '" style="--pct:0%;--accent:' + t.accentColor + '">' +
+          '<a href="/arboles/' + t.slug + '" class="tree-match-name">' + t.name + ' <small>' + t.blurb + '</small></a>' +
+          '<span class="tree-match-bar"><span></span></span>' +
+          '<span class="tree-match-pct">0%</span></li>';
+      }).join('');
+      results.querySelectorAll('li').forEach(function (li) { rows[li.dataset.key] = li; });
+
+      var timer, seq = 0, tracked;
+      input.addEventListener('input', function () {
+        clearTimeout(timer);
+        var text = input.value.trim();
+        if (text.length < 3) { status.textContent = idle; return; }
+        status.textContent = 'El bosque está pensando…';
+        timer = setTimeout(function () {
+          var mine = ++seq; // ponytail: latest-wins; older responses still paint if they land first, stale ones are dropped
+          fetch('/api/arbol', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: text })
+          }).then(function (r) { return r.json(); }).then(function (data) {
+            if (mine !== seq) return;
+            if (!data.ok) throw new Error('bad response');
+            var probs = data.probabilities;
+            var keys = Object.keys(probs).sort(function (a, b) { return probs[b] - probs[a]; });
+            // FLIP: remember where each row was, reorder, then slide from old spot to new spot
+            var before = {};
+            keys.forEach(function (key) { before[key] = rows[key].offsetTop; });
+            keys.forEach(function (key, rank) {
+              var pct = Math.round(probs[key] * 100);
+              rows[key].style.setProperty('--pct', pct + '%');
+              rows[key].style.order = rank;
+              rows[key].classList.toggle('is-top', rank === 0);
+              rows[key].querySelector('.tree-match-pct').textContent = pct + '%';
+            });
+            keys.forEach(function (key) {
+              var row = rows[key];
+              var dy = before[key] - row.offsetTop;
+              if (!dy) return;
+              row.style.transition = 'none';
+              row.style.transform = 'translateY(' + dy + 'px)';
+              void row.offsetHeight; // flush so the next transform change animates
+              row.style.transition = '';
+              row.style.transform = '';
+            });
+            results.hidden = false;
+            showTop(keys[0]);
+            status.textContent = 'Eres sobre todo ' + LNDB.trees[keys[0]].name + '. Toca un árbol para conocerlo.';
+            if (!tracked) { tracked = true; window.lndbTrack('Tree Match', { props: { source: 'productos', tree: keys[0] } }); }
+          }).catch(function () {
+            if (mine === seq) status.textContent = 'El bosque no respondió. Sigue escribiendo para intentar de nuevo.';
+          });
+        }, 250); // ponytail: 250ms debounce; one Jev call per pause, not per keystroke
+      });
+    })();
 
     // Track WhatsApp CTA clicks
     document.querySelectorAll('[data-whatsapp]').forEach(function (el) {
