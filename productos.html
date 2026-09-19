@@ -6,7 +6,7 @@
   <title>Productos - Los Nombres del Bosque</title>
   <meta name="description" content="Descubre el libro Los Nombres del Bosque, crea tu propia arboleda y descarga una guía para ilustrar un mango.">
   <link rel="icon" type="image/png" sizes="48x48" href="assets/logos/favicon.png">
-  <link rel="stylesheet" href="css/styles.css?v=match9">
+  <link rel="stylesheet" href="css/styles.css?v=match10">
 </head>
 <body>
 
@@ -128,11 +128,11 @@
 
   <div id="footer"></div>
 
-  <script src="js/analytics.js?v=cta1"></script>
+  <script src="js/analytics.js?v=match10"></script>
   <script src="js/components.js?v=cta1"></script>
   <script src="https://checkout.wompi.co/widget.js"></script>
   <script src="js/checkout.js?v=cta1"></script>
-  <script src="js/trees.js?v=match9"></script>
+  <script src="js/trees.js?v=match10"></script>
   <script>
     // Track arboleda CTA
     document.querySelector('.arboleda-section .btn-primary').addEventListener('click', function () {
@@ -177,9 +177,31 @@
       }).join('');
       results.querySelectorAll('li').forEach(function (li) { rows[li.dataset.key] = li; });
 
-      var timer, seq = 0, tracked;
+      // Analytics: bounded props only (tree name, word-count bucket, outcome). The text itself is never sent.
+      var started = false, settleTimer, lastResult;
+      function trackResult() {
+        if (!lastResult) return;
+        window.lndbTrack('Tree Match Result', { props: {
+          tree: lastResult.tree,
+          outcome: lastResult.top >= 0.6 ? 'clear' : 'mixed',
+          quantity: Math.min(100, Math.ceil(lastResult.words / 10) * 10),
+          placement: 'tree_match'
+        } });
+        lastResult = null;
+      }
+      // Send the result once the visitor stops typing for a while, or leaves the page mid-typing.
+      document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') trackResult(); });
+      document.querySelector('.tree-match-output').addEventListener('click', function (e) {
+        var link = e.target.closest('a');
+        if (!link) return;
+        window.lndbTrack('Tree Match Click', { props: { tree: link.querySelector('[data-top-name]') ? link.querySelector('[data-top-name]').textContent : link.firstChild.textContent.trim(), placement: link.classList.contains('tree-match-top') ? 'illustration' : 'list' } });
+      });
+
+      var timer, seq = 0;
       input.addEventListener('input', function () {
         clearTimeout(timer);
+        clearTimeout(settleTimer);
+        if (!started) { started = true; window.lndbTrack('Tree Match Started', { props: { placement: 'tree_match' } }); }
         var text = input.value.trim();
         if (text.length < 3) { status.textContent = idle; return; }
         status.textContent = 'El bosque está pensando…';
@@ -191,7 +213,7 @@
             body: JSON.stringify({ text: text })
           }).then(function (r) { return r.json(); }).then(function (data) {
             if (mine !== seq) return;
-            if (!data.ok) throw new Error('bad response');
+            if (!data.ok) throw new Error('server');
             var probs = data.probabilities;
             var keys = Object.keys(probs).sort(function (a, b) { return probs[b] - probs[a]; });
             // FLIP: remember where each row was, reorder, then slide from old spot to new spot
@@ -217,9 +239,12 @@
             results.hidden = false;
             showTop(keys[0]);
             status.textContent = 'Eres sobre todo ' + LNDB.trees[keys[0]].name + '. Toca un árbol para conocerlo.';
-            if (!tracked) { tracked = true; window.lndbTrack('Tree Match', { props: { source: 'productos', tree: keys[0] } }); }
-          }).catch(function () {
-            if (mine === seq) status.textContent = 'El bosque no respondió. Sigue escribiendo para intentar de nuevo.';
+            lastResult = { tree: LNDB.trees[keys[0]].name, top: probs[keys[0]], words: text.split(/\s+/).length };
+            settleTimer = setTimeout(trackResult, 3000);
+          }).catch(function (err) {
+            if (mine !== seq) return;
+            status.textContent = 'El bosque no respondió. Sigue escribiendo para intentar de nuevo.';
+            window.lndbTrack('Tree Match Error', { props: { reason: err.message === 'server' ? 'server' : 'network', placement: 'tree_match' } });
           });
         }, 250); // ponytail: 250ms debounce; one Jev call per pause, not per keystroke
       });

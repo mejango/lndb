@@ -127,7 +127,7 @@
         observer.unobserve(entry.target);
       });
     }, { threshold: 0.5 });
-    [['.drawing-guide-actions', 'mango_guide', 'drawing_guide'], ['.product-actions', 'book', 'book'], ['.arboleda-content .btn', 'arboleda', 'arboleda'], ['.tree-quiz .btn', 'quiz', 'quiz'], ['.newsletter-form', 'newsletter', 'newsletter']].forEach(function (item) {
+    [['.tree-match-form', 'tree_match', 'tree_match'], ['.drawing-guide-actions', 'mango_guide', 'drawing_guide'], ['.product-actions', 'book', 'book'], ['.arboleda-content .btn', 'arboleda', 'arboleda'], ['.tree-quiz .btn', 'quiz', 'quiz'], ['.newsletter-form', 'newsletter', 'newsletter']].forEach(function (item) {
       document.querySelectorAll(item[0]).forEach(function (el) {
         el.dataset.analyticsType = item[1];
         el.dataset.analyticsPlacement = item[2];
