@@ -1071,7 +1071,7 @@ p:last-child {
 
 /* ===== ¿QUÉ ÁRBOL ERES? ===== */
 .tree-match {
-  padding: var(--section-padding);
+  padding: 5rem 0;
   background-color: var(--color-cream-light);
   border-top: 1px solid rgba(64, 74, 55, 0.12);
 }
@@ -1257,8 +1257,12 @@ p:last-child {
 }
 
 @media (max-width: 600px) {
+  .tree-match .container {
+    padding: 0 1rem;
+  }
   .tree-match-row {
     grid-template-columns: 1fr 3rem;
+    padding: 0.5rem 0.75rem;
   }
   .tree-match-name {
     grid-column: 1 / -1;
