@@ -1405,6 +1405,54 @@ p:last-child {
   color: var(--color-text-light);
 }
 
+.footer-bottom a:hover,
+.footer-bottom a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Legal pages share the site's typography and quiet, readable layout. */
+.legal-page {
+  padding: clamp(2.5rem, 6vw, 5rem) 0;
+}
+
+.legal-content {
+  max-width: 820px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.legal-content h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.2;
+}
+
+.legal-content h2 {
+  margin: 2rem 0 0.75rem;
+  font-size: 1.4rem;
+  line-height: 1.4;
+}
+
+.legal-content p,
+.legal-content li {
+  margin-bottom: 1rem;
+}
+
+.legal-content ul {
+  padding-left: 1.4rem;
+}
+
+.legal-content a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.legal-updated {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+}
+
 /* ===== QUIZ PAGE ===== */
 .quiz-page {
   min-height: calc(100vh - 77px);
