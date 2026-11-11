@@ -40,6 +40,18 @@ test('analytics failures cannot throw into a CTA or checkout handler', () => {
   assert.doesNotThrow(() => window.lndbTrack('Guide Download Click'));
 });
 
+test('Meta and Plausible failures cannot suppress each other', () => {
+  const { window, events } = setup();
+  window.lndbMetaTrack = () => { throw Error('Meta blocked'); };
+  window.lndbTrack('Email Signup');
+  assert.equal(events.length, 1);
+  let metaCalls = 0;
+  window.lndbMetaTrack = () => { metaCalls++; };
+  window.plausible = () => { throw Error('Plausible blocked'); };
+  window.lndbTrack('Email Signup');
+  assert.equal(metaCalls, 1);
+});
+
 test('guide CTAs emit distinct events once for click and middle-click, ignoring right-click', () => {
   const { events, handlers } = setup();
   const element = { dataset: { trackEvent: 'Guide Download Click', trackAction: 'download', trackAsset: 'mango-guide', trackPlacement: 'drawing_guide' }, closest() { return this; } };
@@ -65,6 +77,8 @@ test('every page loads shared analytics before consumers, and inline scripts par
   for (const file of files) {
     const html = fs.readFileSync(file, 'utf8');
     assert.ok(html.indexOf('js/analytics.js') > 0, file);
+    assert.ok(html.indexOf('js/meta-events.js') > 0, file);
+    assert.ok(html.indexOf('js/meta-events.js') < html.indexOf('js/analytics.js'), file);
     assert.ok(html.indexOf('js/analytics.js') < html.indexOf('js/components.js'), file);
     for (const match of html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)) new vm.Script(match[1], { filename: file });
   }

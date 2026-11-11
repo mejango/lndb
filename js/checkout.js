@@ -297,6 +297,8 @@
 
           closeModal('payment');
 
+          if (window.lndbRememberCheckout) window.lndbRememberCheckout(data);
+
           var checkout = new WidgetCheckout({
             currency: data.currency,
             amountInCents: data.amountInCents,
@@ -322,6 +324,7 @@
             var paymentProps = { status: status, quantity: data.quantity, amount: data.amountInCents / 100, currency: data.currency, discount: data.discountApplied ? 'yes' : 'no', payment_method: paymentMethod, type: data.publicKey.indexOf('pub_test') === 0 ? 'test' : 'book' };
             track('Checkout Payment Result', { props: paymentProps });
             if (tx && tx.status === 'APPROVED') {
+              if (window.lndbRememberTransaction) window.lndbRememberTransaction(tx.id);
               if (paymentProps.type !== 'test' && !purchaseTracked) {
                 purchaseTracked = true;
                 track('Purchase Completed', { props: paymentProps });

@@ -20,6 +20,10 @@
   }
 
   window.lndbTrack = function (eventName, options) {
+    // Keep tracker failures independent so one provider cannot suppress the other.
+    try {
+      if (typeof window.lndbMetaTrack === 'function') window.lndbMetaTrack(eventName, options && options.props);
+    } catch (_) {}
     try {
       var path = pagePath();
       var props = {

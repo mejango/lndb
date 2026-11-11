@@ -57,3 +57,30 @@ Plausible custom property breakdowns and funnel UI availability depend on the ac
 
 - [Plausible custom events](https://plausible.io/docs/custom-event-goals)
 - [Plausible custom properties and data restrictions](https://plausible.io/docs/custom-props/introduction)
+
+## Meta conversion events — 2026-11-10
+
+`js/meta-events.js` loads before shared analytics on all public pages. Plausible events remain independent. Meta receives only these explicit conversions, in addition to its existing PageView:
+
+| Meta event | Trigger | Parameters |
+| --- | --- | --- |
+| `ViewContent` | Product page load | Fixed book ID, name, product type |
+| `InitiateCheckout` | Checkout contact/shipping modal opens | Fixed book metadata, initial quantity; no estimated value |
+| `Lead` | Existing successful Email Signup or Newsletter Signup hook | Signup group only; accepted subscription, not a guarantee of a brand-new subscriber |
+| `QuizCompleted` | Quiz results are displayed | No answers, name, or result tree |
+| `GuideDownload` | Drawing-guide download click | Fixed guide name and `download_click`; does not confirm file saved |
+| `Purchase` | Return to `/exito`, followed by successful backend verification with Wompi | Actual paid value in COP (including shipping), quantity, fixed book metadata, opaque stable event ID |
+
+### Required deployment setting
+
+Set **`WOMPI_PRIVATE_KEY`** to the production `prv_prod_…` key in the hosting provider's secret/environment settings and redeploy. Do not put this key in HTML, JavaScript, git, chat, or a URL. No Meta access token is needed for this browser-pixel implementation.
+
+The existing production integrity secret signs a checkout receipt valid for seven days. The browser stores that receipt in sessionStorage. The server uses the private key to query Wompi and checks transaction ID, reference, amount, currency, and APPROVED status against the signed receipt. It returns only conversion metadata, never the Wompi customer record. Sandbox checkout does not receive a production receipt. Missing configuration, mismatches, declined payments and verification failures never emit Purchase. Wompi's current transaction lookup requires a private key: https://docs.wompi.co/en/docs/colombia/seguimiento-de-transacciones/
+
+An approved widget callback saves the transaction ID before redirecting. Wompi's direct redirect can also supply `id`. Success-page verification retries pending/server-error responses five times, five seconds apart. Reloading can retry later. Browser localStorage remembers up to 100 purchase event IDs; the same stable ID is also sent to Meta for deduplication. Storage failures cannot break checkout, but can reduce tracking coverage/deduplication. Clearing storage, switching devices, closing the return page, delayed approvals after the retry window, or tracker blocking can prevent reliable browser attribution. This is not Conversions API delivery; purchases without a return visit need a future webhook/CAPI implementation.
+
+Custom conversion setup in Meta remains an account action: after receiving `QuizCompleted` and `GuideDownload`, create custom conversions using those event names. Use Purchase for sales campaigns and Lead for signup campaigns, and include conversion value/ROAS in purchase reporting. Avoid adding duplicate URL/button rules for these already-instrumented actions. Select the correct dataset and make it available to the ad account.
+
+### Verification
+
+Run `npm test` on the Node version in `.nvmrc`. The conversion tests cover event mapping, personal-data exclusion, local/test suppression, redirect recovery, reload deduplication, invalid receipts, payment mismatches, missing credentials, and non-approved payments. Validate the deployed Purchase event with an actual approved production transaction only after configuring the private key; do not fabricate a Purchase to make it appear in Events Manager.

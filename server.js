@@ -1,6 +1,7 @@
 const express = require('express');
 const crypto = require('crypto');
 const fs = require('fs');
+const { createReceipt, purchaseHandler } = require('./lib/purchase-verification.cjs');
 
 // Load .env file if present (no extra dependency)
 try {
@@ -182,6 +183,8 @@ app.post('/api/arbol', express.json(), async (req, res) => {
 });
 
 // Checkout endpoint
+app.post('/api/purchase-event', express.json({ limit: '4kb' }), purchaseHandler());
+
 app.post('/api/checkout', express.json(), (req, res) => {
   // Discount code validation
   const discountCode = ((req.body && req.body.discountCode) || '').trim().toUpperCase();
@@ -225,6 +228,9 @@ app.post('/api/checkout', express.json(), (req, res) => {
 
   res.json({
     reference,
+    // Only production checkouts receive proof for later server-side verification.
+    analyticsReceipt: !isTestMode && publicKey.startsWith('pub_prod_')
+      ? createReceipt({ reference, amountInCents, currency, quantity }, secret) : null,
     amountInCents,
     currency,
     signature,
