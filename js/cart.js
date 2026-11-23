@@ -191,6 +191,12 @@
     }).then(function (data) {
       if (request !== latest) return; // a newer change is already on its way
       quote = data;
+      // The server may trim the cart (a gift bag without its jar); keep the saved cart in step.
+      if (quote) {
+        cart = {};
+        quote.lines.forEach(function (line) { cart[line.sku] = line.qty; });
+        try { localStorage.setItem(KEY, JSON.stringify(cart)); } catch (_) {}
+      }
       render();
       if (reopen && quote && !dialog.open) dialog.showModal();
       reopen = false;
@@ -240,6 +246,15 @@
           : variant.label + ': +' + cop(variant.priceCents - base.priceCents);
       }).join(' · ')));
     }
+    var addon = null;
+    if (product.addon) {
+      var addonLabel = el('label', 'navidad-card-addon');
+      addon = el('input');
+      addon.type = 'checkbox';
+      addonLabel.appendChild(addon);
+      addonLabel.appendChild(document.createTextNode(' Agregar ' + product.addon.name.toLowerCase() + ' (+' + cop(product.addon.priceCents) + ')'));
+      body.appendChild(addonLabel);
+    }
     function chosen() {
       return product.variants.filter(function (v) { return !select || v.sku === select.value; })[0];
     }
@@ -252,6 +267,7 @@
     add.type = 'button';
     add.addEventListener('click', function () {
       var sku = chosen().sku;
+      if (addon && addon.checked) cart[product.addon.sku] = (cart[product.addon.sku] || 0) + 1;
       setQty(sku, (cart[sku] || 0) + 1);
       track('Add To Cart', { type: sku, placement: 'navidad', amount: chosen().priceCents / 100 });
       add.textContent = 'Agregado ✓';

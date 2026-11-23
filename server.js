@@ -2,7 +2,7 @@ const express = require('express');
 const crypto = require('crypto');
 const fs = require('fs');
 const { createReceipt, purchaseHandler } = require('./lib/purchase-verification.cjs');
-const { products, priceOrder } = require('./lib/catalog.cjs');
+const { listProducts, priceOrder } = require('./lib/catalog.cjs');
 
 // Load .env file if present (no extra dependency)
 try {
@@ -191,8 +191,8 @@ function readDiscount(code) {
   return { isTestMode, hasDiscount: !!(discountCode && !isTestMode && validCodes.includes(discountCode)) };
 }
 
-// hidden products stay purchasable (the book has its own section) but are not listed in the grid.
-app.get('/api/products', (req, res) => res.json(products.filter(product => !product.hidden)));
+// hidden products stay purchasable (the book has its own section, the gift bag is an add-on) but are not listed in the grid.
+app.get('/api/products', (req, res) => res.json(listProducts()));
 
 // The cart shows whatever this returns, so prices and shipping rules live only on the server.
 app.post('/api/quote', express.json({ limit: '4kb' }), (req, res) => {

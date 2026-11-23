@@ -61,6 +61,7 @@
   {
     "id": "hoja",
     "name": "Hoja",
+    "addon": "bolsa-regalo",
     "tagline": "A veces, un pequeño gesto dice mucho.",
     "description": "Elige el sabor que más se parece a esa persona especial: mango para quien da sin medir, tamarindo para quien no se parece a nadie o cacao para quien sabe ofrecer justo lo que necesitamos. Una forma sencilla y significativa de regalar un pedacito del bosque.",
     "includes": "Un spread a elección: chutney de mango (210 gr), chutney de tamarindo (210 gr) o spread de cacao (200 gr).",
@@ -74,6 +75,7 @@
   {
     "id": "bolsa-regalo",
     "name": "Bolsa de regalo",
+    "hidden": true,
     "tagline": "Empaque para regalar.",
     "description": "Agrega una bolsa de regalo a tu pedido.",
     "includes": "",

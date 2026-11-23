@@ -24,5 +24,5 @@
 - [x] Cart site-wide (loaded from `js/components.js`; pays on `/productos#carrito`)
 - [x] Meta AddToCart / InitiateCheckout / Purchase carry the actual products
 - [x] Full-resolution photos: three WebP sizes each via `scripts/optimize-photo.sh` (480/800 for cards, 1600 for zoom only)
-- [ ] Photo for the gift bag (none supplied)
+- [x] Gift bag is an add-on for Hoja only (checkbox on the card; server allows one bag per jar and none alone)
 - [x] Shipping: one flat rate for everything (`SHIPPING_COST_CENTS`); per-product override stays available in `data/products.json`

@@ -16,7 +16,7 @@
 
   // The cart is site-wide: every page loads this file, so load the cart from here.
   var cartScript = document.createElement('script');
-  cartScript.src = '/js/cart.js?v=cart9';
+  cartScript.src = '/js/cart.js?v=cart10';
   document.body.appendChild(cartScript);
 
   function inject(id, file) {

@@ -22,6 +22,15 @@ test('discount only touches the book', () => {
   assert.equal(priceOrder([{ sku: 'brote', qty: 1 }], { env, hasDiscount: true }).subtotalCents, 13000000);
 });
 
+test('the gift bag only travels with individual jars, one per jar', () => {
+  assert.equal(priceOrder([{ sku: 'bolsa-regalo', qty: 1 }], { env }), null);
+  const boxed = priceOrder([{ sku: 'fruto', qty: 1 }, { sku: 'bolsa-regalo', qty: 2 }], { env });
+  assert.deepEqual(boxed.lines.map(line => line.sku), ['fruto']);
+  const jars = priceOrder([{ sku: 'chutney-mango', qty: 1 }, { sku: 'spread-cacao', qty: 1 }, { sku: 'bolsa-regalo', qty: 5 }], { env });
+  assert.equal(jars.lines.find(line => line.sku === 'bolsa-regalo').qty, 2);
+  assert.equal(jars.subtotalCents, 1650000 + 4650000 + 2 * 350000);
+});
+
 test('rejects unknown products, bad quantities and empty carts; clamps to 10', () => {
   assert.equal(priceOrder([{ sku: 'nope', qty: 1 }], { env }), null);
   assert.equal(priceOrder([{ sku: 'libro', qty: -1 }], { env }), null);
