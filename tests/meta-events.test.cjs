@@ -71,6 +71,24 @@ test('server-verified purchase survives redirect and deduplicates on reload', as
   assert.equal(reload.events.length, 0);
 });
 
+test('cart events name the products bought; the book keeps its original id', async () => {
+  const b = browser('/quiz');
+  b.context.lndbMetaTrack('Add To Cart', { type: 'fruto-caja', amount: 100000 });
+  b.context.lndbMetaTrack('Checkout Opened', { items: [{ sku: 'libro', qty: 2 }, { sku: 'fruto-caja', qty: 1 }] });
+  b.context.lndbMetaTrack('Checkout Opened', { quantity: 2, items: [{ sku: '<bad>', qty: 1 }] });
+  assert.deepEqual(b.events[0].slice(1, 3), ['AddToCart', { content_ids: ['lndb-fruto-caja'], contents: [{ id: 'lndb-fruto-caja', quantity: 1 }], content_type: 'product', num_items: 1, value: 100000, currency: 'COP' }]);
+  assert.deepEqual(b.events[1][2].content_ids, ['lndb-book', 'lndb-fruto-caja']);
+  assert.equal(b.events[1][2].num_items, 3);
+  assert.deepEqual(b.events[2][2].content_ids, ['lndb-book']);
+  const session = storage();
+  session.setItem('lndb-meta-checkout', JSON.stringify({ receipt: 'proof', transactionId: 'tx' }));
+  const result = { verified: true, eventId: 'purchase-' + 'b'.repeat(64), value: 275000, currency: 'COP', quantity: 2, items: [{ sku: 'arboleda', qty: 2 }] };
+  const bought = browser('/exito', { session, result });
+  await settled();
+  assert.deepEqual(bought.events[0][2].contents, [{ id: 'lndb-arboleda', quantity: 2 }]);
+  assert.equal(bought.events[0][2].content_name, undefined);
+});
+
 test('pending payments retry; declined payments and test checkouts never convert', async () => {
   const session = storage();
   session.setItem('lndb-meta-checkout', JSON.stringify({ receipt: 'proof', transactionId: 'tx' }));
@@ -110,7 +128,7 @@ test('server returns only approved payment metadata with value converted from ce
   assert.match(result.data.eventId, /^purchase-[a-f0-9]{64}$/);
   assert.equal(s.calls[0][0], 'https://production.wompi.co/v1/transactions/tx-1');
   assert.equal(s.calls[0][1].headers.Authorization, 'Bearer prv_prod_dummy');
-  assert.deepEqual(Object.keys(result.data).sort(), ['currency', 'eventId', 'quantity', 'value', 'verified']);
+  assert.deepEqual(Object.keys(result.data).sort(), ['currency', 'eventId', 'items', 'quantity', 'value', 'verified']);
 });
 
 test('tampered proof, test proof, missing credentials and malformed IDs fail closed', async () => {

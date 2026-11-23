@@ -2,6 +2,7 @@ const express = require('express');
 const crypto = require('crypto');
 const fs = require('fs');
 const { createReceipt, purchaseHandler } = require('./lib/purchase-verification.cjs');
+const { products, priceOrder } = require('./lib/catalog.cjs');
 
 // Load .env file if present (no extra dependency)
 try {
@@ -182,20 +183,47 @@ app.post('/api/arbol', express.json(), async (req, res) => {
   }
 });
 
+// --- Catalog + cart ---
+function readDiscount(code) {
+  const discountCode = (typeof code === 'string' ? code : '').trim().toUpperCase();
+  const isTestMode = discountCode === 'TEST';
+  const validCodes = (process.env.DISCOUNT_CODES || '').toUpperCase().split(',').map(c => c.trim()).filter(Boolean);
+  return { isTestMode, hasDiscount: !!(discountCode && !isTestMode && validCodes.includes(discountCode)) };
+}
+
+// hidden products stay purchasable (the book has its own section) but are not listed in the grid.
+app.get('/api/products', (req, res) => res.json(products.filter(product => !product.hidden)));
+
+// The cart shows whatever this returns, so prices and shipping rules live only on the server.
+app.post('/api/quote', express.json({ limit: '4kb' }), (req, res) => {
+  const order = priceOrder(req.body && req.body.items, readDiscount(req.body && req.body.discountCode));
+  if (!order) return res.status(400).json({ error: 'Carrito inválido' });
+  res.json(order);
+});
+
+// Order lines waiting for Wompi's webhook, so the confirmation email can list them.
+// ponytail: in memory, so a restart between checkout and payment sends the email with a
+// count instead of the list (Formspree still has the full order). Move to a database
+// when orders need a durable record.
+const pendingOrders = new Map();
+
 // Checkout endpoint
 app.post('/api/purchase-event', express.json({ limit: '4kb' }), purchaseHandler());
 
 app.post('/api/checkout', express.json(), (req, res) => {
-  // Discount code validation
-  const discountCode = ((req.body && req.body.discountCode) || '').trim().toUpperCase();
-  const isTestMode = discountCode === 'TEST';
-  const validCodes = (process.env.DISCOUNT_CODES || '').toUpperCase().split(',').map(c => c.trim()).filter(Boolean);
-  const hasDiscount = !!(discountCode && !isTestMode && validCodes.includes(discountCode));
+  const { isTestMode, hasDiscount } = readDiscount(req.body && req.body.discountCode);
 
-  // Quantity: integer clamped to [1, 10]; anything else falls back to 1
-  const rawQty = req.body && req.body.quantity;
-  const parsedQty = Number.isFinite(rawQty) ? Math.floor(rawQty) : parseInt(rawQty, 10);
-  const quantity = Number.isFinite(parsedQty) && parsedQty >= 1 && parsedQty <= 10 ? parsedQty : 1;
+  // Cart checkouts send items; the single-book button still sends only a quantity.
+  let items = req.body && req.body.items;
+  if (!items) {
+    // Quantity: integer clamped to [1, 10]; anything else falls back to 1
+    const rawQty = req.body && req.body.quantity;
+    const parsedQty = Number.isFinite(rawQty) ? Math.floor(rawQty) : parseInt(rawQty, 10);
+    items = [{ sku: 'libro', qty: Number.isFinite(parsedQty) && parsedQty >= 1 && parsedQty <= 10 ? parsedQty : 1 }];
+  }
+  const order = priceOrder(items, { isTestMode, hasDiscount });
+  if (!order) return res.status(400).json({ error: 'Carrito inválido. Por favor recarga la página e intenta de nuevo.' });
+  const quantity = order.quantity;
 
   // Use test credentials when TEST promo code is entered
   const secret = isTestMode ? process.env.WOMPI_TEST_INTEGRITY_SECRET : process.env.WOMPI_INTEGRITY_SECRET;
@@ -204,15 +232,11 @@ app.post('/api/checkout', express.json(), (req, res) => {
     return res.status(500).json({ error: 'Checkout not configured' });
   }
 
-  const unitPrice = isTestMode
-    ? 200000
-    : hasDiscount
-      ? parseInt(process.env.DISCOUNT_PRICE_CENTS || '6800000', 10)
-      : parseInt(process.env.BOOK_PRICE_CENTS || '8000000', 10);
-  const shipping = isTestMode ? 0 : parseInt(process.env.SHIPPING_COST_CENTS || '1800000', 10);
-  const amountInCents = unitPrice * quantity + shipping;
+  const amountInCents = order.totalCents;
   const currency = 'COP';
-  const reference = `LNDB-Q${quantity}-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
+  // Q = books only (the original format), C = cart with other products.
+  const booksOnly = order.lines.every(line => line.sku === 'libro');
+  const reference = `LNDB-${booksOnly ? 'Q' : 'C'}${quantity}-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
 
   // Wompi integrity signature: SHA256(reference + amountInCents + currency + integrity_secret)
   const signature = crypto
@@ -226,11 +250,14 @@ app.post('/api/checkout', express.json(), (req, res) => {
     return res.status(400).json({ error: 'Dirección de envío requerida. Por favor recarga la página e intenta de nuevo.' });
   }
 
+  if (pendingOrders.size >= 1000) pendingOrders.delete(pendingOrders.keys().next().value);
+  pendingOrders.set(reference, order.lines);
+
   res.json({
     reference,
     // Only production checkouts receive proof for later server-side verification.
     analyticsReceipt: !isTestMode && publicKey.startsWith('pub_prod_')
-      ? createReceipt({ reference, amountInCents, currency, quantity }, secret) : null,
+      ? createReceipt({ reference, amountInCents, currency, quantity, items: order.lines.map(line => ({ sku: line.sku, qty: line.qty })) }, secret) : null,
     amountInCents,
     currency,
     signature,
@@ -254,7 +281,10 @@ const PAYMENT_METHOD_LABELS = {
   BANCOLOMBIA_COLLECT: 'Bancolombia',
 };
 
-function buildConfirmationEmail({ reference, amount, paymentMethod, shippingAddress, quantity }) {
+function buildConfirmationEmail({ reference, amount, paymentMethod, shippingAddress, quantity, lines, booksOnly = true }) {
+  const itemsLabel = lines && !lines.every(line => line.sku === 'libro')
+    ? lines.map(line => `${line.qty} × ${line.name}`).join('<br>')
+    : booksOnly ? `${quantity} ${quantity === 1 ? 'libro' : 'libros'}` : `${quantity} ${quantity === 1 ? 'producto' : 'productos'}`;
   const domain = process.env.DOMAIN || '';
   const formatted = '$' + (amount / 100).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   const method = PAYMENT_METHOD_LABELS[paymentMethod] || paymentMethod || '—';
@@ -294,7 +324,7 @@ function buildConfirmationEmail({ reference, amount, paymentMethod, shippingAddr
       <tr>
         <td style="padding:8px 32px 24px;">
           <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#3B4A3A;line-height:1.6;text-align:center;">
-            Gracias por darle nombre a un árbol. Tu libro ya comenzó su viaje hacia ti — pronto tendrás en tus manos un pedacito del bosque.
+            Gracias por darle nombre a un árbol. Tu pedido ya comenzó su viaje hacia ti — pronto tendrás en tus manos un pedacito del bosque.
           </p>
         </td>
       </tr>
@@ -309,8 +339,8 @@ function buildConfirmationEmail({ reference, amount, paymentMethod, shippingAddr
               <td align="right" style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#3B4A3A;">${reference}</td>
             </tr>
             ${quantity && quantity > 0 ? `<tr>
-              <td style="padding:6px 0;font-family:Georgia,'Times New Roman',serif;font-size:14px;color:#7E8E6D;">Cantidad</td>
-              <td align="right" style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#3B4A3A;">${quantity} ${quantity === 1 ? 'libro' : 'libros'}</td>
+              <td style="padding:6px 0;font-family:Georgia,'Times New Roman',serif;font-size:14px;color:#7E8E6D;">Pedido</td>
+              <td align="right" style="padding:6px 0;font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#3B4A3A;">${itemsLabel}</td>
             </tr>` : ''}
             <tr>
               <td style="padding:6px 0;font-family:Georgia,'Times New Roman',serif;font-size:14px;color:#7E8E6D;">Total</td>
@@ -392,8 +422,10 @@ app.post('/api/wompi-webhook', express.json(), async (req, res) => {
     processedReferences.add(transaction.reference);
 
     // Parse quantity from reference (format: LNDB-Q<n>-<ts>-<rand>; legacy: LNDB-<ts>-<rand>)
-    const qtyMatch = /^LNDB-Q(\d+)-/.exec(transaction.reference || '');
-    const quantity = qtyMatch ? parseInt(qtyMatch[1], 10) : 1;
+    const qtyMatch = /^LNDB-([QC])(\d+)-/.exec(transaction.reference || '');
+    const quantity = qtyMatch ? parseInt(qtyMatch[2], 10) : 1;
+    const lines = pendingOrders.get(transaction.reference);
+    pendingOrders.delete(transaction.reference);
 
     // Send confirmation email
     const email = transaction.customer_email;
@@ -417,6 +449,8 @@ app.post('/api/wompi-webhook', express.json(), async (req, res) => {
         paymentMethod: transaction.payment_method_type,
         shippingAddress: transaction.shipping_address,
         quantity,
+        lines,
+        booksOnly: !qtyMatch || qtyMatch[1] === 'Q',
       }),
     });
 

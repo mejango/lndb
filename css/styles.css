@@ -4011,8 +4011,10 @@ p:last-child {
   opacity: 0.5;
 }
 
-.checkout-modal-field select {
+.checkout-modal-field select,
+.navidad-card-variant {
   appearance: none;
+  -webkit-appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236B7A5C' d='M1.4 0L6 4.6 10.6 0 12 1.4l-6 6-6-6z'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.85rem center;
@@ -4149,4 +4151,251 @@ p:last-child {
   font-weight: 400;
   color: var(--color-text-muted);
   margin-right: 0.25rem;
+}
+
+/* ===== NAVIDAD PRODUCTS + CART ===== */
+.navidad {
+  padding: var(--section-padding);
+  background-color: var(--color-cream);
+  color: var(--color-text-dark);
+  text-align: center;
+}
+
+.navidad-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-coral);
+  margin-bottom: 0.5rem;
+}
+
+.navidad-intro {
+  max-width: 44rem;
+  margin: 1rem auto 2.5rem;
+  line-height: 1.8;
+}
+
+.navidad-note {
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.navidad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  text-align: left;
+}
+
+.navidad-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-cream-light);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* a card without a photo (the gift bag) stays as tall as its text instead of stretching to the row */
+.navidad-card:not(:has(img)) {
+  align-self: start;
+}
+
+.navidad-card img {
+  width: 100%;
+  aspect-ratio: 4 / 5; /* the photos are portraits; a wider crop cut the jars */
+  object-fit: cover;
+}
+
+.navidad-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.6rem;
+  padding: 1.25rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.navidad-card-body h3,
+.navidad-card-body p {
+  margin: 0;
+}
+
+.navidad-card-tagline {
+  font-weight: 700;
+  color: var(--color-sage-dark);
+}
+
+.navidad-card-includes {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.navidad-card-variant {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.5rem 2.5rem 0.5rem 0.75rem; /* right side leaves room for the arrow */
+  width: 100%;
+  text-overflow: ellipsis;
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  background-color: #fff;
+  color: var(--color-text-dark);
+  max-width: 100%;
+}
+
+/* price + button sit at the bottom so cards in a row line up */
+.navidad-card-body .product-price {
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.navidad-teaser {
+  background-color: var(--color-cream);
+}
+
+.cart-fab {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 900;
+  padding: 0.85rem 1.4rem;
+  border: none;
+  border-radius: 50px;
+  background: var(--color-forest);
+  color: var(--color-text-light);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.cart-fab[hidden] {
+  display: none;
+}
+
+.cart-dialog {
+  margin: auto; /* the global reset removes the dialog's default centering */
+  width: min(480px, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  padding: 2rem 1.5rem 1.5rem;
+  border: none;
+  border-radius: var(--border-radius);
+  background: var(--color-cream-light);
+  color: var(--color-text-dark);
+  font-family: var(--font-body);
+}
+
+.cart-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.cart-dialog h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.cart-dialog .btn {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.cart-lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cart-line {
+  display: grid;
+  /* name on top, quantity and price below it, so nothing overflows on a phone */
+  grid-template-columns: 48px 1fr auto;
+  grid-template-areas: "thumb name name" "thumb qty price";
+  gap: 0.35rem 0.75rem;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 0.95rem;
+}
+
+.cart-line-name {
+  grid-area: name;
+}
+
+.cart-line .qty-stepper {
+  grid-area: qty;
+  justify-self: start;
+  margin-left: 0;
+}
+
+.cart-line-thumb {
+  grid-area: thumb;
+  align-self: start;
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.cart-line-price {
+  grid-area: price;
+  min-width: 5.5rem;
+  text-align: right;
+  font-weight: 600;
+}
+
+.cart-totals {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.35rem 1rem;
+  margin: 1rem 0 0;
+}
+
+.cart-totals dd {
+  margin: 0;
+  text-align: right;
+}
+
+.cart-totals dt:last-of-type,
+.cart-totals dd:last-of-type {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .navidad {
+    padding: var(--section-padding-mobile);
+  }
+}
+
+.zoomable {
+  cursor: zoom-in;
+}
+
+.zoom-dialog {
+  margin: auto;
+  padding: 0;
+  border: none;
+  background: transparent;
+  max-width: none;
+  max-height: none;
+  cursor: zoom-out;
+}
+
+.zoom-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+/* fill the screen as far as the photo's shape allows */
+.zoom-dialog img {
+  display: block;
+  width: min(92vw, 900px);
+  max-height: 92vh;
+  object-fit: contain;
+  border-radius: var(--border-radius);
 }

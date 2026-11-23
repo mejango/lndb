@@ -98,7 +98,8 @@
   var collected = {};
   var currentBtn = null;
 
-  function openModal(btn) {
+  // cart (optional): { items: [{sku, qty}], discountCode, quantity, totalCents, summary } from js/cart.js
+  function openModal(btn, cart) {
     currentBtn = btn;
     collected = {};
     overlay = buildModal();
@@ -122,15 +123,17 @@
     var modalTotalLine = overlay.querySelector('#checkout-total-line');
 
     // Pre-fill from the product page section the button belongs to
-    var section = btn.closest('.product-text, .book-section, section');
-    var initialQty = getQty(section);
+    var section = btn ? btn.closest('.product-text, .book-section, section') : null;
+    var initialQty = cart ? cart.quantity : getQty(section);
     var modalQty = initialQty;
-    checkoutContext = { quantity: modalQty, step: 'contact', type: 'book' };
-    track('Checkout Opened');
+    // The cart already set quantities and its total comes from the server.
+    if (cart) overlay.querySelector('.qty-stepper-row').remove();
+    checkoutContext = { quantity: modalQty, step: 'contact', type: cart ? 'cart' : 'book' };
+    track('Checkout Opened', cart ? { props: { items: cart.items } } : undefined);
 
     function renderModalTotal() {
       var unit = getUnitCents(section);
-      var total = unit * modalQty + SHIPPING_CENTS;
+      var total = cart ? cart.totalCents : unit * modalQty + SHIPPING_CENTS;
       if (modalTotalLine) {
         modalTotalLine.innerHTML = '<span class="checkout-total-label">Total:</span>' + formatCop(total);
       }
@@ -224,17 +227,21 @@
         phone: collected.phone,
         notes: collected.notes || '',
         quantity: modalQty,
+        items: cart ? cart.summary : modalQty + ' × Libro',
         _subject: 'Nueva orden',
         source: 'checkout'
       };
 
       // Read discount code from the page (outside modal)
       var codeInput = section ? section.querySelector('[data-discount-code]') : null;
-      var discountCode = codeInput ? codeInput.value.trim() : '';
+      var discountCode = cart ? (cart.discountCode || '') : codeInput ? codeInput.value.trim() : '';
 
+      // Wompi rejects the payment if "Apartamento / Interior / Oficina" has fewer than 4
+      // characters ("301", "B2"), so a short note travels on the main address line instead.
+      var shortNote = collected.notes && collected.notes.length < 4;
       var shippingAddress = {
-        addressLine1: collected.address,
-        addressLine2: collected.notes || undefined,
+        addressLine1: shortNote ? collected.address + ', ' + collected.notes : collected.address,
+        addressLine2: shortNote ? undefined : collected.notes || undefined,
         city: collected.city,
         region: collected.department,
         country: 'CO',
@@ -266,6 +273,7 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           quantity: modalQty,
+          items: cart ? cart.items : undefined,
           discountCode: discountCode,
           shippingAddress: shippingAddress
         })
@@ -305,7 +313,9 @@
             reference: data.reference,
             publicKey: data.publicKey,
             signature: { integrity: data.signature },
-            redirectUrl: data.redirectUrl,
+            // Wompi answers 403 to a localhost return address and the widget spins forever, so local
+            // previews leave it out; the callback below still sends the buyer to the thank-you page.
+            redirectUrl: /^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(data.redirectUrl) ? undefined : data.redirectUrl,
             shippingAddress: data.shippingAddress,
             customerData: {
               email: collected.email,
@@ -325,6 +335,7 @@
             track('Checkout Payment Result', { props: paymentProps });
             if (tx && tx.status === 'APPROVED') {
               if (window.lndbRememberTransaction) window.lndbRememberTransaction(tx.id);
+              if (cart) { try { localStorage.removeItem('lndb-cart'); } catch (_) {} }
               if (paymentProps.type !== 'test' && !purchaseTracked) {
                 purchaseTracked = true;
                 track('Purchase Completed', { props: paymentProps });
@@ -437,6 +448,8 @@
     updateStepperButtons(section);
     renderTotal(section);
   }
+
+  window.lndbCheckout = function (cart) { openModal(null, cart); };
 
   // ---- Bind buttons ----
   document.querySelectorAll('[data-checkout]').forEach(function (btn) {

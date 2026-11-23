@@ -5,6 +5,22 @@
   var path = location.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
   var product = { content_ids: ['lndb-book'], content_type: 'product', content_name: 'Los Nombres del Bosque' };
   var pendingKey = 'lndb-meta-checkout';
+
+  // What was actually bought: [{ sku, qty }] → Meta contents. The book keeps its original id
+  // so its history in Meta continues. Anything malformed falls back to the book.
+  function describe(items, quantity) {
+    var ok = Array.isArray(items) && items.length && items.every(function (item) {
+      return item && /^[a-z0-9-]{1,40}$/.test(item.sku) && Number.isInteger(item.qty) && item.qty > 0;
+    });
+    if (!ok) return Object.assign({}, product, { num_items: quantity || 1 });
+    var contents = items.map(function (item) {
+      return { id: item.sku === 'libro' ? 'lndb-book' : 'lndb-' + item.sku, quantity: item.qty };
+    });
+    return {
+      content_ids: contents.map(function (c) { return c.id; }), contents: contents, content_type: 'product',
+      num_items: contents.reduce(function (sum, c) { return sum + c.quantity; }, 0)
+    };
+  }
   var sentInPage = {};
 
   function emit(method, name, params, eventId) {
@@ -19,7 +35,11 @@
     props = props || {};
     if (props.type === 'test') return;
     if (name === 'Checkout Opened') {
-      emit('track', 'InitiateCheckout', Object.assign({}, product, { num_items: props.quantity || 1 }));
+      emit('track', 'InitiateCheckout', describe(props.items, props.quantity));
+    } else if (name === 'Add To Cart') {
+      var added = describe([{ sku: props.type, qty: 1 }]);
+      if (Number.isFinite(props.amount) && props.amount > 0) { added.value = props.amount; added.currency = 'COP'; }
+      emit('track', 'AddToCart', added);
     } else if (name === 'Email Signup' || name === 'Newsletter Signup') {
       // Only existing successful subscription hooks call this event.
       emit('track', 'Lead', { content_name: 'Email signup', signup_source: props.group || 'newsletter' });
@@ -54,8 +74,8 @@
     try { sent = JSON.parse(localStorage.getItem('lndb-meta-purchases') || '[]'); } catch (_) {}
     if (!Array.isArray(sent)) sent = [];
     if (sentInPage[result.eventId] || sent.indexOf(result.eventId) !== -1) return;
-    if (emit('track', 'Purchase', Object.assign({}, product, {
-      value: result.value, currency: result.currency, num_items: result.quantity
+    if (emit('track', 'Purchase', Object.assign(describe(result.items, result.quantity), {
+      value: result.value, currency: result.currency
     }), result.eventId)) {
       sentInPage[result.eventId] = true;
       try { localStorage.setItem('lndb-meta-purchases', JSON.stringify(sent.concat(result.eventId).slice(-100))); } catch (_) {}

@@ -1,0 +1,85 @@
+[
+  {
+    "id": "libro",
+    "name": "Libro Los Nombres del Bosque",
+    "hidden": true,
+    "tagline": "Todo bosque comienza con una semilla.",
+    "description": "Un libro que nos invita a descubrir que, así como los árboles, cada persona tiene una manera única de ser, de amar y de dejar huella. Dieciséis árboles, dieciséis formas de reconocer a quienes hacen parte de nuestra vida.",
+    "includes": "El libro y sus espacios para dedicar.",
+    "image": "",
+    "variants": [
+      { "sku": "libro", "priceCents": 8000000 }
+    ]
+  },
+  {
+    "id": "fruto",
+    "name": "Fruto",
+    "tagline": "Cada árbol tiene algo distinto para compartir.",
+    "description": "Tres sabores que cuentan tres maneras de ser: la generosidad del mango, la autenticidad del tamarindo y la sabiduría del cacao. Un regalo para celebrar todo lo que las personas especiales aportan a nuestra vida.",
+    "includes": "Chutney de mango (210 gr), chutney de tamarindo (210 gr), spread de cacao (200 gr) y postal.",
+    "image": "assets/navidad/fruto",
+    "variants": [
+      { "sku": "fruto", "priceCents": 9600000 },
+      { "sku": "fruto-caja", "label": "En caja de madera", "priceCents": 10000000 }
+    ]
+  },
+  {
+    "id": "brote",
+    "name": "Brote",
+    "tagline": "Hay personas que nos ayudan a crecer desde adentro.",
+    "description": "Como el cacao, profundo y reconfortante, hay personas que parecen saber qué necesitamos en cada momento. Un regalo para agradecer a quienes nos nutren, nos cuidan y nos ayudan a encontrar nuestro equilibrio.",
+    "includes": "Libro, spread de cacao (200 gr) y postal.",
+    "image": "assets/navidad/brote",
+    "variants": [
+      { "sku": "brote", "priceCents": 13000000 }
+    ]
+  },
+  {
+    "id": "ramas",
+    "name": "Ramas",
+    "tagline": "Cada rama crece a su manera, pero todas forman parte del mismo árbol.",
+    "description": "El mango nos recuerda a quienes dan sin medir; el tamarindo, a quienes son auténticos e irrepetibles. Dos maneras diferentes de querer que hacen más rico y diverso nuestro bosque de afectos.",
+    "includes": "Libro, chutney de mango (210 gr), chutney de tamarindo (210 gr) y postal.",
+    "image": "assets/navidad/ramas",
+    "variants": [
+      { "sku": "ramas", "priceCents": 13050000 },
+      { "sku": "ramas-caja", "label": "En caja de madera", "priceCents": 13600000 }
+    ]
+  },
+  {
+    "id": "arboleda",
+    "name": "Arboleda",
+    "tagline": "Solos somos árboles. Juntos somos bosque.",
+    "description": "La generosidad del mango, la autenticidad del tamarindo y la sabiduría del cacao se encuentran en un regalo que celebra las distintas maneras de querer, cuidar y acompañar. Porque cada persona nos ofrece algo único y juntas hacen de nuestra vida un bosque.",
+    "includes": "Libro, los tres spreads y postal.",
+    "image": "assets/navidad/arboleda",
+    "variants": [
+      { "sku": "arboleda", "priceCents": 17700000 },
+      { "sku": "arboleda-caja", "label": "En caja de madera", "priceCents": 18250000 }
+    ]
+  },
+  {
+    "id": "hoja",
+    "name": "Hoja",
+    "tagline": "A veces, un pequeño gesto dice mucho.",
+    "description": "Elige el sabor que más se parece a esa persona especial: mango para quien da sin medir, tamarindo para quien no se parece a nadie o cacao para quien sabe ofrecer justo lo que necesitamos. Una forma sencilla y significativa de regalar un pedacito del bosque.",
+    "includes": "Un spread a elección: chutney de mango (210 gr), chutney de tamarindo (210 gr) o spread de cacao (200 gr).",
+    "image": "assets/navidad/hoja",
+    "variants": [
+      { "sku": "chutney-mango", "label": "Chutney de mango", "priceCents": 1650000 },
+      { "sku": "chutney-tamarindo", "label": "Chutney de tamarindo", "priceCents": 2050000 },
+      { "sku": "spread-cacao", "label": "Spread de cacao", "priceCents": 4650000 }
+    ]
+  },
+  {
+    "id": "bolsa-regalo",
+    "name": "Bolsa de regalo",
+    "tagline": "Empaque para regalar.",
+    "description": "Agrega una bolsa de regalo a tu pedido.",
+    "includes": "",
+    "image": "",
+    "variants": [
+      { "sku": "bolsa-regalo", "priceCents": 350000 }
+    ]
+  }
+]
