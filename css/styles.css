@@ -957,6 +957,40 @@ p:last-child {
   opacity: 0.85;
 }
 
+.product-quicklinks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.product-quicklinks a {
+  padding: 0.45rem 1.1rem;
+  border: 1.5px solid rgba(245, 237, 224, 0.6);
+  border-radius: 50px;
+  color: var(--color-text-light);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.product-quicklinks a:hover,
+.product-quicklinks a:focus-visible {
+  background-color: var(--color-cream);
+  color: var(--color-forest);
+}
+
+/* quick links land below the sticky header, not under it */
+#libro,
+#navidad,
+#arboleda,
+#ilustraciones {
+  scroll-margin-top: 5rem;
+}
+
 .product-detail {
   padding: var(--section-padding);
   background-color: var(--color-cream);
