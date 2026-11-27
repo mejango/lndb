@@ -949,6 +949,14 @@ p:last-child {
   opacity: 0.85;
 }
 
+.product-title-section .product-intro {
+  max-width: 40rem;
+  margin: 0.75rem auto 0;
+  line-height: 1.7;
+  color: var(--color-cream);
+  opacity: 0.85;
+}
+
 .product-detail {
   padding: var(--section-padding);
   background-color: var(--color-cream);
